@@ -1,0 +1,52 @@
+---
+import Layout from '../components/Layout.astro';
+import SquareBackground from '../components/SquareBackground.astro';
+import LinkButton from '../components/LinkButton.astro';
+import Copyright from '../components/Copyright.astro';
+import { profileData } from '../data/profile';
+---
+
+<Layout
+  title={`${profileData.name.ja} | Links`}
+  bodyClass="bg-neutral-100 text-black min-h-screen lg:h-screen lg:overflow-hidden flex flex-col items-center p-6"
+>
+  <SquareBackground />
+
+  <main class="max-w-md lg:max-w-5xl w-full flex-1 flex flex-col relative z-10">
+    <div
+      class="flex-1 flex flex-col justify-center lg:flex-row lg:items-center lg:justify-center lg:gap-20 space-y-6 lg:space-y-0 my-auto"
+    >
+      <section class="lg:w-1/2 text-center relative z-10">
+        <div class="space-y-3">
+          <img
+            src="/images/profile.jpg"
+            alt={profileData.name.ja}
+            class="w-50 h-50 mx-auto object-cover relative z-10"
+          />
+          <div class="bg-neutral-100 inline-block px-4 py-2 relative z-10">
+            <h1 class="text-2xl font-extrabold text-black tracking-tight">
+              {profileData.name.ja}
+            </h1>
+          </div>
+        </div>
+      </section>
+
+      <!-- ボタン群をまとめて囲むカードは無し。各ボタン自体が背景を持つ -->
+      <section class="lg:w-1/2 relative z-10 space-y-3">
+        <div class="space-y-3">
+          {profileData.links.sns.map((sns) => (
+            <LinkButton href={sns.url} label={sns.name} handle={sns.handle} external />
+          ))}
+        </div>
+        <div class="pt-2">
+          <LinkButton href="/home" label="PORTFOLIO" />
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 shrink-0 relative z-10">
+      <Copyright />
+    </footer>
+  </main>
+</Layout>

@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* iOS Safari などでは button / input にUA由来の角丸が付くため、
+   サイト全体のデザイン（角ばったスタイル）に合わせて明示的にリセットする。
+   MusicPlayerのボタンだけ角丸に見えていた原因がこれ。 */
+button,
+input,
+select,
+textarea {
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.h-screen > section > *,
+.h-screen > footer > * {
+  position: relative;
+  z-index: 20;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* --- 通常時 (白背景用) --- */
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 0;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #000000 #ffffff;
+}
+
+/* --- 黒背景表示時 (.is-dark-scroll) --- */
+.is-dark-scroll::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.is-dark-scroll::-webkit-scrollbar-thumb {
+  background: #ffffff;
+}
+
+.is-dark-scroll {
+  scrollbar-color: #ffffff #000000;
+}

@@ -1,0 +1,37 @@
+---
+import Bilingual from './Bilingual.astro';
+
+interface Props {
+  eyebrow: string;
+  titleJa: string;
+  titleEn: string;
+  theme?: 'light' | 'dark';
+}
+
+const { eyebrow, titleJa, titleEn, theme = 'light' } = Astro.props;
+const isDark = theme === 'dark';
+---
+
+<div
+  class:list={[
+    'p-3 border-l-4',
+    isDark ? 'bg-black border-white' : 'bg-white border-black',
+  ]}
+>
+  <h2
+    class:list={[
+      'text-xs uppercase tracking-widest font-mono',
+      isDark ? 'text-neutral-400' : 'text-neutral-500',
+    ]}
+  >
+    {eyebrow}
+  </h2>
+  <h3
+    class:list={[
+      'text-2xl font-bold mt-1',
+      isDark ? 'text-white' : 'text-black',
+    ]}
+  >
+    <Bilingual ja={titleJa} en={titleEn} />
+  </h3>
+</div>

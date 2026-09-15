@@ -1,0 +1,138 @@
+---
+interface Props {
+  count?: number;
+  minSize?: number;
+  maxSizeRatio?: number;
+  sizeDistribution?: number;
+  borderWidth?: number;
+  followSpeed?: number;
+  maxOpacity?: number;
+  minOpacity?: number;
+}
+
+const {
+  count = 10,
+  minSize = 4,
+  maxSizeRatio = 1,
+  sizeDistribution = 4,
+  borderWidth = 1,
+  followSpeed = 0.1,
+  maxOpacity = 1,
+  minOpacity = 0,
+} = Astro.props;
+
+const config = {
+  count,
+  minSize,
+  maxSizeRatio,
+  sizeDistribution,
+  borderWidth,
+  followSpeed,
+};
+---
+
+<div id="cursor-trail" aria-hidden="true" data-config={JSON.stringify(config)}>
+  {Array.from({ length: count }).map((_, index) => (
+    <span
+      style={`opacity:${maxOpacity - (index / (count - 1)) * (maxOpacity - minOpacity)};`}
+    ></span>
+  ))}
+</div>
+
+<style>
+  #cursor-trail {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  #cursor-trail span {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+  }
+
+  @media (pointer: coarse) {
+    #cursor-trail {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.getElementById('cursor-trail');
+  if (root) {
+    const CONFIG = JSON.parse(root.dataset.config || '{}');
+
+    const trailElements = Array.from(
+      root.querySelectorAll('span')
+    ) as HTMLElement[];
+
+    const positions = trailElements.map(() => ({ x: 0, y: 0 }));
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let initialized = false;
+
+    function sizeTrail() {
+      const maxSize = Math.min(window.innerWidth, window.innerHeight) * CONFIG.maxSizeRatio;
+
+      trailElements.forEach((element) => {
+        const random = Math.random();
+        const size =
+          CONFIG.minSize + (maxSize - CONFIG.minSize) * Math.pow(random, CONFIG.sizeDistribution);
+        const gray = Math.floor(Math.random() * 256);
+
+        element.style.width = `${size}px`;
+        element.style.height = `${size}px`;
+        element.style.background = 'transparent';
+        element.style.border = `${CONFIG.borderWidth}px solid rgb(${gray}, ${gray}, ${gray})`;
+      });
+    }
+
+    sizeTrail();
+
+    window.addEventListener('mousemove', (event) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+
+      if (!initialized) {
+        positions.forEach((position) => {
+          position.x = mouseX;
+          position.y = mouseY;
+        });
+
+        trailElements.forEach((element, index) => {
+          element.style.transform = `translate(${positions[index].x}px, ${positions[index].y}px) translate(-50%, -50%)`;
+        });
+
+        initialized = true;
+      }
+    });
+
+    function animate() {
+      if (initialized) {
+        positions[0].x += (mouseX - positions[0].x) * CONFIG.followSpeed;
+        positions[0].y += (mouseY - positions[0].y) * CONFIG.followSpeed;
+
+        for (let i = 1; i < positions.length; i++) {
+          positions[i].x += (positions[i - 1].x - positions[i].x) * CONFIG.followSpeed;
+          positions[i].y += (positions[i - 1].y - positions[i].y) * CONFIG.followSpeed;
+        }
+
+        trailElements.forEach((element, index) => {
+          element.style.transform = `translate(${positions[index].x}px, ${positions[index].y}px) translate(-50%, -50%)`;
+        });
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', sizeTrail);
+  }
+</script>

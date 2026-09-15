@@ -1,0 +1,48 @@
+<div id="lang-switcher" class="fixed top-5 right-5 z-50">
+  <div id="lang-switcher-inner" class="flex border border-black divide-x divide-black text-xs font-mono font-bold w-20 h-8 bg-white shadow-sm">
+    <button id="btn-ja" class="w-1/2 h-full bg-black text-white flex items-center justify-center transition-colors">JA</button>
+    <button id="btn-en" class="w-1/2 h-full bg-white text-black flex items-center justify-center transition-colors">EN</button>
+  </div>
+</div>
+
+<script>
+  const btnJa = document.getElementById('btn-ja');
+  const btnEn = document.getElementById('btn-en');
+  const langSwitcherInner = document.getElementById('lang-switcher-inner');
+  const elementsJa = document.querySelectorAll('.js-ja');
+  const elementsEn = document.querySelectorAll('.js-en');
+
+  function setLang(lang: 'ja' | 'en') {
+    if (lang === 'ja') {
+      elementsJa.forEach(el => el.classList.remove('hidden'));
+      elementsEn.forEach(el => el.classList.add('hidden'));
+
+      btnJa?.classList.remove('bg-white', 'text-black');
+      btnJa?.classList.add('bg-black', 'text-white');
+
+      btnEn?.classList.remove('bg-black', 'text-white');
+      btnEn?.classList.add('bg-white', 'text-black');
+    } else {
+      elementsJa.forEach(el => el.classList.add('hidden'));
+      elementsEn.forEach(el => el.classList.remove('hidden'));
+
+      btnJa?.classList.remove('bg-black', 'text-white');
+      btnJa?.classList.add('bg-white', 'text-black');
+
+      btnEn?.classList.remove('bg-white', 'text-black');
+      btnEn?.classList.add('bg-black', 'text-white');
+    }
+  }
+
+  btnJa?.addEventListener('click', () => setLang('ja'));
+  btnEn?.addEventListener('click', () => setLang('en'));
+
+  window.addEventListener('theme-change', ((event: CustomEvent<{ isDark: boolean }>) => {
+    const isDark = event.detail.isDark;
+
+    langSwitcherInner?.classList.toggle('border-white', isDark);
+    langSwitcherInner?.classList.toggle('divide-white', isDark);
+    langSwitcherInner?.classList.toggle('border-black', !isDark);
+    langSwitcherInner?.classList.toggle('divide-black', !isDark);
+  }) as EventListener);
+</script>

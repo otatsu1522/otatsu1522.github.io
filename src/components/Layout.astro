@@ -1,0 +1,34 @@
+---
+import '../styles/global.css';
+import { profileData } from '../data/profile';
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+  htmlClass?: string;
+}
+
+const {
+  title,
+  description = `${profileData.name.ja} — ${profileData.tagline.ja}`,
+  bodyClass = '',
+  htmlClass = '',
+} = Astro.props;
+---
+
+<html lang="ja" class={htmlClass}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <title>{title}</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
+  <body class:list={['selection:bg-black selection:text-white', bodyClass]}>
+    <slot />
+  </body>
+</html>

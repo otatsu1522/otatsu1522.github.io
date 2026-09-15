@@ -1,0 +1,236 @@
+---
+interface Props {
+  /** BGMの初期音量 (0.0 ~ 1.0)。変更しやすいようここで一元管理する */
+  volume?: number;
+}
+
+const { volume = 0.3 } = Astro.props;
+---
+
+<!-- 画面左下。サイズ・枠線・文字サイズは TopButton.astro に合わせている（角丸なし） -->
+<div class="fixed bottom-5 left-5 z-50">
+  <button
+    id="music-toggle"
+    type="button"
+    class="w-24 h-8 border border-black bg-white text-black flex flex-col items-center justify-center font-mono font-bold text-xs shadow-sm hover:bg-black hover:text-white transition-colors"
+    aria-label="音楽を再生"
+  >
+    <span id="music-label" class="text-xs leading-none">▶ MUSIC</span>
+    <span id="music-wave" class="flex items-end justify-center gap-[2px] h-2 w-16 mt-[3px]" aria-hidden="true">
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+      <span class="w-[2px] bg-black"></span>
+    </span>
+  </button>
+</div>
+
+<audio id="bgm" src="/audio/background.mp3" loop preload="auto" data-volume={String(volume)}></audio>
+
+<style>
+  #music-wave span {
+    height: 2px;
+    transform-origin: bottom;
+    transition: height 40ms linear;
+  }
+
+  #music-toggle:hover #music-wave span {
+    background-color: white;
+  }
+</style>
+
+<script>
+  const bgm = document.getElementById('bgm') as HTMLAudioElement | null;
+  const musicToggle = document.getElementById('music-toggle');
+  const musicLabel = document.getElementById('music-label');
+  const waveBars = Array.from(document.querySelectorAll('#music-wave span')) as HTMLElement[];
+
+  let audioContext: AudioContext | null = null;
+  let analyser: AnalyserNode | null = null;
+  let source: MediaElementAudioSourceNode | null = null;
+  let animationFrameId: number | null = null;
+
+  if (bgm) {
+    // 音量は MusicPlayer.astro の volume プロパティ（既定 0.3）から受け取る
+    bgm.volume = Number(bgm.dataset.volume ?? '0.3');
+  }
+
+  function initAudioAnalyser() {
+    if (!bgm || audioContext) return;
+
+    audioContext = new AudioContext();
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 64;
+    analyser.smoothingTimeConstant = 0.7;
+
+    source = audioContext.createMediaElementSource(bgm);
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+  }
+
+  function animateWave() {
+    if (!bgm || bgm.paused) {
+      waveBars.forEach(bar => {
+        bar.style.height = '2px';
+      });
+      animationFrameId = null;
+      return;
+    }
+
+    let hasSignal = false;
+
+    if (analyser && audioContext?.state === 'running') {
+      const data = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(data);
+
+      const average = data.reduce((sum, value) => sum + value, 0) / data.length;
+      hasSignal = average > 0;
+
+      if (hasSignal) {
+        waveBars.forEach((bar, index) => {
+          const start = Math.floor((index / waveBars.length) * data.length);
+          const end = Math.max(start + 1, Math.floor(((index + 1) / waveBars.length) * data.length));
+          const values = data.slice(start, end);
+          const bandAverage = values.reduce((sum, value) => sum + value, 0) / values.length;
+
+          const combined = bandAverage * 0.7 + average * 0.3;
+          // ボタンを h-8 に縮めたのに合わせ、波形の最大高さも8pxに収める
+          const height = Math.max(2, Math.min(8, 2 + combined * 0.08));
+
+          bar.style.height = `${height}px`;
+        });
+      }
+    }
+
+    if (!hasSignal) {
+      const now = performance.now() / 200;
+
+      waveBars.forEach((bar, index) => {
+        const wave = Math.sin(now + index * 0.6) * 0.5 + 0.5;
+        const height = 2 + wave * 6;
+        bar.style.height = `${height}px`;
+      });
+    }
+
+    animationFrameId = requestAnimationFrame(animateWave);
+  }
+
+  function startWave() {
+    if (animationFrameId === null) {
+      animateWave();
+    }
+  }
+
+  function stopWave() {
+    if (animationFrameId !== null) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+
+    waveBars.forEach(bar => {
+      bar.style.height = '2px';
+    });
+  }
+
+  function updateMusicButton() {
+    if (!bgm || !musicLabel) return;
+
+    if (bgm.paused) {
+      musicLabel.textContent = '▶ MUSIC';
+      stopWave();
+    } else {
+      musicLabel.textContent = '■ MUSIC';
+      startWave();
+    }
+  }
+
+  musicToggle?.addEventListener('click', async () => {
+    if (!bgm) return;
+
+    initAudioAnalyser();
+
+    if (audioContext?.state === 'suspended') {
+      await audioContext.resume();
+    }
+
+    if (bgm.paused) {
+      await bgm.play();
+    } else {
+      bgm.pause();
+    }
+
+    updateMusicButton();
+  });
+
+  bgm?.addEventListener('play', async () => {
+    // 解析器の生成はユーザー操作時のみ（上記 load ハンドラのコメント参照）
+    if (audioContext?.state === 'suspended') {
+      try {
+        await audioContext.resume();
+      } catch {
+      }
+    }
+
+    updateMusicButton();
+  });
+
+  bgm?.addEventListener('pause', updateMusicButton);
+
+  window.addEventListener('load', async () => {
+    if (!bgm) return;
+
+    try {
+      await bgm.play();
+    } catch {
+    }
+
+    updateMusicButton();
+  });
+  window.addEventListener('stop-bgm', () => {
+    if (bgm && !bgm.paused) {
+      bgm.pause();
+      updateMusicButton();
+    }
+  });
+
+  // キーボード操作: m で再生 / 停止（ミュート）を切り替える
+  window.addEventListener('keydown', async (event) => {
+    if (event.key !== 'm') return;
+
+    // 入力中や修飾キー併用時はショートカットを無効にする
+    const target = event.target as HTMLElement | null;
+    if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    if (!bgm) return;
+
+    event.preventDefault();
+
+    initAudioAnalyser();
+
+    if (audioContext?.state === 'suspended') {
+      await audioContext.resume();
+    }
+
+    if (bgm.paused) {
+      try {
+        await bgm.play();
+      } catch {}
+    } else {
+      bgm.pause();
+    }
+
+    updateMusicButton();
+  });
+</script>
