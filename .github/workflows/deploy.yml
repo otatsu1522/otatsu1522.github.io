@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install, build, and upload Site
-        uses: withastro/action@v6
+        uses: withastro/action@v4
         with:
           node-version: '22'
 
