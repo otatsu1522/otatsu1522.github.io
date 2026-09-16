@@ -1,4 +1,6 @@
 ---
+import { siteText } from '../data/site';
+
 interface Props {
   /** BGMの初期音量 (0.0 ~ 1.0)。変更しやすいようここで一元管理する */
   volume?: number;
@@ -12,10 +14,11 @@ const { volume = 0.3 } = Astro.props;
   <button
     id="music-toggle"
     type="button"
+    data-label={siteText.music.label}
     class="w-24 h-8 border border-black bg-white text-black flex flex-col items-center justify-center font-mono font-bold text-xs shadow-sm hover:bg-black hover:text-white transition-colors"
     aria-label="音楽を再生"
   >
-    <span id="music-label" class="text-xs leading-none">▶ MUSIC</span>
+    <span id="music-label" class="text-xs leading-none">▶ {siteText.music.label}</span>
     <span id="music-wave" class="flex items-end justify-center gap-[2px] h-2 w-16 mt-[3px]" aria-hidden="true">
       <span class="w-[2px] bg-black"></span>
       <span class="w-[2px] bg-black"></span>
@@ -60,7 +63,6 @@ const { volume = 0.3 } = Astro.props;
   let audioContext: AudioContext | null = null;
   let analyser: AnalyserNode | null = null;
   let source: MediaElementAudioSourceNode | null = null;
-  let animationFrameId: number | null = null;
 
   if (bgm) {
     // 音量は MusicPlayer.astro の volume プロパティ（既定 0.3）から受け取る
@@ -80,80 +82,65 @@ const { volume = 0.3 } = Astro.props;
     analyser.connect(audioContext.destination);
   }
 
+  // 【修正】以前は play/pause イベントの発火のたびに rAF ループを
+  // start/stop する作りだったため、モバイルでイベントの発火順が前後すると
+  // 「再生中なのにループが再開されない（＝波が消えたまま）」状態になることがあった。
+  // rAFループはページ読み込み後ずっと1本走らせ続け、毎フレーム bgm.paused を見て
+  // 描画するかどうかだけを判断する方式に変更し、start/stopの取りこぼしをなくす。
   function animateWave() {
-    if (!bgm || bgm.paused) {
-      waveBars.forEach(bar => {
-        bar.style.height = '2px';
-      });
-      animationFrameId = null;
-      return;
-    }
+    if (bgm && !bgm.paused) {
+      let hasSignal = false;
 
-    let hasSignal = false;
+      if (analyser && audioContext?.state === 'running') {
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
 
-    if (analyser && audioContext?.state === 'running') {
-      const data = new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(data);
+        const average = data.reduce((sum, value) => sum + value, 0) / data.length;
+        hasSignal = average > 0;
 
-      const average = data.reduce((sum, value) => sum + value, 0) / data.length;
-      hasSignal = average > 0;
+        if (hasSignal) {
+          waveBars.forEach((bar, index) => {
+            const start = Math.floor((index / waveBars.length) * data.length);
+            const end = Math.max(start + 1, Math.floor(((index + 1) / waveBars.length) * data.length));
+            const values = data.slice(start, end);
+            const bandAverage = values.reduce((sum, value) => sum + value, 0) / values.length;
 
-      if (hasSignal) {
+            const combined = bandAverage * 0.7 + average * 0.3;
+            // ボタンを h-8 に縮めたのに合わせ、波形の最大高さも8pxに収める
+            const height = Math.max(2, Math.min(8, 2 + combined * 0.08));
+
+            bar.style.height = `${height}px`;
+          });
+        }
+      }
+
+      // iOS Safari などでは AudioContext / MediaElementSource から周波数データが
+      // 取得できず（全て0）ことがあるため、その場合は時間ベースの擬似波形で代替する。
+      if (!hasSignal) {
+        const now = performance.now() / 200;
+
         waveBars.forEach((bar, index) => {
-          const start = Math.floor((index / waveBars.length) * data.length);
-          const end = Math.max(start + 1, Math.floor(((index + 1) / waveBars.length) * data.length));
-          const values = data.slice(start, end);
-          const bandAverage = values.reduce((sum, value) => sum + value, 0) / values.length;
-
-          const combined = bandAverage * 0.7 + average * 0.3;
-          // ボタンを h-8 に縮めたのに合わせ、波形の最大高さも8pxに収める
-          const height = Math.max(2, Math.min(8, 2 + combined * 0.08));
-
+          const wave = Math.sin(now + index * 0.6) * 0.5 + 0.5;
+          const height = 2 + wave * 6;
           bar.style.height = `${height}px`;
         });
       }
-    }
-
-    if (!hasSignal) {
-      const now = performance.now() / 200;
-
-      waveBars.forEach((bar, index) => {
-        const wave = Math.sin(now + index * 0.6) * 0.5 + 0.5;
-        const height = 2 + wave * 6;
-        bar.style.height = `${height}px`;
+    } else {
+      waveBars.forEach((bar) => {
+        bar.style.height = '2px';
       });
     }
 
-    animationFrameId = requestAnimationFrame(animateWave);
+    requestAnimationFrame(animateWave);
   }
 
-  function startWave() {
-    if (animationFrameId === null) {
-      animateWave();
-    }
-  }
-
-  function stopWave() {
-    if (animationFrameId !== null) {
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = null;
-    }
-
-    waveBars.forEach(bar => {
-      bar.style.height = '2px';
-    });
-  }
+  requestAnimationFrame(animateWave);
 
   function updateMusicButton() {
-    if (!bgm || !musicLabel) return;
+    if (!bgm || !musicLabel || !musicToggle) return;
 
-    if (bgm.paused) {
-      musicLabel.textContent = '▶ MUSIC';
-      stopWave();
-    } else {
-      musicLabel.textContent = '■ MUSIC';
-      startWave();
-    }
+    const label = (musicToggle as HTMLElement).dataset.label ?? 'MUSIC';
+    musicLabel.textContent = bgm.paused ? `▶ ${label}` : `■ ${label}`;
   }
 
   musicToggle?.addEventListener('click', async () => {
@@ -191,6 +178,9 @@ const { volume = 0.3 } = Astro.props;
   window.addEventListener('load', async () => {
     if (!bgm) return;
 
+    // 【修正】ここで initAudioAnalyser() を呼ぶと、ユーザー操作前に AudioContext が
+    // suspended 状態で生成され、iOS Safari では音声がそこで止まってしまうことがある。
+    // 解析器の生成はユーザー操作（クリック / mキー）のタイミングまで遅らせる。
     try {
       await bgm.play();
     } catch {

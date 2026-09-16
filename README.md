@@ -1,9 +1,7 @@
 # Portfolio
 
-自転車で世界を旅するトラベラー「旅人おたつ」のポートフォリオ / リンク集サイト。
+リンクページとポートフォリオサイト
 
-- `/` … SNSリンクとポートフォリオへの導線をまとめたリンク集（いわゆる「リンクツリー」的ページ）
-- `/home` … フルスクリーン・スクロールスナップ形式のポートフォリオ本体（自己紹介・旅歴・動画・SNS・メッセージ）
 
 ## 使用技術
 
@@ -12,10 +10,11 @@
 | フレームワーク | [Astro](https://astro.build/) v7（静的サイト生成） |
 | スタイリング | [Tailwind CSS v4](https://tailwindcss.com/)（`@tailwindcss/vite` 経由） |
 | 言語 | TypeScript（`astro/tsconfigs/strict` を継承） |
-| アイコン | `lucide-astro`（※現状のコードからは未使用。使う予定がなければ依存関係から外して問題ありません） |
+| 画像最適化 | `astro:assets`（`<Image />`）。`src/assets/images/` 配下の画像をビルド時にwebp変換・圧縮 |
 | パッケージマネージャ | pnpm（`pnpm-workspace.yaml` あり） |
 | 型チェック | `@astrojs/check` + `typescript`（`astro check`） |
 | コード整形 | Prettier + `prettier-plugin-astro` + `prettier-plugin-tailwindcss` |
+| デプロイ | GitHub Actions → GitHub Pages（`.github/workflows/deploy.yml`） |
 
 多言語対応（日本語⇄英語）はAstroの国際化ルーティングではなく、**ページ内の全要素を両方レンダリングしておき、JSでどちらかを `hidden` にするクライアントサイド切り替え方式**です（`LanguageSwitcher.astro` が `.js-ja` / `.js-en` の表示を切り替えます）。SEO上は日本語のみが正規コンテンツとして評価されやすい点は留意してください。
 
@@ -44,58 +43,33 @@ pnpm preview    # ビルド結果をローカルでプレビュー
 2. コミット前に `pnpm format` → `pnpm check` を実行し、型エラー・フォーマット崩れがない状態にする
 3. `pnpm build` が通ることを確認してからPR/デプロイ
 
-## ディレクトリ構成
+## コンテンツ・文言の編集場所
 
-```
-src/
-  pages/
-    index.astro     # トップ（リンク集）ページ
-    home.astro       # ポートフォリオ本体（6セクション・スクロールスナップ）
-  components/
-    Layout.astro         # 全ページ共通の <html>/<head>/<body> ラッパー
-    SectionHeading.astro # 「アイキャッチ + 日英見出し」の共通パーツ
-    Bilingual.astro       # 日英切替スパンの共通パーツ (.js-ja / .js-en)
-    LinkButton.astro      # 白背景/黒背景に対応したリンクボタン共通パーツ
-    SquareBackground.astro # 背景のアニメーション付き四角形（Canvas）
-    CursorTrail.astro     # カーソル追従の残像エフェクト（デスクトップのみ）
-    LanguageSwitcher.astro # 右上の JA/EN 切替ボタン
-    TopButton.astro       # 左上の「← TOP」ボタン（/ に戻る）
-    MusicPlayer.astro     # 右下のBGM再生ボタン（Web Audio APIで波形表示）
-  data/
-    profile.ts       # サイト全体のコンテンツ（プロフィール・旅歴・SNS・再生リスト等）
-  scripts/
-    scrollTheme.ts    # スクロール位置からダーク/ライトを判定し、
-                       # スクロールバーの色切替 & 'theme-change' イベント発火
-  styles/
-    global.css        # Tailwindの読み込み + スクロールバーのカスタムスタイル
-astro.config.mjs
-package.json
-tsconfig.json
-```
+コードを触らずに更新できるよう、テキストは2つのデータファイルに集約している。
 
-## このリファクタで直した点（メモ）
+- `src/data/profile.ts` … プロフィール・自己紹介・旅歴・SNS・再生リストなどの**コンテンツ**
+- `src/data/site.ts` … ボタンラベルや見出しの飾り文字、コピーライトなどの**UI固定文言**
 
-コード全体の見直しの中で、以下の実質的な不具合・無駄を修正しています。
+画像は以下の場所に置く（`<Image />` で自動的にwebp変換・最適化される）。
 
-- **`CursorTrail.astro` の設定値バグ**：フロントマターとスクリプト内で同名定数が別の値で二重定義されており、実際に効いていたのはスクリプト側の値のみでした。`SquareBackground.astro` と同じ「`data-config` 属性で設定を一元化する」方式に統一しました。
-- **`astro:page-load` のデッドコード**：このサイトはAstroの `<ClientRouter />`（クライアントサイド遷移）を使っていないため、`astro:page-load` リスナーは一度も発火していませんでした。削除済み。将来 View Transitions を入れる場合は `scrollTheme.ts` / `SquareBackground.astro` にリスナーを追加してください。
-- **`IntersectionObserver` の二重監視**：`scrollTheme.ts` と `LanguageSwitcher.astro` が同じ内容の監視をそれぞれ独自に行っていたのを、`scrollTheme.ts` 側に一本化し `theme-change` カスタムイベントで通知する形に統一しました。
-- **`home.astro` 内のYouTube連携スクリプトの空処理**：何もしない分岐を削除し、実際に機能している `CustomEvent('stop-bgm')` の通知のみ残しました。
-- **`index.astro` / `home.astro` の `<head>` 重複**：`Layout.astro` に共通化。OGP用の `description` メタタグも追加しています。
-- **繰り返しパターンの部品化**：日英切替スパン・セクション見出し・リンクボタンをそれぞれ `Bilingual.astro` / `SectionHeading.astro` / `LinkButton.astro` に切り出しました。
-- **`home.astro` のスマホ表示対策**：自己紹介／旅歴セクションは `h-screen` 固定＆スクロールスナップのため、小さい画面高の端末でコンテンツがあふれた場合に見切れる可能性があったので、その2セクションに `overflow-y-auto` を追加しています。
+- `src/assets/images/profile.jpg` … プロフィール写真（`/` と `/portfolio` の両方で使用）
+- `src/assets/images/gallery/*.{jpg,jpeg,png,webp}` … ギャラリーセクションの画像。ファイルを追加/削除するだけで自動的に反映される（コード変更不要）
+- `public/ogp.jpg`（推奨 1200×630px）… SNSシェア時のOGP画像。こちらは最適化せずそのまま配信したいので `public/` に置く
+- `public/audio/background.mp3` … BGM
+- `public/favicon.svg`
 
-## 今後の改善候補（未実施・提案のみ）
+## キーボード操作（`/portfolio`）
 
-必要に応じて検討してください（依存関係の追加が伴うため、今回のリファクタでは実装していません）。
+| キー | 動作 |
+| --- | --- |
+| `j` | 前の画面へ |
+| `k` | 次の画面へ |
+| `m` | BGMの再生/停止 |
 
-- `@astrojs/sitemap` の導入（`astro.config.mjs` に `site` を設定済みなので追加しやすい状態にしてあります）
-- OGP画像（`og:image`）の追加
-- `<img>` を Astro の `astro:assets` の `<Image />` に置き換えて画像を自動最適化（現状は `public/images/profile.jpg` を素の `<img>` で参照）
-- `lucide-astro` が未使用であれば依存関係から削除（使う予定があれば逆に使用箇所を追加）
-- Astro公式インテグレーションとしての国際化ルーティング（`i18n`設定）への移行（現状はクライアントサイド切替のみ）
+## デプロイ（GitHub Pages）
 
-## 注意事項
+`.github/workflows/deploy.yml` が `main` ブランチへのpushで自動ビルド・デプロイする。事前に以下を確認すること。
 
-- `public/images/profile.jpg`, `public/favicon.svg`, `public/audio/background.mp3` は本リポジトリのアップロード対象に含まれていなかったため、zip内には含まれていません。既存の `public/` フォルダに配置してください。
-- 音楽の自動再生（`MusicPlayer.astro` の `window.addEventListener('load', ...)` 内の `bgm.play()`）は、多くのブラウザの自動再生ポリシーによりユーザー操作なしでは失敗します（コード側で失敗を握りつぶして正常に手動再生ボタンにフォールバックする作りになっているため、動作上の問題はありません）。
+- リポジトリの **Settings → Pages → Build and deployment → Source** を `GitHub Actions` にする（`Deploy from a branch` のままだと動かない）
+- `pnpm-lock.yaml` をコミットする（ロックファイルが無いとpackage-managerを自動検出できずactionが失敗する）
+- `astro.config.mjs` の `site` をデプロイ先のURLに合わせる（現状 `https://otatsu1522.github.io` = ユーザーページ想定。リポジトリ名を変えたプロジェクトページにする場合は `base` の追加が必要）

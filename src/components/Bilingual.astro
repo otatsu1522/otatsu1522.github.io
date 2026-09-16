@@ -1,4 +1,7 @@
 ---
+// LanguageSwitcher.astro が .js-ja / .js-en を toggle する前提の
+// 「日本語+英語スパンを並べる」パターンを1箇所にまとめたもの。
+// これまで home.astro 内に同じ形が10箇所近く手書きされていた。
 interface Props {
   ja: string;
   en: string;

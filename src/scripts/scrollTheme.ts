@@ -35,4 +35,6 @@ export function initScrollTheme() {
   sections.forEach((sec) => observer.observe(sec));
 }
 
+// 【修正】astro:page-load は <ClientRouter /> 使用時のみ発火するイベントで、
+// このプロジェクトでは未使用のため削除（DOMContentLoadedのみで十分）。
 document.addEventListener('DOMContentLoaded', initScrollTheme);

@@ -1,4 +1,5 @@
 <div id="lang-switcher" class="fixed top-5 right-5 z-50">
+  <!-- 高さ・枠線・文字サイズは TopButton.astro に統一（角丸なし） -->
   <div id="lang-switcher-inner" class="flex border border-black divide-x divide-black text-xs font-mono font-bold w-20 h-8 bg-white shadow-sm">
     <button id="btn-ja" class="w-1/2 h-full bg-black text-white flex items-center justify-center transition-colors">JA</button>
     <button id="btn-en" class="w-1/2 h-full bg-white text-black flex items-center justify-center transition-colors">EN</button>
@@ -37,6 +38,9 @@
   btnJa?.addEventListener('click', () => setLang('ja'));
   btnEn?.addEventListener('click', () => setLang('en'));
 
+  // 【修正】以前はここに独自のIntersectionObserverがあり、scrollTheme.tsの監視と
+  // ほぼ同じ内容（背景色を見てdark/lightを判定）が2重に走っていた。
+  // scrollTheme.ts側の観測結果を 'theme-change' イベントで受け取る方式に統一。
   window.addEventListener('theme-change', ((event: CustomEvent<{ isDark: boolean }>) => {
     const isDark = event.detail.isDark;
 

@@ -1,0 +1,47 @@
+---
+// key-value形式の表を汎用化したもの。自転車のスペック表・装備リストなど、
+// 「項目名 + 内容」の組み合わせであれば何にでも使い回せる。
+// rows は配列なので行数は自由に増減可能（大量になっても崩れない）。
+// 表だけだと背景に同化して見にくいため、カード風の背景を内蔵している。
+import Bilingual from './Bilingual.astro';
+
+interface Row {
+  label: { ja: string; en: string };
+  value: { ja: string; en: string };
+}
+
+interface Props {
+  rows: Row[];
+  theme?: 'light' | 'dark';
+}
+
+const { rows, theme = 'light' } = Astro.props;
+const isDark = theme === 'dark';
+---
+
+<div
+  class:list={[
+    'border p-4',
+    isDark ? 'bg-neutral-900 border-neutral-700' : 'bg-neutral-50 border-neutral-300',
+  ]}
+>
+  <table class="w-full text-sm border-collapse">
+    <tbody>
+      {rows.map((row) => (
+        <tr class={isDark ? 'border-b border-neutral-700 last:border-none' : 'border-b border-neutral-300 last:border-none'}>
+          <th
+            class:list={[
+              'py-2 pr-4 w-28 shrink-0 text-left align-top font-mono font-normal whitespace-nowrap',
+              isDark ? 'text-neutral-400' : 'text-neutral-500',
+            ]}
+          >
+            <Bilingual ja={row.label.ja} en={row.label.en} />
+          </th>
+          <td class="py-2 align-top">
+            <Bilingual ja={row.value.ja} en={row.value.en} />
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

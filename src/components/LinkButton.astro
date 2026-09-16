@@ -1,9 +1,13 @@
 ---
+// index.astro（SNS一覧・PORTFOLIOリンク）と home.astro（再生リスト）で
+// ほぼ同一だった「白背景・黒枠・ホバーで反転」ボタンの共通化。
 interface Props {
   href: string;
+  /** ラベル文字列。日英切り替えが必要な場合はこのpropの代わりにslotへ<Bilingual />を渡す */
   label?: string;
   handle?: string;
   external?: boolean;
+  /** light: 白背景セクション用(黒枠) / dark: 黒背景セクション用(白枠) */
   variant?: 'light' | 'dark';
 }
 

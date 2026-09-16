@@ -1,0 +1,25 @@
+---
+// 文章が乗る場所で背景と同化しないよう、カード風の背景を付けて表示する共通パーツ。
+// ギャラリーセクションの「そのギャラリーの名前」表示などで使用。
+import Bilingual from './Bilingual.astro';
+
+interface Props {
+  ja: string;
+  en: string;
+  theme?: 'light' | 'dark';
+}
+
+const { ja, en, theme = 'light' } = Astro.props;
+const isDark = theme === 'dark';
+---
+
+<div
+  class:list={[
+    'inline-block p-3 text-sm leading-relaxed border',
+    isDark
+      ? 'bg-neutral-900 border-neutral-700 text-neutral-300'
+      : 'bg-neutral-50 border-neutral-300 text-neutral-700',
+  ]}
+>
+  <Bilingual ja={ja} en={en} />
+</div>

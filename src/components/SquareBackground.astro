@@ -59,6 +59,10 @@ const config = {
     // datasetから設定値を取り出し
     const CONFIG = JSON.parse(canvas.dataset.config || '{}');
 
+    // 【修正】以前は canvas.width に CSSピクセル値をそのまま入れていたため、
+    // 高DPIディスプレイでは1pxの線が実ピクセルの境界にまたがってアンチエイリアスされ、
+    // CursorTrail側（DOMの border:1px）より線がぼやけて細く見えていた。
+    // devicePixelRatioでスケールし、CursorTrailと同じ見た目の線幅に揃える。
     let width = window.innerWidth;
     let height = window.innerHeight;
 
@@ -153,6 +157,8 @@ const config = {
         ctx.strokeStyle = `rgba(${sq.gray}, ${sq.gray}, ${sq.gray}, ${Math.max(0, sq.opacity)})`;
         ctx.lineWidth = CONFIG.borderWidth;
         ctx.beginPath();
+        // 線幅1pxの場合、整数座標だと線がピクセル境界をまたいでぼやけるため
+        // 0.5pxずらして描画し、DOM側のborderと同じシャープさに揃える
         ctx.rect(
           Math.floor(sq.x - sq.size / 2) + 0.5,
           Math.floor(sq.y - sq.size / 2) + 0.5,
@@ -169,4 +175,7 @@ const config = {
   }
 
   initSquareBg();
+  // 【修正】astro:page-load は <ClientRouter /> によるクライアントサイド遷移でのみ発火するイベントで、
+  // このサイトはページ遷移をブラウザの通常ナビゲーションに任せているため、これまで一度も発火していなかった
+  // (=デッドコード)。View Transitionsを導入する場合はここに再度リスナーを追加すること。
 </script>

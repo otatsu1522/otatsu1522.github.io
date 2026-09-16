@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+:root {
+  /* サイト全体のフォント。ここを書き換えるだけでサイト全体のフォントを変更できる。
+     既定は外部フォントを読み込まない「機械的」な印象のシステム標準モノスペース体。
+     Webフォントに差し替える場合は、Layout.astroの<head>に<link>を追加した上で
+     ここにフォント名を追加すること（例: "'JetBrains Mono', ui-monospace, ...」）。 */
+  --font-primary: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', 'Roboto Mono', monospace;
+}
+
+body {
+  font-family: var(--font-primary);
+}
+
 /* iOS Safari などでは button / input にUA由来の角丸が付くため、
    サイト全体のデザイン（角ばったスタイル）に合わせて明示的にリセットする。
    MusicPlayerのボタンだけ角丸に見えていた原因がこれ。 */
@@ -16,6 +28,16 @@ textarea {
 .h-screen > footer > * {
   position: relative;
   z-index: 20;
+}
+
+/* マウスカーソルを塗りつぶしのグレー四角形に変更。
+   リンクやボタンのUA標準カーソル(pointer)より*を優先させて全要素に適用する。
+   タッチ端末はそもそもカーソルが表示されないため影響しない。 */
+* {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect width='14' height='14' fill='%23808080'/%3E%3C/svg%3E")
+      7 7,
+    auto;
 }
 
 ::-webkit-scrollbar {
