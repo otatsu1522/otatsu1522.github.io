@@ -9,7 +9,23 @@ interface Props {
 const { volume = 0.3 } = Astro.props;
 ---
 
-<!-- 画面左下。サイズ・枠線・文字サイズは TopButton.astro に合わせている（角丸なし） -->
+<!--
+  【設計を全面的にやり直した経緯】
+  以前は AnalyserNode (Web Audio API) で実際の音声波形を取得して描画していたが、
+  スマホでボタンをタップして一時停止→再生すると波形が復活しない不具合が
+  何度修正しても再発していた。原因の切り分けが難しい理由は、
+  createMediaElementSource() で <audio> をWeb Audio Graphに接続すると、
+  それ以降そのタグの音声出力は AudioContext 経由でしか鳴らなくなり、
+  スマホでは AudioContext の生成/resumeがユーザー操作のタイミングに
+  非常にシビアで、状況によってはサウンド出力そのものが
+  無音のまま固まってしまうことがあるため（＝波形うんぬん以前の問題）。
+
+  そのため今回は「実音声を解析して波形を描く」方式を完全に廃止し、
+  AudioContext/AnalyserNodeを一切使わない構成にした。
+  波形は bgm.paused の状態だけを見てCSSアニメーションの
+  再生/一時停止(animation-play-state)を切り替えているだけなので、
+  例外が起きる余地そのものがなく、原理的に「波が復活しない」状態になり得ない。
+-->
 <div class="fixed bottom-5 left-5 z-50">
   <button
     id="music-toggle"
@@ -20,22 +36,9 @@ const { volume = 0.3 } = Astro.props;
   >
     <span id="music-label" class="text-xs leading-none">▶ {siteText.music.label}</span>
     <span id="music-wave" class="flex items-end justify-center gap-[2px] h-2 w-16 mt-[3px]" aria-hidden="true">
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
-      <span class="w-[2px] bg-black"></span>
+      {Array.from({ length: 16 }).map((_, i) => (
+        <span class="wave-bar" style={`animation-delay:${(i % 8) * 90}ms`}></span>
+      ))}
     </span>
   </button>
 </div>
@@ -43,14 +46,32 @@ const { volume = 0.3 } = Astro.props;
 <audio id="bgm" src="/audio/background.mp3" loop preload="auto" data-volume={String(volume)}></audio>
 
 <style>
-  #music-wave span {
+  .wave-bar {
+    width: 2px;
     height: 2px;
+    background-color: black;
     transform-origin: bottom;
-    transition: height 40ms linear;
+    animation: wave-bounce 0.8s ease-in-out infinite;
+    animation-play-state: paused;
   }
 
-  #music-toggle:hover #music-wave span {
+  #music-toggle:hover .wave-bar {
     background-color: white;
+  }
+
+  /* 再生中のみアニメーションを走らせる。JSはこのクラスの付け外しだけを行う。 */
+  #music-wave.is-playing .wave-bar {
+    animation-play-state: running;
+  }
+
+  @keyframes wave-bounce {
+    0%,
+    100% {
+      height: 2px;
+    }
+    50% {
+      height: 8px;
+    }
   }
 </style>
 
@@ -58,127 +79,33 @@ const { volume = 0.3 } = Astro.props;
   const bgm = document.getElementById('bgm') as HTMLAudioElement | null;
   const musicToggle = document.getElementById('music-toggle');
   const musicLabel = document.getElementById('music-label');
-  const waveBars = Array.from(document.querySelectorAll('#music-wave span')) as HTMLElement[];
-
-  let audioContext: AudioContext | null = null;
-  let analyser: AnalyserNode | null = null;
-  let source: MediaElementAudioSourceNode | null = null;
+  const musicWave = document.getElementById('music-wave');
 
   if (bgm) {
     // 音量は MusicPlayer.astro の volume プロパティ（既定 0.3）から受け取る
     bgm.volume = Number(bgm.dataset.volume ?? '0.3');
   }
 
-  function initAudioAnalyser() {
-    if (!bgm || audioContext) return;
-
-    try {
-      audioContext = new AudioContext();
-      analyser = audioContext.createAnalyser();
-      analyser.fftSize = 64;
-      analyser.smoothingTimeConstant = 0.7;
-
-      source = audioContext.createMediaElementSource(bgm);
-      source.connect(analyser);
-      analyser.connect(audioContext.destination);
-    } catch {
-      // 初期化に失敗した場合は次回また試せるよう状態を戻す
-      audioContext = null;
-      analyser = null;
-      source = null;
-    }
-  }
-
-  // 【修正】以前は play/pause イベントの発火のたびに rAF ループを
-  // start/stop する作りだったため、モバイルでイベントの発火順が前後すると
-  // 「再生中なのにループが再開されない（＝波が消えたまま）」状態になることがあった。
-  // rAFループはページ読み込み後ずっと1本走らせ続け、毎フレーム bgm.paused を見て
-  // 描画するかどうかだけを判断する方式に変更し、start/stopの取りこぼしをなくした。
-  //
-  // 【追加修正】それでもなお、スマホでボタンを押した瞬間にごく稀に
-  // AnalyserNode からのデータ取得が例外を投げることがあり、
-  // 1度でも例外が発生するとその場でループ(rAFの再帰呼び出し)自体が
-  // 止まってしまい、以後ずっと波形が復活しない、という不具合があった。
-  // そのため描画処理全体をtry/catchで包み、内部で何が起きても
-  // 最後の requestAnimationFrame(animateWave) だけは必ず実行されるようにする。
-  function animateWave() {
-    try {
-      if (bgm && !bgm.paused) {
-        // iOSでは再生中でもAudioContextが自動的にsuspendされることがあるため、
-        // 再生中を検知するたびに念のためresumeを試みる（失敗しても無視してよい）
-        if (audioContext?.state === 'suspended') {
-          audioContext.resume().catch(() => {});
-        }
-
-        let hasSignal = false;
-
-        if (analyser && audioContext?.state === 'running') {
-          const data = new Uint8Array(analyser.frequencyBinCount);
-          analyser.getByteFrequencyData(data);
-
-          const average = data.reduce((sum, value) => sum + value, 0) / data.length;
-          hasSignal = average > 0;
-
-          if (hasSignal) {
-            waveBars.forEach((bar, index) => {
-              const start = Math.floor((index / waveBars.length) * data.length);
-              const end = Math.max(start + 1, Math.floor(((index + 1) / waveBars.length) * data.length));
-              const values = data.slice(start, end);
-              const bandAverage = values.reduce((sum, value) => sum + value, 0) / values.length;
-
-              const combined = bandAverage * 0.7 + average * 0.3;
-              // ボタンを h-8 に縮めたのに合わせ、波形の最大高さも8pxに収める
-              const height = Math.max(2, Math.min(8, 2 + combined * 0.08));
-
-              bar.style.height = `${height}px`;
-            });
-          }
-        }
-
-        // iOS Safari などでは AudioContext / MediaElementSource から周波数データが
-        // 取得できず（全て0）ことがあるため、その場合は時間ベースの擬似波形で代替する。
-        if (!hasSignal) {
-          const now = performance.now() / 200;
-
-          waveBars.forEach((bar, index) => {
-            const wave = Math.sin(now + index * 0.6) * 0.5 + 0.5;
-            const height = 2 + wave * 6;
-            bar.style.height = `${height}px`;
-          });
-        }
-      } else {
-        waveBars.forEach((bar) => {
-          bar.style.height = '2px';
-        });
-      }
-    } catch {
-      // 描画中に何が起きても、ループ自体は次のフレームも必ず継続する
-    }
-
-    requestAnimationFrame(animateWave);
-  }
-
-  requestAnimationFrame(animateWave);
-
-  function updateMusicButton() {
-    if (!bgm || !musicLabel || !musicToggle) return;
+  // 表示（ラベルの文字・波アニメーションのON/OFF）を bgm.paused の値だけを見て更新する。
+  // 再生/一時停止の実際の処理（play()/pause()の呼び出し）とは完全に分離しており、
+  // 'play'/'pause' イベントさえ発火すれば必ず正しい見た目になる。
+  function syncUI() {
+    if (!bgm || !musicLabel || !musicToggle || !musicWave) return;
 
     const label = (musicToggle as HTMLElement).dataset.label ?? 'MUSIC';
     musicLabel.textContent = bgm.paused ? `▶ ${label}` : `■ ${label}`;
+    musicWave.classList.toggle('is-playing', !bgm.paused);
   }
 
-  musicToggle?.addEventListener('click', async () => {
+  // 'play'/'pause' はユーザーの操作経路（ボタン、mキー、他タブでの停止指示など）に
+  // 関わらず、実際に再生状態が変わったタイミングで必ず発火するブラウザ標準のイベント。
+  // UIの更新はこのイベントだけをトリガーにすることで、
+  // 「どのボタン操作から呼ばれたか」を気にしなくてよいシンプルな構成にしている。
+  bgm?.addEventListener('play', syncUI);
+  bgm?.addEventListener('pause', syncUI);
+
+  async function togglePlayback() {
     if (!bgm) return;
-
-    try {
-      initAudioAnalyser();
-
-      if (audioContext?.state === 'suspended') {
-        await audioContext.resume();
-      }
-    } catch {
-      // 解析器の初期化に失敗しても、再生/停止自体は続行する
-    }
 
     try {
       if (bgm.paused) {
@@ -187,71 +114,41 @@ const { volume = 0.3 } = Astro.props;
         bgm.pause();
       }
     } catch {
+      // 自動再生ポリシーなどで失敗しても何もしない（UIは現在のpaused状態に追従する）
+      syncUI();
     }
+  }
 
-    updateMusicButton();
-  });
-
-  bgm?.addEventListener('play', async () => {
-    // 解析器の生成はユーザー操作時のみ（上記 load ハンドラのコメント参照）
-    if (audioContext?.state === 'suspended') {
-      try {
-        await audioContext.resume();
-      } catch {
-      }
-    }
-
-    updateMusicButton();
-  });
-
-  bgm?.addEventListener('pause', updateMusicButton);
+  musicToggle?.addEventListener('click', togglePlayback);
 
   window.addEventListener('load', async () => {
     if (!bgm) return;
 
-    // 【修正】ここで initAudioAnalyser() を呼ぶと、ユーザー操作前に AudioContext が
-    // suspended 状態で生成され、iOS Safari では音声がそこで止まってしまうことがある。
-    // 解析器の生成はユーザー操作（クリック / mキー）のタイミングまで遅らせる。
     try {
       await bgm.play();
     } catch {
+      // 自動再生がブロックされた場合は手動再生を待つ（'pause'イベントでUIは正しい状態になる）
     }
 
-    updateMusicButton();
+    syncUI();
   });
+
   window.addEventListener('stop-bgm', () => {
     if (bgm && !bgm.paused) {
       bgm.pause();
-      updateMusicButton();
     }
   });
 
   // キーボード操作: m で再生 / 停止（ミュート）を切り替える
-  window.addEventListener('keydown', async (event) => {
+  window.addEventListener('keydown', (event) => {
     if (event.key !== 'm') return;
 
     // 入力中や修飾キー併用時はショートカットを無効にする
     const target = event.target as HTMLElement | null;
     if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
     if (event.metaKey || event.ctrlKey || event.altKey) return;
-    if (!bgm) return;
 
     event.preventDefault();
-
-    initAudioAnalyser();
-
-    if (audioContext?.state === 'suspended') {
-      await audioContext.resume();
-    }
-
-    if (bgm.paused) {
-      try {
-        await bgm.play();
-      } catch {}
-    } else {
-      bgm.pause();
-    }
-
-    updateMusicButton();
+    togglePlayback();
   });
 </script>
