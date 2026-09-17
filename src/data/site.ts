@@ -37,11 +37,6 @@ export const siteText = {
       titleJa: '自転車（日本一周）',
       titleEn: 'Bicycle (Japan)',
     },
-    gearJapan: {
-      eyebrow: 'Gear',
-      titleJa: '装備（日本一周）',
-      titleEn: 'Gear (Japan)',
-    },
     galleryWorld: {
       eyebrow: 'Gallery',
       titleJa: '自転車世界一周',
@@ -52,10 +47,20 @@ export const siteText = {
       titleJa: '自転車（世界一周）',
       titleEn: 'Bicycle (World)',
     },
-    gearWorld: {
+    gear: {
       eyebrow: 'Gear',
-      titleJa: '装備（世界一周）',
-      titleEn: 'Gear (World)',
+      titleJa: '装備',
+      titleEn: 'Gear',
+    },
+    map: {
+      eyebrow: 'Map',
+      titleJa: '地図',
+      titleEn: 'Map',
+    },
+    stats: {
+      eyebrow: 'Stats',
+      titleJa: '統計',
+      titleEn: 'Stats',
     },
     recommend: {
       eyebrow: 'Recommend',

@@ -72,63 +72,87 @@ const { volume = 0.3 } = Astro.props;
   function initAudioAnalyser() {
     if (!bgm || audioContext) return;
 
-    audioContext = new AudioContext();
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 64;
-    analyser.smoothingTimeConstant = 0.7;
+    try {
+      audioContext = new AudioContext();
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 64;
+      analyser.smoothingTimeConstant = 0.7;
 
-    source = audioContext.createMediaElementSource(bgm);
-    source.connect(analyser);
-    analyser.connect(audioContext.destination);
+      source = audioContext.createMediaElementSource(bgm);
+      source.connect(analyser);
+      analyser.connect(audioContext.destination);
+    } catch {
+      // 初期化に失敗した場合は次回また試せるよう状態を戻す
+      audioContext = null;
+      analyser = null;
+      source = null;
+    }
   }
 
   // 【修正】以前は play/pause イベントの発火のたびに rAF ループを
   // start/stop する作りだったため、モバイルでイベントの発火順が前後すると
   // 「再生中なのにループが再開されない（＝波が消えたまま）」状態になることがあった。
   // rAFループはページ読み込み後ずっと1本走らせ続け、毎フレーム bgm.paused を見て
-  // 描画するかどうかだけを判断する方式に変更し、start/stopの取りこぼしをなくす。
+  // 描画するかどうかだけを判断する方式に変更し、start/stopの取りこぼしをなくした。
+  //
+  // 【追加修正】それでもなお、スマホでボタンを押した瞬間にごく稀に
+  // AnalyserNode からのデータ取得が例外を投げることがあり、
+  // 1度でも例外が発生するとその場でループ(rAFの再帰呼び出し)自体が
+  // 止まってしまい、以後ずっと波形が復活しない、という不具合があった。
+  // そのため描画処理全体をtry/catchで包み、内部で何が起きても
+  // 最後の requestAnimationFrame(animateWave) だけは必ず実行されるようにする。
   function animateWave() {
-    if (bgm && !bgm.paused) {
-      let hasSignal = false;
+    try {
+      if (bgm && !bgm.paused) {
+        // iOSでは再生中でもAudioContextが自動的にsuspendされることがあるため、
+        // 再生中を検知するたびに念のためresumeを試みる（失敗しても無視してよい）
+        if (audioContext?.state === 'suspended') {
+          audioContext.resume().catch(() => {});
+        }
 
-      if (analyser && audioContext?.state === 'running') {
-        const data = new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(data);
+        let hasSignal = false;
 
-        const average = data.reduce((sum, value) => sum + value, 0) / data.length;
-        hasSignal = average > 0;
+        if (analyser && audioContext?.state === 'running') {
+          const data = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(data);
 
-        if (hasSignal) {
+          const average = data.reduce((sum, value) => sum + value, 0) / data.length;
+          hasSignal = average > 0;
+
+          if (hasSignal) {
+            waveBars.forEach((bar, index) => {
+              const start = Math.floor((index / waveBars.length) * data.length);
+              const end = Math.max(start + 1, Math.floor(((index + 1) / waveBars.length) * data.length));
+              const values = data.slice(start, end);
+              const bandAverage = values.reduce((sum, value) => sum + value, 0) / values.length;
+
+              const combined = bandAverage * 0.7 + average * 0.3;
+              // ボタンを h-8 に縮めたのに合わせ、波形の最大高さも8pxに収める
+              const height = Math.max(2, Math.min(8, 2 + combined * 0.08));
+
+              bar.style.height = `${height}px`;
+            });
+          }
+        }
+
+        // iOS Safari などでは AudioContext / MediaElementSource から周波数データが
+        // 取得できず（全て0）ことがあるため、その場合は時間ベースの擬似波形で代替する。
+        if (!hasSignal) {
+          const now = performance.now() / 200;
+
           waveBars.forEach((bar, index) => {
-            const start = Math.floor((index / waveBars.length) * data.length);
-            const end = Math.max(start + 1, Math.floor(((index + 1) / waveBars.length) * data.length));
-            const values = data.slice(start, end);
-            const bandAverage = values.reduce((sum, value) => sum + value, 0) / values.length;
-
-            const combined = bandAverage * 0.7 + average * 0.3;
-            // ボタンを h-8 に縮めたのに合わせ、波形の最大高さも8pxに収める
-            const height = Math.max(2, Math.min(8, 2 + combined * 0.08));
-
+            const wave = Math.sin(now + index * 0.6) * 0.5 + 0.5;
+            const height = 2 + wave * 6;
             bar.style.height = `${height}px`;
           });
         }
-      }
-
-      // iOS Safari などでは AudioContext / MediaElementSource から周波数データが
-      // 取得できず（全て0）ことがあるため、その場合は時間ベースの擬似波形で代替する。
-      if (!hasSignal) {
-        const now = performance.now() / 200;
-
-        waveBars.forEach((bar, index) => {
-          const wave = Math.sin(now + index * 0.6) * 0.5 + 0.5;
-          const height = 2 + wave * 6;
-          bar.style.height = `${height}px`;
+      } else {
+        waveBars.forEach((bar) => {
+          bar.style.height = '2px';
         });
       }
-    } else {
-      waveBars.forEach((bar) => {
-        bar.style.height = '2px';
-      });
+    } catch {
+      // 描画中に何が起きても、ループ自体は次のフレームも必ず継続する
     }
 
     requestAnimationFrame(animateWave);
@@ -146,16 +170,23 @@ const { volume = 0.3 } = Astro.props;
   musicToggle?.addEventListener('click', async () => {
     if (!bgm) return;
 
-    initAudioAnalyser();
+    try {
+      initAudioAnalyser();
 
-    if (audioContext?.state === 'suspended') {
-      await audioContext.resume();
+      if (audioContext?.state === 'suspended') {
+        await audioContext.resume();
+      }
+    } catch {
+      // 解析器の初期化に失敗しても、再生/停止自体は続行する
     }
 
-    if (bgm.paused) {
-      await bgm.play();
-    } else {
-      bgm.pause();
+    try {
+      if (bgm.paused) {
+        await bgm.play();
+      } else {
+        bgm.pause();
+      }
+    } catch {
     }
 
     updateMusicButton();

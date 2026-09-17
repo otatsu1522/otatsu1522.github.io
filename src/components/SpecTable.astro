@@ -5,13 +5,16 @@
 // 表だけだと背景に同化して見にくいため、カード風の背景を内蔵している。
 import Bilingual from './Bilingual.astro';
 
-interface Row {
+// データファイル側 (bicycle-*.ts, equipment.ts) からも
+// `import type { SpecRow } from '../components/SpecTable.astro'` の形でそのまま使う。
+// 型専用の別ファイルを作るほどの内容ではないため、ここに一本化している。
+export interface SpecRow {
   label: { ja: string; en: string };
   value: { ja: string; en: string };
 }
 
 interface Props {
-  rows: Row[];
+  rows: SpecRow[];
   theme?: 'light' | 'dark';
 }
 
