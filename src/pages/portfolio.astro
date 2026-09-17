@@ -55,7 +55,7 @@ import statsImage from '../assets/images/stats.jpg';
 
     <!-- ================= 2. 自己紹介 (黒) ================= -->
     <section
-      class="h-screen w-full snap-start flex items-center justify-center px-6 md:px-12 bg-black text-white border-b border-neutral-700 overflow-y-auto"
+      class="h-screen w-full snap-start flex items-center justify-center px-6 md:px-12 bg-black text-white border-b border-neutral-700 overflow-y-auto no-scrollbar"
     >
       <div
         class="max-w-4xl w-full flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-16 relative z-20 py-8"
@@ -87,7 +87,7 @@ import statsImage from '../assets/images/stats.jpg';
 
     <!-- ================= 3. 旅歴 (白) ================= -->
     <section
-      class="h-screen w-full snap-start flex items-center justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 overflow-y-auto"
+      class="h-screen w-full snap-start flex items-center justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 overflow-y-auto no-scrollbar"
     >
       <div
         class="max-w-4xl w-full flex flex-col md:flex-row items-start justify-between gap-6 md:gap-16 relative z-20 py-8"
@@ -137,7 +137,7 @@ import statsImage from '../assets/images/stats.jpg';
     <!-- ================= 5. 自転車：日本一周 (白) ================= -->
     <!-- 左上: タイトル+写真 / 右: 表（スマホは縦積み：タイトル→写真→表） -->
     <section
-      class="h-screen w-full snap-start flex items-start justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 overflow-y-auto"
+      class="h-screen w-full snap-start flex items-start justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 overflow-y-auto no-scrollbar"
     >
       <div
         class="max-w-4xl w-full flex flex-col md:flex-row items-start gap-6 md:gap-12 relative z-20 py-8"
@@ -178,7 +178,7 @@ import statsImage from '../assets/images/stats.jpg';
 
     <!-- ================= 7. 自転車：世界一周 (白) ================= -->
     <section
-      class="h-screen w-full snap-start flex items-start justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 overflow-y-auto"
+      class="h-screen w-full snap-start flex items-start justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 overflow-y-auto no-scrollbar"
     >
       <div
         class="max-w-4xl w-full flex flex-col md:flex-row items-start gap-6 md:gap-12 relative z-20 py-8"
@@ -204,7 +204,7 @@ import statsImage from '../assets/images/stats.jpg';
 
     <!-- ================= 8. 装備（最新） (黒) ================= -->
     <section
-      class="h-screen w-full snap-start flex items-start justify-center px-6 md:px-12 bg-black text-white border-b border-neutral-700 overflow-y-auto"
+      class="h-screen w-full snap-start flex items-start justify-center px-6 md:px-12 bg-black text-white border-b border-neutral-700 overflow-y-auto no-scrollbar"
     >
       <div
         class="max-w-4xl w-full flex flex-col md:flex-row items-start gap-6 md:gap-12 relative z-20 py-8"
@@ -229,48 +229,46 @@ import statsImage from '../assets/images/stats.jpg';
       </div>
     </section>
 
-    <!-- ================= 9. 地図 (白) ================= -->
+    <!-- ================= 9. 地図・統計 (白) ================= -->
+    <!-- PCでは横並び、スマホでは縦並び（地図→統計の順） -->
     <section
-      class="h-screen w-full snap-start flex flex-col items-center justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 gap-6"
+      class="h-screen w-full snap-start flex items-center justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300"
     >
-      <div class="max-w-4xl w-full relative z-20">
-        <SectionHeading
-          eyebrow={siteText.sections.map.eyebrow}
-          titleJa={siteText.sections.map.titleJa}
-          titleEn={siteText.sections.map.titleEn}
-        />
+      <div
+        class="max-w-5xl w-full flex flex-col md:flex-row items-start gap-8 md:gap-12 relative z-20"
+      >
+        <div class="w-full md:w-1/2 flex flex-col items-start gap-4">
+          <SectionHeading
+            eyebrow={siteText.sections.map.eyebrow}
+            titleJa={siteText.sections.map.titleJa}
+            titleEn={siteText.sections.map.titleEn}
+          />
+          <Image
+            src={mapImage}
+            alt={siteText.sections.map.titleJa}
+            height={800}
+            class="w-full h-auto max-h-[70vh] object-contain"
+          />
+        </div>
+        <div class="w-full md:w-1/2 flex flex-col items-start gap-4">
+          <SectionHeading
+            eyebrow={siteText.sections.stats.eyebrow}
+            titleJa={siteText.sections.stats.titleJa}
+            titleEn={siteText.sections.stats.titleEn}
+          />
+          <Image
+            src={statsImage}
+            alt={siteText.sections.stats.titleJa}
+            height={800}
+            class="w-full h-auto max-h-[70vh] object-contain"
+          />
+        </div>
       </div>
-      <Image
-        src={mapImage}
-        alt={siteText.sections.map.titleJa}
-        height={480}
-        class="h-[60vh] w-auto max-w-full object-contain relative z-20"
-      />
     </section>
 
-    <!-- ================= 10. 統計 (黒) ================= -->
+    <!-- ================= 10. おすすめ動画 (黒) ================= -->
     <section
-      class="h-screen w-full snap-start flex flex-col items-center justify-center px-6 md:px-12 bg-black text-white border-b border-neutral-700 gap-6"
-    >
-      <div class="max-w-4xl w-full relative z-20">
-        <SectionHeading
-          eyebrow={siteText.sections.stats.eyebrow}
-          titleJa={siteText.sections.stats.titleJa}
-          titleEn={siteText.sections.stats.titleEn}
-          theme="dark"
-        />
-      </div>
-      <Image
-        src={statsImage}
-        alt={siteText.sections.stats.titleJa}
-        height={480}
-        class="h-[60vh] w-auto max-w-full object-contain relative z-20"
-      />
-    </section>
-
-    <!-- ================= 11. おすすめ動画 (白) ================= -->
-    <section
-      class="h-screen w-full snap-start flex items-center justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 overflow-y-auto"
+      class="h-screen w-full snap-start flex items-center justify-center px-6 md:px-12 bg-black text-white border-b border-neutral-700 overflow-y-auto no-scrollbar"
     >
       <!-- グリッドで「タイトル(上段・全幅) / 動画(下段左)・リンク一覧(下段右、同じ行)」に配置。
            スマホ(1カラム)ではDOM順のまま タイトル→動画→リンク の縦並びになる。
@@ -281,10 +279,11 @@ import statsImage from '../assets/images/stats.jpg';
             eyebrow={siteText.sections.recommend.eyebrow}
             titleJa={siteText.sections.recommend.titleJa}
             titleEn={siteText.sections.recommend.titleEn}
+            theme="dark"
           />
         </div>
 
-        <div class="w-full aspect-video border border-neutral-300 bg-neutral-100">
+        <div class="w-full aspect-video border border-neutral-700 bg-neutral-900">
           <iframe
             id="youtube-player"
             class="yt-player w-full h-full"
@@ -298,7 +297,7 @@ import statsImage from '../assets/images/stats.jpg';
         <!-- 再生リスト（や個別動画）へのリンク。profileData.links.playlists に追加するだけで増減できる -->
         <div class="w-full space-y-3">
           {profileData.links.playlists.map((pl) => (
-            <LinkButton href={pl.url} external variant="light">
+            <LinkButton href={pl.url} external variant="dark">
               <Bilingual ja={pl.title.ja} en={pl.title.en} />
             </LinkButton>
           ))}
@@ -307,7 +306,7 @@ import statsImage from '../assets/images/stats.jpg';
     </section>
 
 
-    <!-- ================= 12. SNSリンク集 (白) ================= -->
+    <!-- ================= 11. SNSリンク集 (白) ================= -->
     <section
       class="h-screen w-full snap-start flex flex-col justify-center px-6 md:px-12 bg-white text-black border-b border-neutral-300 gap-8"
     >
@@ -354,7 +353,7 @@ import statsImage from '../assets/images/stats.jpg';
       }
     </style>
 
-    <!-- ================= 13. メッセージ (黒) ＋ コピーライト ================= -->
+    <!-- ================= 12. メッセージ (黒) ＋ コピーライト ================= -->
     <section
       class="h-screen w-full snap-start flex flex-col justify-between items-center px-6 py-12 bg-black text-white text-center"
     >

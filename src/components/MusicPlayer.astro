@@ -10,21 +10,22 @@ const { volume = 0.3 } = Astro.props;
 ---
 
 <!--
-  【設計を全面的にやり直した経緯】
-  以前は AnalyserNode (Web Audio API) で実際の音声波形を取得して描画していたが、
-  スマホでボタンをタップして一時停止→再生すると波形が復活しない不具合が
-  何度修正しても再発していた。原因の切り分けが難しい理由は、
-  createMediaElementSource() で <audio> をWeb Audio Graphに接続すると、
-  それ以降そのタグの音声出力は AudioContext 経由でしか鳴らなくなり、
-  スマホでは AudioContext の生成/resumeがユーザー操作のタイミングに
-  非常にシビアで、状況によってはサウンド出力そのものが
-  無音のまま固まってしまうことがあるため（＝波形うんぬん以前の問題）。
+  【この方式にした理由】
+  以前はCSSアニメーション(animation-play-state)の付け外しで波を表現していたが、
+  スマホで「一時停止→再生」すると波が復活しないという報告が、
+  ブラウザの種類を問わず繰り返し発生していた。
+  CSSアニメーションの再開自体に何かしら不確実性がある（原因を断定できていない）と
+  判断し、CSSアニメーションへの依存を完全にやめた。
 
-  そのため今回は「実音声を解析して波形を描く」方式を完全に廃止し、
-  AudioContext/AnalyserNodeを一切使わない構成にした。
-  波形は bgm.paused の状態だけを見てCSSアニメーションの
-  再生/一時停止(animation-play-state)を切り替えているだけなので、
-  例外が起きる余地そのものがなく、原理的に「波が復活しない」状態になり得ない。
+  今の実装は非常に単純：
+  setInterval を1つだけ、ページ読み込み時から常に動かし続け、
+  毎回 bgm.paused を直接読んで、再生中なら各バーの高さを直接書き換え、
+  停止中ならすべて2pxに戻す。それだけ。
+  ・CSSアニメーションの開始/一時停止/再開という概念を一切使わない
+  （＝ブラウザ側の「再開時に反映されない」系の不具合が原理的に起こり得ない）
+  ・setIntervalはrequestAnimationFrameと違い、コールバック内で例外が起きても
+  次のtickの実行が止まらない（rAFの自己再帰と違い、ブラウザが独立してスケジュールする）
+  ・AudioContext/AnalyserNodeは使わない（再生そのものを阻害するリスクを排除）
 -->
 <div class="fixed bottom-5 left-5 z-50">
   <button
@@ -36,8 +37,8 @@ const { volume = 0.3 } = Astro.props;
   >
     <span id="music-label" class="text-xs leading-none">▶ {siteText.music.label}</span>
     <span id="music-wave" class="flex items-end justify-center gap-[2px] h-2 w-16 mt-[3px]" aria-hidden="true">
-      {Array.from({ length: 16 }).map((_, i) => (
-        <span class="wave-bar" style={`animation-delay:${(i % 8) * 90}ms`}></span>
+      {Array.from({ length: 16 }).map(() => (
+        <span class="wave-bar"></span>
       ))}
     </span>
   </button>
@@ -50,28 +51,10 @@ const { volume = 0.3 } = Astro.props;
     width: 2px;
     height: 2px;
     background-color: black;
-    transform-origin: bottom;
-    animation: wave-bounce 0.8s ease-in-out infinite;
-    animation-play-state: paused;
   }
 
   #music-toggle:hover .wave-bar {
     background-color: white;
-  }
-
-  /* 再生中のみアニメーションを走らせる。JSはこのクラスの付け外しだけを行う。 */
-  #music-wave.is-playing .wave-bar {
-    animation-play-state: running;
-  }
-
-  @keyframes wave-bounce {
-    0%,
-    100% {
-      height: 2px;
-    }
-    50% {
-      height: 8px;
-    }
   }
 </style>
 
@@ -79,30 +62,51 @@ const { volume = 0.3 } = Astro.props;
   const bgm = document.getElementById('bgm') as HTMLAudioElement | null;
   const musicToggle = document.getElementById('music-toggle');
   const musicLabel = document.getElementById('music-label');
-  const musicWave = document.getElementById('music-wave');
+  const waveBars = Array.from(document.querySelectorAll('#music-wave .wave-bar')) as HTMLElement[];
 
   if (bgm) {
     // 音量は MusicPlayer.astro の volume プロパティ（既定 0.3）から受け取る
     bgm.volume = Number(bgm.dataset.volume ?? '0.3');
   }
 
-  // 表示（ラベルの文字・波アニメーションのON/OFF）を bgm.paused の値だけを見て更新する。
-  // 再生/一時停止の実際の処理（play()/pause()の呼び出し）とは完全に分離しており、
-  // 'play'/'pause' イベントさえ発火すれば必ず正しい見た目になる。
-  function syncUI() {
-    if (!bgm || !musicLabel || !musicToggle || !musicWave) return;
-
+  function updateLabel() {
+    if (!bgm || !musicLabel || !musicToggle) return;
     const label = (musicToggle as HTMLElement).dataset.label ?? 'MUSIC';
     musicLabel.textContent = bgm.paused ? `▶ ${label}` : `■ ${label}`;
-    musicWave.classList.toggle('is-playing', !bgm.paused);
   }
 
-  // 'play'/'pause' はユーザーの操作経路（ボタン、mキー、他タブでの停止指示など）に
-  // 関わらず、実際に再生状態が変わったタイミングで必ず発火するブラウザ標準のイベント。
-  // UIの更新はこのイベントだけをトリガーにすることで、
-  // 「どのボタン操作から呼ばれたか」を気にしなくてよいシンプルな構成にしている。
-  bgm?.addEventListener('play', syncUI);
-  bgm?.addEventListener('pause', syncUI);
+  // 波の描画本体。100msごとに呼ばれる。
+  // bgm.paused を直接読むだけなので、誰がどの経路で再生/停止したかを一切気にしない。
+  function tick() {
+    if (bgm && !bgm.paused) {
+      const now = Date.now() / 200;
+      waveBars.forEach((bar, index) => {
+        const wave = Math.sin(now + index * 0.6) * 0.5 + 0.5;
+        bar.style.height = `${2 + wave * 6}px`;
+      });
+    } else {
+      waveBars.forEach((bar) => {
+        bar.style.height = '2px';
+      });
+    }
+  }
+
+  // setIntervalは、中のコールバックで例外が起きても次回の呼び出しが止まらない
+  // （requestAnimationFrameの自己再帰と違い、ブラウザ側が独立してスケジュールするため）。
+  // これにより「一度エラーが起きるとループごと死んで波が二度と出てこない」
+  // という不具合クラスが構造的に起こり得なくなる。
+  setInterval(() => {
+    try {
+      tick();
+    } catch {
+      // 何が起きても次のtickには影響しない
+    }
+  }, 100);
+
+  updateLabel();
+
+  bgm?.addEventListener('play', updateLabel);
+  bgm?.addEventListener('pause', updateLabel);
 
   async function togglePlayback() {
     if (!bgm) return;
@@ -114,9 +118,10 @@ const { volume = 0.3 } = Astro.props;
         bgm.pause();
       }
     } catch {
-      // 自動再生ポリシーなどで失敗しても何もしない（UIは現在のpaused状態に追従する）
-      syncUI();
+      // 自動再生ポリシーなどで失敗した場合は何もしない
     }
+
+    updateLabel();
   }
 
   musicToggle?.addEventListener('click', togglePlayback);
@@ -127,15 +132,16 @@ const { volume = 0.3 } = Astro.props;
     try {
       await bgm.play();
     } catch {
-      // 自動再生がブロックされた場合は手動再生を待つ（'pause'イベントでUIは正しい状態になる）
+      // 自動再生がブロックされた場合は手動再生を待つ
     }
 
-    syncUI();
+    updateLabel();
   });
 
   window.addEventListener('stop-bgm', () => {
     if (bgm && !bgm.paused) {
       bgm.pause();
+      updateLabel();
     }
   });
 

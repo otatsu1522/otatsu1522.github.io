@@ -1,102 +1,48 @@
 ---
-// 画面右下のページナビゲーション。
-// 現在のセクション番号（01, 02 ...）と上下移動用の三角ボタンを表示する。
+// 画面右下のページ番号表示。タップすると先頭のセクションへ戻る。
 // 現在位置は scrollTheme.ts が発火する 'section-change' イベントから受け取るため、
-// ここで独自にIntersectionObserverを持たない（監視の二重化を避ける）。
-// ボタンのデザインは TopButton.astro に合わせている（角丸なし・黒枠・白背景）。
+// ここで独自にIntersectionObserverは持たない（監視の二重化を避ける）。
+// サイズはTopButton.astroと揃えている（角丸なし・黒枠・白背景）。
 ---
 
-<div class="fixed bottom-5 right-5 z-50 flex items-stretch text-xs font-mono font-bold shadow-sm">
-  <!-- 下へ -->
+<div class="fixed bottom-5 right-5 z-50">
   <button
-    id="scroll-nav-down"
-    type="button"
-    class="flex h-8 w-8 items-center justify-center border border-r-0 border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400 disabled:hover:bg-neutral-200 disabled:hover:text-neutral-400"
-    aria-label="次の画面へ"
-  >
-    ▽
-  </button>
-
-  <!-- 現在のページ番号 -->
-  <div
     id="scroll-nav-indicator"
-    class="flex h-8 w-20 items-center justify-center border border-r-0 border-black bg-white text-black tabular-nums"
+    type="button"
+    class="flex h-8 w-20 items-center justify-center border border-black bg-white text-black text-xs font-mono font-bold tabular-nums shadow-sm transition-colors hover:bg-black hover:text-white"
+    aria-label="先頭の画面へ戻る"
   >
     <span id="scroll-nav-current">01</span>
     <span class="mx-1 text-neutral-400">/</span>
     <span id="scroll-nav-total">01</span>
-  </div>
-
-  <!-- 上へ -->
-  <button
-    id="scroll-nav-up"
-    type="button"
-    class="flex h-8 w-8 items-center justify-center border border-black bg-white text-black transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400 disabled:hover:bg-neutral-200 disabled:hover:text-neutral-400"
-    aria-label="前の画面へ"
-  >
-    △
   </button>
 </div>
 
 <script>
   const container = document.getElementById('scroll-container');
+  const indicator = document.getElementById('scroll-nav-indicator');
   const currentLabel = document.getElementById('scroll-nav-current');
   const totalLabel = document.getElementById('scroll-nav-total');
-  const upButton = document.getElementById('scroll-nav-up') as HTMLButtonElement | null;
-  const downButton = document.getElementById('scroll-nav-down') as HTMLButtonElement | null;
 
   if (container) {
     const sections = Array.from(container.querySelectorAll('section, footer'));
-
-    let currentIndex = 0;
 
     function pad(value: number) {
       return String(value).padStart(2, '0');
     }
 
-    function render() {
-      if (currentLabel) currentLabel.textContent = pad(currentIndex + 1);
-      if (totalLabel) totalLabel.textContent = pad(sections.length);
-
-      // 先頭では上、末尾では下の三角を無効化する
-      if (upButton) upButton.disabled = currentIndex <= 0;
-      if (downButton) downButton.disabled = currentIndex >= sections.length - 1;
-    }
-
-    function scrollToIndex(index: number) {
-      const target = sections[index];
-      if (!target) return;
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    upButton?.addEventListener('click', () => scrollToIndex(currentIndex - 1));
-    downButton?.addEventListener('click', () => scrollToIndex(currentIndex + 1));
+    if (totalLabel) totalLabel.textContent = pad(sections.length);
 
     // 現在位置は scrollTheme.ts の監視結果を購読して更新する
     window.addEventListener('section-change', ((
       event: CustomEvent<{ index: number; total: number }>
     ) => {
-      if (event.detail.index < 0) return;
-      currentIndex = event.detail.index;
-      render();
+      if (event.detail.index < 0 || !currentLabel) return;
+      currentLabel.textContent = pad(event.detail.index + 1);
     }) as EventListener);
 
-    // キーボード操作: j で上の画面へ / k で下の画面へ
-    window.addEventListener('keydown', (event) => {
-      // 入力中や修飾キー併用時はショートカットを無効にする
-      const target = event.target as HTMLElement | null;
-      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
-      if (event.metaKey || event.ctrlKey || event.altKey) return;
-
-      if (event.key === 'j') {
-        event.preventDefault();
-        scrollToIndex(currentIndex - 1);
-      } else if (event.key === 'k') {
-        event.preventDefault();
-        scrollToIndex(currentIndex + 1);
-      }
+    indicator?.addEventListener('click', () => {
+      sections[0]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-
-    render();
   }
 </script>
