@@ -1,6 +1,7 @@
-# Portfolio
+# Portfolio (otatsu1522.github.io)
 
 ポートフォリオサイト
+
 
 ## 使用技術
 
@@ -15,6 +16,7 @@
 | コード整形 | Prettier + `prettier-plugin-astro` + `prettier-plugin-tailwindcss` |
 | デプロイ | GitHub Actions → GitHub Pages（`.github/workflows/deploy.yml`） |
 
+
 ## セットアップ
 
 ```bash
@@ -22,6 +24,7 @@ pnpm install
 ```
 
 Node.js `>=22.12.0` が必要です（`package.json` の `engines` を参照）。
+
 
 ## 開発の流れ
 
@@ -38,7 +41,8 @@ pnpm preview       # ビルド結果をローカルでプレビュー
 ## デプロイ
 
 - GitHub Pagesで公開する。（ `.github/workflows/deploy.yml` が `main` ブランチへのpushで自動ビルド・デプロイする。）
-- 公開URL: [https://otatsu1522.github.io](https://otatsu1522.github.io)]
+- 公開URL: [https://otatsu1522.github.io](https://otatsu1522.github.io)
+
 
 ## ライセンス
 
