@@ -53,8 +53,20 @@ const { volume = 0.3 } = Astro.props;
     background-color: black;
   }
 
-  #music-toggle:hover .wave-bar {
-    background-color: white;
+  /* 【今回発見した実バグ】
+     このルールだけ生のCSSで:hoverを使っており、Tailwindのhover:ユーティリティと違って
+     @media (hover: hover) で自動的に保護されていなかった。
+     タッチデバイスでは、ボタンをタップした後も:hover状態が「固着」する既知の挙動があり、
+     ここでバーの色がwhiteになったまま戻らなくなっていた。
+     一方ボタン自体の背景色（Tailwindのhover:bg-black）は
+     @media (hover: hover) で保護されているためタッチデバイスでは常に白いまま変化しない。
+     結果として「白いバー」が「白いボタン背景」に重なり、波が見えなくなっていた
+     （画面の別の場所をタップすると:hoverが解除されて黒に戻り、再び見えるようになる）。
+     これが「波が消える」不具合の実際の原因だった。 */
+  @media (hover: hover) and (pointer: fine) {
+    #music-toggle:hover .wave-bar {
+      background-color: white;
+    }
   }
 </style>
 

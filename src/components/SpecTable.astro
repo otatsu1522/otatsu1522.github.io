@@ -28,23 +28,27 @@ const isDark = theme === 'dark';
     isDark ? 'bg-neutral-900 border-neutral-700' : 'bg-neutral-50 border-neutral-300',
   ]}
 >
-  <table class="w-full text-sm border-collapse">
-    <tbody>
-      {rows.map((row) => (
-        <tr class={isDark ? 'border-b border-neutral-700 last:border-none' : 'border-b border-neutral-300 last:border-none'}>
-          <th
-            class:list={[
-              'py-2 pr-4 w-28 shrink-0 text-left align-top font-mono font-normal whitespace-nowrap',
-              isDark ? 'text-neutral-400' : 'text-neutral-500',
-            ]}
-          >
-            <Bilingual ja={row.label.ja} en={row.label.en} />
-          </th>
-          <td class="py-2 align-top">
-            <Bilingual ja={row.value.ja} en={row.value.en} />
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <!-- 行数が多くタイトル・写真ごと画面をはみ出す場合でも、
+       表の中だけでスクロールできるようにし、タイトル・写真は常に見える位置に固定する。 -->
+  <div class="max-h-[40vh] overflow-y-auto">
+    <table class="w-full text-sm border-collapse">
+      <tbody>
+        {rows.map((row) => (
+          <tr class={isDark ? 'border-b border-neutral-700 last:border-none' : 'border-b border-neutral-300 last:border-none'}>
+            <th
+              class:list={[
+                'py-2 pr-4 w-28 shrink-0 text-left align-top font-mono font-normal whitespace-nowrap',
+                isDark ? 'text-neutral-400' : 'text-neutral-500',
+              ]}
+            >
+              <Bilingual ja={row.label.ja} en={row.label.en} />
+            </th>
+            <td class="py-2 align-top">
+              <Bilingual ja={row.value.ja} en={row.value.en} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 </div>
