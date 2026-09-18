@@ -1,0 +1,48 @@
+---
+// 画面右下のページ番号表示。タップすると先頭のセクションへ戻る。
+// 現在位置は scrollTheme.ts が発火する 'section-change' イベントから受け取るため、
+// ここで独自にIntersectionObserverは持たない（監視の二重化を避ける）。
+// サイズはTopButton.astroと揃えている（角丸なし・黒枠・白背景）。
+---
+
+<div class="fixed bottom-5 right-5 z-50">
+  <button
+    id="scroll-nav-indicator"
+    type="button"
+    class="flex h-8 w-20 items-center justify-center border border-black bg-white text-black text-xs font-mono font-bold tabular-nums shadow-sm transition-colors hover:bg-black hover:text-white"
+    aria-label="先頭の画面へ戻る"
+  >
+    <span id="scroll-nav-current">01</span>
+    <span class="mx-1 text-neutral-400">/</span>
+    <span id="scroll-nav-total">01</span>
+  </button>
+</div>
+
+<script>
+  const container = document.getElementById('scroll-container');
+  const indicator = document.getElementById('scroll-nav-indicator');
+  const currentLabel = document.getElementById('scroll-nav-current');
+  const totalLabel = document.getElementById('scroll-nav-total');
+
+  if (container) {
+    const sections = Array.from(container.querySelectorAll('section, footer'));
+
+    function pad(value: number) {
+      return String(value).padStart(2, '0');
+    }
+
+    if (totalLabel) totalLabel.textContent = pad(sections.length);
+
+    // 現在位置は scrollTheme.ts の監視結果を購読して更新する
+    window.addEventListener('section-change', ((
+      event: CustomEvent<{ index: number; total: number }>
+    ) => {
+      if (event.detail.index < 0 || !currentLabel) return;
+      currentLabel.textContent = pad(event.detail.index + 1);
+    }) as EventListener);
+
+    indicator?.addEventListener('click', () => {
+      sections[0]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+</script>

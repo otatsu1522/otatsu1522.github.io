@@ -1,0 +1,41 @@
+---
+// 「タイトル+写真(左、スマホでは上) / 表(右、スマホでは下)」という1画面ぶんの型。
+// 自転車(日本一周/世界一周)・装備で使い回すためのコンポーネント。
+import { Image } from 'astro:assets';
+import Section from './Section.astro';
+import SectionHeading from './SectionHeading.astro';
+import SpecTable, { type SpecRow } from './SpecTable.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  eyebrow: string;
+  titleJa: string;
+  titleEn: string;
+  theme?: 'light' | 'dark';
+  photo: ImageMetadata;
+  rows: SpecRow[];
+}
+
+const { eyebrow, titleJa, titleEn, theme = 'light', photo, rows } = Astro.props;
+const isDark = theme === 'dark';
+---
+
+<Section theme={theme} align="start" scrollable>
+  <div class="max-w-4xl w-full flex flex-col md:flex-row items-start gap-6 md:gap-12 py-8">
+    <div class="w-full md:w-1/2 space-y-4">
+      <SectionHeading eyebrow={eyebrow} titleJa={titleJa} titleEn={titleEn} theme={theme} />
+      <Image
+        src={photo}
+        alt={titleJa}
+        height={320}
+        class:list={[
+          'h-56 md:h-64 w-auto max-w-full object-contain border',
+          isDark ? 'border-neutral-700' : 'border-neutral-300',
+        ]}
+      />
+    </div>
+    <div class="w-full md:w-1/2">
+      <SpecTable rows={rows} theme={theme} />
+    </div>
+  </div>
+</Section>

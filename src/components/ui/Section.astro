@@ -1,0 +1,40 @@
+---
+// 全セクション共通の <section> シェル。
+// h-screen/snap-start/配色(theme)/スマホでの固定ボタン避けの余白/内部スクロールの
+// 有無を1箇所で管理し、各セクションは中身（スロット）だけを書けばよいようにする。
+interface Props {
+  theme?: 'light' | 'dark';
+  /** 縦方向の配置。center: 上下中央(既定) / start: 上詰め(表など内容が長くなりうる画面用) */
+  align?: 'center' | 'start';
+  /** 画面に収まらない場合、この画面の中だけでスクロールさせる */
+  scrollable?: boolean;
+  class?: string;
+}
+
+const {
+  theme = 'light',
+  align = 'center',
+  scrollable = false,
+  class: className = '',
+} = Astro.props;
+
+const isDark = theme === 'dark';
+---
+
+<section
+  class:list={[
+    'h-screen w-full snap-start flex flex-col justify-center px-6 md:px-12',
+    // 左上/右上/左下/右下にある固定ボタン(TopButton/LanguageSwitcher/MusicPlayer/ScrollNav)と
+    // スマホでコンテンツが重なって見えなくなるのを避けるための安全余白。
+    // PCはボタンとコンテンツの間に十分な余白があるため外している。
+    'pt-20 pb-20 md:pt-0 md:pb-0',
+    align === 'start' ? 'items-start' : 'items-center',
+    isDark
+      ? 'bg-black text-white border-b border-neutral-700'
+      : 'bg-white text-black border-b border-neutral-300',
+    scrollable ? 'overflow-y-auto no-scrollbar' : '',
+    className,
+  ]}
+>
+  <slot />
+</section>

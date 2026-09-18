@@ -1,0 +1,26 @@
+---
+// 「タイトル(上) + 横スクロールギャラリー(下)」という1画面ぶんの型。
+// 日本一周/世界一周など、ツアーごとに使い回すためのコンポーネント。
+import Section from './Section.astro';
+import SectionHeading from './SectionHeading.astro';
+import Gallery from './Gallery.astro';
+
+interface Props {
+  eyebrow: string;
+  titleJa: string;
+  titleEn: string;
+  theme?: 'light' | 'dark';
+  /** src/assets/images/gallery/ 配下のフォルダ名 */
+  dir: string;
+  captions?: Record<string, { ja: string; en: string }>;
+}
+
+const { eyebrow, titleJa, titleEn, theme = 'light', dir, captions } = Astro.props;
+---
+
+<Section theme={theme} class="gap-8">
+  <div class="max-w-4xl w-full mx-auto">
+    <SectionHeading eyebrow={eyebrow} titleJa={titleJa} titleEn={titleEn} theme={theme} />
+  </div>
+  <Gallery dir={dir} captions={captions} />
+</Section>

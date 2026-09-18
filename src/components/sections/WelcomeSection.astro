@@ -1,0 +1,17 @@
+---
+import Section from '../ui/Section.astro';
+import Bilingual from '../ui/Bilingual.astro';
+import { profileData } from '../../data/profile';
+import { siteText } from '../../data/site';
+---
+
+<Section>
+  <div class="text-center space-y-4 max-w-2xl w-full flex flex-col items-center">
+    <p class="text-xs tracking-widest text-neutral-500 uppercase font-mono">
+      {siteText.sections.welcome.eyebrow}
+    </p>
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-black">
+      <Bilingual ja={profileData.name.ja} en={profileData.name.en} />
+    </h1>
+  </div>
+</Section>

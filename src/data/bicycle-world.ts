@@ -1,5 +1,5 @@
 import photo from '../assets/images/bicycle/world.jpg';
-import type { SpecRow } from '../components/SpecTable.astro';
+import type { SpecRow } from '../components/ui/SpecTable.astro';
 
 // value（ブランド・型番など）はほぼ英数字表記のため、
 // 特別な事情がない限り ja/en で同じ文字列を使っている。
@@ -8,7 +8,7 @@ export const bicycleWorld = {
   rows: [
     { label: { ja: 'フレーム', en: 'Frame' }, value: { ja: 'MARIN MUIRWOODS 26 17 2012', en: 'MARIN MUIRWOODS 26 17 2012' } },
     { label: { ja: 'リム', en: 'Rim' }, value: { ja: 'ARAYA RM395 TEAM XC 26 32H', en: 'ARAYA RM395 TEAM XC 26 32H' } },
-    { label: { ja: 'ハブ', en: 'Hub' }, value: { ja: 'SHIMANO DEORE XT HB-737(738)', en: 'SHIMANO DEORE XT HB-737(738)' } },
+    { label: { ja: 'ハブ', en: 'Hub' }, value: { ja: 'SHIMANO DEORE XT HB-738', en: 'SHIMANO DEORE XT HB-738' } },
     { label: { ja: 'ブレーキレバー', en: 'Brake Lever' }, value: { ja: 'SHIMANO ALIVIO BL-T4000', en: 'SHIMANO ALIVIO BL-T4000' } },
     { label: { ja: 'シフター', en: 'Shifter' }, value: { ja: 'SHIMANO ALIVIO SL-M410', en: 'SHIMANO ALIVIO SL-M410' } },
     { label: { ja: 'クランク', en: 'Crank' }, value: { ja: 'SHIMANO ALIVIO FC-T4060 3S 44-32-22T', en: 'SHIMANO ALIVIO FC-T4060 3S 44-32-22T' } },
@@ -24,8 +24,8 @@ export const bicycleWorld = {
     { label: { ja: 'ステム', en: 'Stem' }, value: { ja: 'SHIMANO PLT 120mm 6 31.8', en: 'SHIMANO PLT 120mm 6 31.8' } },
     { label: { ja: 'シートポスト', en: 'Seatpost' }, value: { ja: 'KALLOY SP-243 27.2mm 300mm', en: 'KALLOY SP-243 27.2mm 300mm' } },
     { label: { ja: 'バーテープ', en: 'Bar Tape' }, value: { ja: '帆布', en: 'Canvas' } },
-    { label: { ja: 'チューブ', en: 'Tube' }, value: { ja: 'SCHWALBE 26 SV12A 40mm', en: 'SCHWALBE 26 SV12A 40mm' } },
     { label: { ja: 'タイヤ', en: 'Tire' }, value: { ja: 'SCHWALBE MARATHON PLUS 26 × 1.50', en: 'SCHWALBE MARATHON PLUS 26 × 1.50' } },
+    { label: { ja: 'チューブ', en: 'Tube' }, value: { ja: 'SCHWALBE 26 SV12A 40mm', en: 'SCHWALBE 26 SV12A 40mm' } },
     { label: { ja: 'フロントキャリア', en: 'Front Carrier' }, value: { ja: 'TUBUS Tara', en: 'TUBUS Tara' } },
     { label: { ja: 'リアキャリア', en: 'Rear Carrier' }, value: { ja: 'TUBUS Logo Classic', en: 'TUBUS Logo Classic' } },
   ] as SpecRow[],

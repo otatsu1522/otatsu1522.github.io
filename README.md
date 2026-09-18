@@ -166,6 +166,44 @@ pnpm preview
 
 ---
 
+## プロジェクト概要
+
+### 1. ページ構成
+
+- `/` (`src/pages/index.astro`) — SNSリンク集
+- `/portfolio` (`src/pages/portfolio.astro`) — スクロールスナップ形式のポートフォリオ本体（全12画面: ウェルカム → 自己紹介 → 旅歴 → ギャラリー(日本一周) → 自転車(日本一周) → ギャラリー(世界一周) → 自転車(世界一周) → 装備 → 地図・統計 → おすすめ動画 → SNS → メッセージ）
+
+### 2. コンテンツ・文言の編集場所
+
+コードを触らずに更新できるよう、テキストは用途別のデータファイルに分けている。
+
+- `src/data/profile.ts` … プロフィール・自己紹介・旅歴・SNS・再生リストなどの人物側のコンテンツ
+- `src/data/site.ts` … ボタンラベルや各セクションの見出し、コピーライトなどのUI固定文言
+- `src/data/gallery-japan.ts` / `gallery-world.ts` … ギャラリー写真のキャプション（ファイル名をキーにした辞書）
+- `src/data/bicycle-japan.ts` / `bicycle-world.ts` … 自転車の写真とスペック表の行データ
+- `src/data/equipment.ts` … 装備の写真とリストの行データ（最新装備として1本化）
+
+表（`SpecTable.astro`）・ギャラリー（`Gallery.astro`）はどちらも行データ/フォルダを渡すだけの汎用コンポーネントなので、上記データファイルを増やせばそのまま使い回せる。
+
+### 3. 画像の置き場所
+
+`<Image />` で自動的にwebp変換・最適化される（`src/assets/images/` 配下）。
+
+- `src/assets/images/profile.jpg` … プロフィール写真（`/` と `/portfolio` の両方で使用）
+- `src/assets/images/gallery/japan/*` / `gallery/world/*` … 各ギャラリーの写真。ファイルを追加/削除するだけで自動的に反映される（コード変更不要、枚数の上限なし）
+- `src/assets/images/bicycle/japan.jpg` / `world.jpg` … 自転車セクションの写真
+- `src/assets/images/equipment.jpg` … 装備セクションの写真
+- `src/assets/images/summary/map.jpg` / `stats.jpg` … PC表示用（地図・統計を別々に横並び表示）
+- `src/assets/images/summary/map-stats.jpg` … スマホ表示用（地図・統計を1枚にまとめた画像）
+
+最適化せずそのまま配信したいものだけ `public/` に置く。
+
+- `public/ogp.jpg`（推奨 1200×630px）… SNSシェア時のOGP画像
+- `public/audio/background.mp3` … BGM
+- `public/favicon.svg`
+
+---
+
 ## ライセンス
 
 [MIT License](LICENSE)
