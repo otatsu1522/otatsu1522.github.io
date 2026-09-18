@@ -8,10 +8,10 @@
 
 - **高速な静的サイト生成**: Astroを利用したSSG構成
 - **バイリンガル対応**: 日本語・英語の切り替えおよび表示機能
-- **画像最適化**: ビルド時に `src/assets/images/` 配下の画像をWebP形式へ自動変換・圧縮
-- **レスポンシブデザイン**: Tailwind CSSによるモバイル・PC双方に最適化したレイアウト
+- **画像最適化**: ビルド時に `astro:assets` と Sharp を用いて `src/assets/images/` 配下の画像を WebP 形式へ自動変換・圧縮
+- **レスポンシブデザイン**: Tailwind CSS v4 によるモバイル・PC双方に最適化したレイアウト
 - **BGMプレイヤー機能**: 独立した音声再生コンポーネントおよびインタラクティブ表現
-- **CI/CD自動化**: GitHub Actionsを用いたGitHub Pagesへの自動ビルド・デプロイ
+- **CI/CD自動化**: GitHub Actionsを用いた GitHub Pages への自動ビルド・デプロイ
 
 ---
 
@@ -31,29 +31,29 @@
 │   ├── pages/              # ページルーティング
 │   ├── scripts/            # クライアントサイドスクリプト
 │   └── styles/             # グローバルCSS
-└── pnpm-workspace.yaml
+└── package.json
 ```
 
 ---
 
 ## 使用技術
 
-| カテゴリ | ツール / ライブラリ | 用途 |
-| --- | --- | --- |
-| フレームワーク | [Astro](https://astro.build/) v7 | 静的サイト生成（SSG） |
-| スタイリング | [Tailwind CSS](https://tailwindcss.com/) v4 | UIデザイン・レイアウト |
-| 言語 | TypeScript | 型安全な開発環境 |
-| パッケージマネージャ | pnpm | 依存関係管理 |
-| Node管理 | fnm (Fast Node Manager) | Node.js バージョン管理 |
-| 画像最適化 | `astro:assets` | WebP変換・レスポンシブ画像生成 |
-| 静的解析・整形 | Prettier, `@astrojs/check` | コードフォーマット・型チェック |
-| ホスティング | GitHub Pages | Webサイトの配信 |
+| カテゴリ | ツール / ライブラリ | バージョン / 詳細 | 用途 |
+| --- | --- | --- | --- |
+| フレームワーク | [Astro](https://astro.build/) | v7.3.2 | 静的サイト生成（SSG） |
+| スタイリング | [Tailwind CSS](https://tailwindcss.com/) | v4.3.3 (`@tailwindcss/vite`) | UIデザイン・レイアウト |
+| 言語 | TypeScript | v5.7.3 | 型安全な開発環境 |
+| Node管理 | fnm (Fast Node Manager) | - | Node.js バージョン管理 (`>=22.12.0`) |
+| パッケージマネージャ | pnpm | v10.5.2 | 依存関係管理 |
+| 画像最適化 | Sharp / `astro:assets`  | v0.35.4 | WebP変換・高解像度画像の圧縮処理 |
+| コード整形・診断 | Prettier / `@astrojs/check` | v3.4.2 / v0.9.4 | Astro・Tailwind対応コード整形と型診断 |
+| ホスティング | GitHub Pages | - | Webサイトの自動配信 |
 
 ---
 
 ## 環境構築
 
-本プロジェクトの開発には **Node.js `>=22.12.0`** および **pnpm** が必要です。
+本プロジェクトの開発には **Node.js `>=22.12.0`** および **pnpm `10.5.2`** が必要です。
 Node.jsのバージョン管理には `fnm`（Fast Node Manager）の使用を推奨します。
 
 ### 1. パッケージマネージャによるツールチェーンのインストール
@@ -90,7 +90,7 @@ eval "$(fnm env --use-on-cd)"
 
 ### 2. Node.js のセットアップ
 
-リポジトリに必要な Node.js バージョンをインストールして切り替え、正しく適用されたか確認します。
+リポジトリに必要な Node.js バージョンをインストールして切り替えます。
 
 ```bash
 # Node.js 22.12.0 のインストールと適用
@@ -102,16 +102,16 @@ fnm use 22.12.0
 
 ### 3. バージョン確認
 
-インストール後、正常に導入されたかバージョンを確認します。
+正常に導入されたか各種バージョンを確認します。
 
 ```powershell
 # fnm バージョン確認
 fnm --version
 
-# Node.js バージョンの確認
+# Node.js バージョンの確認（22.12.0 以上）
 node -v
 
-# pnpm バージョン確認
+# pnpm バージョン確認（10.5.2）
 pnpm -v
 ```
 
@@ -139,7 +139,7 @@ pnpm dev
 # 型チェックとAstroコンポーネントの診断
 pnpm check
 
-# Prettierによるコード整形
+# Prettierによるコード整形 (Astro / Tailwind プラグイン適用)
 pnpm format
 
 # 整形チェック（CI検証用）
