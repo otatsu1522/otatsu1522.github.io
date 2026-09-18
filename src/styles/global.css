@@ -8,6 +8,15 @@
   --font-primary: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', 'Roboto Mono', monospace;
 }
 
+html,
+body {
+  /* スクロール端での跳ね返り(オーバースクロール)時に、既定の白背景が
+     一瞬見えてチラつくのを防ぐための保険。各セクション自体は個別に
+     背景色を持っているので、通常はこの色が見えることはない。 */
+  background-color: #000000;
+  overscroll-behavior-y: none;
+}
+
 body {
   font-family: var(--font-primary);
 }
