@@ -23,12 +23,14 @@ const isDark = theme === 'dark';
 
 <section
   class:list={[
-    'h-screen w-full snap-start flex flex-col justify-center px-6 md:px-12',
+    'h-screen w-full snap-start flex flex-col items-center px-6 md:px-12',
     // 左上/右上/左下/右下にある固定ボタン(TopButton/LanguageSwitcher/MusicPlayer/ScrollNav)と
     // スマホでコンテンツが重なって見えなくなるのを避けるための安全余白。
     // PCはボタンとコンテンツの間に十分な余白があるため外している。
     'pt-20 pb-20 md:pt-0 md:pb-0',
-    align === 'start' ? 'items-start' : 'items-center',
+    // flex-col構成のためitems-*は横方向(常にitems-centerで中央揃え)、
+    // 縦方向の配置はjustify-*側で制御する。
+    align === 'start' ? 'justify-start' : 'justify-center',
     isDark
       ? 'bg-black text-white border-b border-neutral-700'
       : 'bg-white text-black border-b border-neutral-300',
