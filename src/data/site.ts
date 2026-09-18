@@ -62,6 +62,12 @@ export const siteText = {
       titleJa: '統計',
       titleEn: 'Stats',
     },
+    // スマホでは地図と統計を1枚の画像・1つの見出しにまとめて表示する
+    mapStats: {
+      eyebrow: 'Map & Stats',
+      titleJa: '地図・統計',
+      titleEn: 'Map & Stats',
+    },
     recommend: {
       eyebrow: 'Recommend',
       titleJa: 'おすすめ動画',

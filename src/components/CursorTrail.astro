@@ -1,9 +1,4 @@
 ---
-// 【修正】以前はフロントマター（ビルド時）とscript内（実行時）に
-// 同名の定数（TRAIL_COUNT / TRAIL_MAX_SIZE_RATIO 等）がそれぞれ
-// 別の値で二重定義されており、実際に効いているのはscript側の値だけ、
-// フロントマター側の値は表示要素数(count)以外実質使われていなかった。
-// SquareBackground.astroと同じ「data属性でconfigを1箇所にまとめる」方式に統一。
 interface Props {
   count?: number;
   minSize?: number;

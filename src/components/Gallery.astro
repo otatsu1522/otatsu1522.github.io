@@ -64,8 +64,6 @@ const images = Object.keys(imageModules)
 )}
 
 <script>
-  // このページに複数のギャラリー(.gallery-strip)が存在しうるため、
-  // それぞれを独立してループさせる。
   document.querySelectorAll<HTMLElement>('.gallery-strip').forEach((strip) => {
     const track = strip.querySelector<HTMLElement>('.gallery-track');
     if (!track) return;

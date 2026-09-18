@@ -13,10 +13,6 @@ export function initScrollTheme() {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
 
-        // 【修正】表が長いセクションなどは内部に独自のスクロール(overflow-y-auto)を持つため、
-        // 一度下までスクロールしてから他の画面を経由して再訪問すると、
-        // 前回のスクロール位置が残ったまま（＝上が切れて見える）ことがあった。
-        // そのセクションが「今アクティブな画面」になるたびに、内部スクロールを必ず先頭へ戻す。
         entry.target.scrollTop = 0;
 
         const isDark = entry.target.classList.contains('bg-black');
@@ -41,6 +37,4 @@ export function initScrollTheme() {
   sections.forEach((sec) => observer.observe(sec));
 }
 
-// 【修正】astro:page-load は <ClientRouter /> 使用時のみ発火するイベントで、
-// このプロジェクトでは未使用のため削除（DOMContentLoadedのみで十分）。
 document.addEventListener('DOMContentLoaded', initScrollTheme);

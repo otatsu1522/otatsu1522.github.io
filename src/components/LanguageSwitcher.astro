@@ -38,9 +38,6 @@
   btnJa?.addEventListener('click', () => setLang('ja'));
   btnEn?.addEventListener('click', () => setLang('en'));
 
-  // 【修正】以前はここに独自のIntersectionObserverがあり、scrollTheme.tsの監視と
-  // ほぼ同じ内容（背景色を見てdark/lightを判定）が2重に走っていた。
-  // scrollTheme.ts側の観測結果を 'theme-change' イベントで受け取る方式に統一。
   window.addEventListener('theme-change', ((event: CustomEvent<{ isDark: boolean }>) => {
     const isDark = event.detail.isDark;
 

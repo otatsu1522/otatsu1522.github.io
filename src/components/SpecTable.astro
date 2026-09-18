@@ -7,7 +7,6 @@ import Bilingual from './Bilingual.astro';
 
 // データファイル側 (bicycle-*.ts, equipment.ts) からも
 // `import type { SpecRow } from '../components/SpecTable.astro'` の形でそのまま使う。
-// 型専用の別ファイルを作るほどの内容ではないため、ここに一本化している。
 export interface SpecRow {
   label: { ja: string; en: string };
   value: { ja: string; en: string };
@@ -29,8 +28,9 @@ const isDark = theme === 'dark';
   ]}
 >
   <!-- 行数が多くタイトル・写真ごと画面をはみ出す場合でも、
-       表の中だけでスクロールできるようにし、タイトル・写真は常に見える位置に固定する。 -->
-  <div class="max-h-[40vh] overflow-y-auto">
+       表の中だけでスクロールできるようにし、タイトル・写真は常に見える位置に固定する。
+       スマホは画面に収まりやすい高さ、PCは縦の余白を活かして画面いっぱいに近い高さまで広げる。 -->
+  <div class="max-h-[40vh] md:max-h-[72vh] overflow-y-auto">
     <table class="w-full text-sm border-collapse">
       <tbody>
         {rows.map((row) => (

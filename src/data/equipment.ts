@@ -1,8 +1,6 @@
 import photo from '../assets/images/equipment.jpg';
 import type { SpecRow } from '../components/SpecTable.astro';
 
-// 日本一周時点の装備リストは廃止し、こちらを「最新の装備」として一本化。
-// カテゴリ名（label）は商品名から判断した目安なので、必要に応じて調整してください。
 export const equipment = {
   photo,
   rows: [
@@ -15,7 +13,7 @@ export const equipment = {
     { label: { ja: 'Tシャツ', en: 'T-Shirt' }, value: { ja: 'Patagonia キャップリーンTシャツ', en: 'Patagonia Capilene T-Shirt' } },
     { label: { ja: 'ショーツ', en: 'Shorts' }, value: { ja: 'Patagonia バギーズショーツ', en: 'Patagonia Baggies Shorts' } },
     { label: { ja: 'キャップ', en: 'Cap' }, value: { ja: 'Patagonia キャップ', en: 'Patagonia Cap' } },
-    { label: { ja: '防寒グローブ', en: 'Winter Gloves' }, value: { ja: 'SHOWA 防寒テムレス LL', en: 'SHOWA Temres (Winter) LL' } },
+    { label: { ja: 'グローブ', en: 'Gloves' }, value: { ja: 'SHOWA 防寒テムレス LL', en: 'SHOWA Temres (Winter) LL' } },
     { label: { ja: 'バフ', en: 'Buff' }, value: { ja: 'BUFF CREDEMCIAL MULTI', en: 'BUFF CREDEMCIAL MULTI' } },
     { label: { ja: 'ストーブ', en: 'Stove' }, value: { ja: 'MSR ウィスパーライト', en: 'MSR WhisperLite' } },
     { label: { ja: 'クッカー', en: 'Cookware' }, value: { ja: 'Snow Peak アルミパーソナルクッカー', en: 'Snow Peak Aluminum Personal Cooker' } },
@@ -25,6 +23,6 @@ export const equipment = {
     { label: { ja: '腕時計', en: 'Watch' }, value: { ja: 'CASIO G-SHOCK G-5600E', en: 'CASIO G-SHOCK G-5600E' } },
     { label: { ja: 'スマートフォン', en: 'Smartphone' }, value: { ja: 'Pixel 5 128GB + PALLET Black', en: 'Pixel 5 128GB + PALLET Black' } },
     { label: { ja: 'カメラ', en: 'Camera' }, value: { ja: 'GoPro Hero 6', en: 'GoPro Hero 6' } },
-    { label: { ja: 'ノートPC', en: 'Laptop' }, value: { ja: 'ThinkPad x1 carbon gen7', en: 'ThinkPad X1 Carbon Gen 7' } },
+    { label: { ja: 'パソコン', en: 'Laptop' }, value: { ja: 'ThinkPad x1 carbon gen7', en: 'ThinkPad X1 Carbon Gen 7' } },
   ] as SpecRow[],
 };
