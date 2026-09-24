@@ -7,19 +7,51 @@ function setupPageIndicator() {
 
   totalEl.textContent = String(sections.length).padStart(2, '0');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const index = Array.from(sections).indexOf(entry.target as HTMLElement);
+  let ticking = false;
 
-        if (index !== -1) {
-          currentEl.textContent = String(index + 1).padStart(2, '0');
-        }
+  const updateCurrentPage = () => {
+    const scrollBottom = window.scrollY + window.innerHeight;
+    const documentBottom = document.documentElement.scrollHeight;
+
+    // ページ最下部では必ず最後のsectionを表示
+    if (scrollBottom >= documentBottom - 2) {
+      currentEl.textContent = String(sections.length).padStart(2, '0');
+      ticking = false;
+      return;
+    }
+
+    const viewportCenter = window.scrollY + window.innerHeight / 2;
+
+    let closestIndex = 0;
+    let closestDistance = Infinity;
+
+    sections.forEach((section, index) => {
+      const rect = section.getBoundingClientRect();
+      const sectionCenter = window.scrollY + rect.top + rect.height / 2;
+      const distance = Math.abs(sectionCenter - viewportCenter);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
       }
     });
-  }, { threshold: 0.4 });
 
-  sections.forEach((section) => observer.observe(section));
+    currentEl.textContent = String(closestIndex + 1).padStart(2, '0');
+
+    ticking = false;
+  };
+
+  const requestUpdate = () => {
+    if (ticking) return;
+
+    ticking = true;
+    requestAnimationFrame(updateCurrentPage);
+  };
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
+
+  updateCurrentPage();
 }
 
 setupPageIndicator();

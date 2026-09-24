@@ -7,7 +7,7 @@ export interface SnsLink {
 export const snsLinks: SnsLink[] = [
   {
     name: 'YouTube',
-    url: 'https://www.youtube.com/channel/@otatsu1522',
+    url: 'https://www.youtube.com/@otatsu1522',
     icon: 'youtube',
   },
   {
