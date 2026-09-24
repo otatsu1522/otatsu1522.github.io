@@ -119,19 +119,8 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
 
     let isButtonScrolling = false;
     let finishTimer: number | undefined;
+    let normalizeTimer: number | undefined;
 
-    /*
-     * 現在のレイアウト情報を取得する。
-     *
-     * anchor:
-     *   2セット目の先頭カードを「通常表示する位置」
-     *
-     * setWidth:
-     *   同じカードが次のセットに現れるまでの正確な距離
-     *
-     * itemStep:
-     *   隣のカードへ移動する正確な距離
-     */
     const getLayout = () => {
       const firstItem = container.children[0] as HTMLElement | undefined;
       const secondItem = container.children[1] as HTMLElement | undefined;
@@ -149,10 +138,6 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
       const setWidth =
         secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
 
-      /*
-       * スマホは snap-center のため、
-       * カードの左端ではなくカード中央がコンテナ中央に来る位置が基準になる。
-       */
       const centerOffset = isMobile
         ? (container.clientWidth - secondSetFirstItem.offsetWidth) / 2
         : 0;
@@ -168,34 +153,6 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
       };
     };
 
-    /*
-     * 現在位置を中央セットと同じ見た目の位置へ戻す。
-     *
-     * scrollLeft自体は変化するが、
-     * 表示されているカード列は全く同じになる。
-     */
-    const normalizePosition = () => {
-      const layout = getLayout();
-      if (!layout || layout.setWidth <= 0) return;
-
-      let position = container.scrollLeft;
-
-      while (position < layout.anchor) {
-        position += layout.setWidth;
-      }
-
-      while (position > layout.anchor + layout.setWidth) {
-        position -= layout.setWidth;
-      }
-
-      if (position !== container.scrollLeft) {
-        container.scrollLeft = position;
-      }
-    };
-
-    /*
-     * 初期表示は必ず2セット目から開始する。
-     */
     const initScrollPosition = () => {
       const layout = getLayout();
       if (!layout || layout.setWidth <= 0) return;
@@ -203,11 +160,47 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
       container.scrollLeft = layout.anchor;
     };
 
-    initScrollPosition();
+    const normalizePosition = () => {
+      const layout = getLayout();
+      if (!layout || layout.setWidth <= 0) return;
 
-    /*
-     * 画像の読み込み後、カードサイズが確定した状態でもう一度計算する。
-     */
+      let position = container.scrollLeft;
+      let normalized = false;
+
+      while (position < layout.anchor) {
+        position += layout.setWidth;
+        normalized = true;
+      }
+
+      while (position > layout.anchor + layout.setWidth) {
+        position -= layout.setWidth;
+        normalized = true;
+      }
+
+      if (!normalized) return;
+
+      // scroll-snapによる再補正との競合を防ぐ
+      container.style.scrollSnapType = 'none';
+      container.scrollLeft = position;
+
+      requestAnimationFrame(() => {
+        container.style.scrollSnapType = '';
+      });
+    };
+
+    const scheduleNormalize = () => {
+      if (isButtonScrolling) return;
+
+      if (normalizeTimer !== undefined) {
+        window.clearTimeout(normalizeTimer);
+      }
+
+      normalizeTimer = window.setTimeout(() => {
+        normalizeTimer = undefined;
+        normalizePosition();
+      }, 100);
+    };
+
     const images = container.querySelectorAll('img');
 
     images.forEach((img) => {
@@ -216,40 +209,22 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
       }
     });
 
+    initScrollPosition();
+
     /*
-     * ユーザーによる通常の横スクロール。
-     *
-     * 中央セットの範囲から1セット分外れたら、
-     * 同じ表示位置を別セットへ移動する。
+     * 通常のスワイプ・ドラッグではスクロール中に位置を変更せず、
+     * スクロールが止まった後にだけ無限ループ位置を補正する。
      */
-    const updateLoop = () => {
+    container.addEventListener('scroll', scheduleNormalize, { passive: true });
+
+    /*
+     * scrollend対応ブラウザではスクロール完了時に即座に補正する。
+     */
+    container.addEventListener('scrollend', () => {
       if (isButtonScrolling) return;
+      normalizePosition();
+    });
 
-      const layout = getLayout();
-      if (!layout || layout.setWidth <= 0) return;
-
-      let position = container.scrollLeft;
-
-      if (position < layout.anchor) {
-        position += layout.setWidth;
-      } else if (position > layout.anchor + layout.setWidth) {
-        position -= layout.setWidth;
-      }
-
-      if (position !== container.scrollLeft) {
-        container.scrollLeft = position;
-      }
-    };
-
-    container.addEventListener('scroll', updateLoop, { passive: true });
-
-    /*
-     * スムーススクロール終了後に中央セットへ戻す。
-     *
-     * これをスムーススクロール中に行うと、
-     * ボタンを押したときに途中でジャンプしてしまうため、
-     * スクロール完了後だけ実行する。
-     */
     const finishButtonScroll = () => {
       if (!isButtonScrolling) return;
 
@@ -263,31 +238,20 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
       normalizePosition();
     };
 
-    /*
-     * scrollend対応ブラウザでは正確に終了を検知する。
-     */
     container.addEventListener('scrollend', finishButtonScroll);
 
-    /*
-     * scrollend非対応環境用のフォールバック。
-     */
     const scrollWithButton = (direction: number) => {
       const layout = getLayout();
       if (!layout || layout.itemStep <= 0) return;
 
       let current = container.scrollLeft;
-      let amount = layout.isMobile
+
+      const amount = layout.isMobile
         ? layout.itemStep
         : container.clientWidth;
 
       let target = current + amount * direction;
 
-      /*
-       * 3セットの範囲から外れる場合は、
-       * スクロール開始前に同じ位置を別セットへ移す。
-       *
-       * これにより「端まで行ってから逆方向へ突然飛ぶ」ことを防ぐ。
-       */
       while (target < 0) {
         current += layout.setWidth;
         target += layout.setWidth;
@@ -298,11 +262,13 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
         target -= layout.setWidth;
       }
 
-      /*
-       * 必要なら、スクロール開始位置だけを同じ表示位置へ移動。
-       */
       if (current !== container.scrollLeft) {
+        container.style.scrollSnapType = 'none';
         container.scrollLeft = current;
+
+        requestAnimationFrame(() => {
+          container.style.scrollSnapType = '';
+        });
       }
 
       isButtonScrolling = true;
@@ -321,24 +287,18 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
       }, 800);
     };
 
-    /*
-     * 左ボタン
-     */
     leftBtn.addEventListener('click', () => {
       const layout = getLayout();
       if (!layout) return;
 
-      scrollWithButton(layout.isMobile ? 1 : -1);
+      scrollWithButton(-1);
     });
 
-    /*
-     * 右ボタン
-     */
     rightBtn.addEventListener('click', () => {
       const layout = getLayout();
       if (!layout) return;
 
-      scrollWithButton(layout.isMobile ? -1 : 1);
+      scrollWithButton(1);
     });
 
     container.dataset.infiniteInitialized = 'true';
