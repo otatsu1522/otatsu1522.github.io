@@ -1,60 +1,29 @@
 ---
-import { Image } from 'astro:assets';
-import Layout from '../components/layout/Layout.astro';
-import SquareBackground from '../components/global/SquareBackground.astro';
-import LinkButton from '../components/ui/LinkButton.astro';
-import { profileData } from '../data/profile';
-import { siteText } from '../data/site';
-import profileImage from '../assets/images/profile.jpg';
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import AboutSection from '../components/AboutSection.astro';
+import HistorySection from '../components/HistorySection.astro';
+import JourneySection from '../components/JourneySection.astro';
+import RecommendSection from '../components/RecommendSection.astro';
+import GallerySection from '../components/GallerySection.astro';
+import SocialSection from '../components/SocialSection.astro';
+import PostSection from '../components/PostSection.astro';
+import MessageSection from '../components/MessageSection.astro';
+import ContactSection from '../components/ContactSection.astro';
 ---
 
-<Layout
-  title={`${profileData.name.ja} | Links`}
-  bodyClass="bg-neutral-100 text-black min-h-screen lg:h-screen lg:overflow-hidden flex flex-col items-center p-6"
->
-  <SquareBackground />
+<Layout>
+  <Hero />
 
-  <!-- relative z-20 はこの<main>だけに付ければ十分。
-       スタッキングコンテキストが形成されるため、内側の要素は
-       個別にrelative/z-indexを持たなくても常に背景より手前に描画される。 -->
-  <main class="max-w-md lg:max-w-5xl w-full flex-1 flex flex-col relative z-20">
-    <div
-      class="flex-1 flex flex-col justify-center lg:flex-row lg:items-center lg:justify-center lg:gap-20 space-y-6 lg:space-y-0 my-auto"
-    >
-      <section class="lg:w-1/2 text-center">
-        <div class="space-y-3">
-          <Image
-            src={profileImage}
-            alt={profileData.name.ja}
-            width={200}
-            height={200}
-            class="w-50 h-50 mx-auto object-cover"
-          />
-          <h1 class="text-2xl font-extrabold text-white tracking-tight inline-flex items-center justify-center min-h-8">
-            <span id="typing-text"></span>
-            <span class="animate-pulse ml-0.5 font-normal text-neutral-300">|</span>
-          </h1>
-        </div>
-      </section>
-
-      <!-- ボタン群をまとめて囲むカードは無し。各ボタン自体が背景を持つ -->
-      <section class="lg:w-1/2 space-y-3">
-        <div class="space-y-3">
-          {profileData.links.sns.map((sns) => (
-            <LinkButton href={sns.url} label={sns.name} handle={sns.handle} external />
-          ))}
-        </div>
-        <div class="pt-2">
-          <LinkButton href="/portfolio" label={siteText.portfolioLinkLabel} />
-        </div>
-      </section>
-    </div>
-
-    <!-- Footer -->
-    <footer class="py-4 shrink-0">
-      <p class="text-center text-xs text-neutral-500 font-mono">{siteText.copyright}</p>
-    </footer>
+  <main class="max-w-4xl mx-auto px-4 sm:px-6">
+    <AboutSection />
+    <HistorySection />
+    <JourneySection />
+    <RecommendSection />
+    <GallerySection />
+    <PostSection />
+    <SocialSection />
+    <ContactSection />
+    <MessageSection />
   </main>
 </Layout>
-
-<script src="../scripts/typing.ts"></script>

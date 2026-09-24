@@ -1,0 +1,105 @@
+---
+import '../styles/global.css';
+import '../styles/background.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { siteConfig } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const site = siteConfig.ja;
+const languages = ['ja', 'en'] as const;
+const showPageIndicator = Astro.url.pathname === '/';
+
+const pageTitle = title ? `${title} | ${site.author}` : site.title;
+const pageDescription = description || site.description;
+---
+
+<!DOCTYPE html>
+<html lang="ja" data-lang="ja" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+
+    <script is:inline>
+      (function() {
+        const saved = localStorage.getItem('preferred-lang');
+        if (saved === 'en' || saved === 'ja') {
+          document.documentElement.setAttribute('data-lang', saved);
+          document.documentElement.setAttribute('lang', saved);
+        }
+      })();
+    </script>
+
+    <style is:global>
+      html[data-lang="ja"] .lang-en { display: none !important; }
+      html[data-lang="en"] .lang-ja { display: none !important; }
+
+      html[data-lang="ja"] [data-lang-btn="ja"],
+      html[data-lang="en"] [data-lang-btn="en"] {
+        color: #ffffff;
+        font-weight: 700;
+        opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body id="top" class="bg-slate-950 text-gray-100 min-h-screen flex flex-col font-sans antialiased relative">
+    <Header />
+
+    <!-- PC用言語切り替え -->
+    <div class="hidden md:block fixed top-6 right-6 z-60 text-xs font-mono text-gray-400/80 pointer-events-auto select-none tracking-widest">
+      <button
+        type="button"
+        data-lang-btn="ja"
+        class="text-inherit hover:text-white transition-colors"
+      >
+        JA
+      </button>
+      {' / '}
+      <button
+        type="button"
+        data-lang-btn="en"
+        class="text-inherit hover:text-white transition-colors"
+      >
+        EN
+      </button>
+    </div>
+
+    <div
+      id="background-particles"
+      class="fixed inset-0 z-0 overflow-hidden pointer-events-none"
+      aria-hidden="true"
+    ></div>
+
+    <div class="flex-1 relative z-10">
+      <slot />
+    </div>
+
+    <!-- 右下のページ数 -->
+    {showPageIndicator && (
+      <div class="fixed bottom-6 right-6 z-40 text-xs font-mono text-gray-400/80 pointer-events-none select-none tracking-widest">
+        <span id="current-page">01</span> / <span id="total-pages">01</span>
+      </div>
+    )}
+
+    <div class="relative z-10">
+      <Footer />
+    </div>
+
+    <script src="../scripts/app.ts"></script>
+    <script src="../scripts/background.ts"></script>
+
+    {showPageIndicator && (
+      <script src="../scripts/page-indicator.ts"></script>
+    )}
+  </body>
+</html>

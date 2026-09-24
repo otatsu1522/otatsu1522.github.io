@@ -1,0 +1,35 @@
+---
+import { siteConfig } from '../data/site';
+import { ui } from '../data/ui';
+---
+
+<section id="contact" class="pt-20 pb-0">
+  <div class="flex items-baseline gap-2 mb-6">
+    <h2 class="text-2xl font-bold text-white">
+      <span class="lang-ja">{ui.ja.sections.contactTitle}</span>
+      <span class="lang-en">{ui.en.sections.contactTitle}</span>
+    </h2>
+
+    <span class="lang-ja text-xs text-gray-400">
+      {ui.ja.sections.contactSubtitle}
+    </span>
+
+    <span class="lang-en text-xs text-gray-400">
+      {ui.en.sections.contactSubtitle}
+    </span>
+  </div>
+
+  <div class="bg-slate-800/50 border border-slate-800 p-6 md:p-8 text-center">
+    <p class="text-sm sm:text-base text-gray-400 mb-6">
+      <span class="lang-ja">{siteConfig.ja.contactDescription}</span>
+      <span class="lang-en">{siteConfig.en.contactDescription}</span>
+    </p>
+
+    <a
+      href={`mailto:${siteConfig.ja.email}`}
+      class="text-base sm:text-lg text-gray-200 hover:text-sky-300 transition-colors break-all"
+    >
+      {siteConfig.ja.email}
+    </a>
+  </div>
+</section>

@@ -1,0 +1,77 @@
+---
+import { navigationItems, type NavItem } from '../data/navigation';
+import { ui } from '../data/ui';
+---
+
+<header class="w-full bg-transparent fixed top-0 left-0 z-50">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-end md:justify-center relative">
+    <!-- PC用ナビゲーション -->
+    <nav class="hidden md:flex items-center space-x-6 -translate-y-2.5">
+      {navigationItems.map((item: NavItem) => (
+        <a
+          href={item.href}
+          class="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+        >
+          <span class="lang-ja">{ui.ja.nav[item.key]}</span>
+          <span class="lang-en">{ui.en.nav[item.key]}</span>
+        </a>
+      ))}
+    </nav>
+
+    <!-- モバイル用メニューボタン -->
+    <button
+      id="mobile-menu-button"
+      class="md:hidden p-2 text-gray-300 focus:outline-none relative z-50"
+      aria-label={ui.ja.buttons.toggleMenu}
+    >
+      <svg id="icon-open" class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+      <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- モバイルメニュー -->
+  <div
+    id="mobile-menu"
+    class="hidden fixed inset-0 bg-slate-950/95 backdrop-blur-md z-40 flex flex-col justify-center items-center px-6 overflow-hidden"
+  >
+    <div
+      id="mobile-menu-particles"
+      class="absolute inset-0 z-0 pointer-events-none"
+      aria-hidden="true"
+    ></div>
+
+    <nav class="relative z-10 flex flex-col items-center space-y-6 text-center">
+      {navigationItems.map((item: NavItem) => (
+        <a
+          href={item.href}
+          class="mobile-menu-link text-xl font-bold text-gray-200 hover:text-white transition-colors"
+        >
+          <span class="lang-ja">{ui.ja.nav[item.key]}</span>
+          <span class="lang-en">{ui.en.nav[item.key]}</span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="relative z-10 mt-12 pt-6 flex items-center space-x-4 text-sm font-mono">
+      <button
+        type="button"
+        data-lang-btn="ja"
+        class="text-gray-400 hover:text-white transition-colors opacity-60"
+      >
+        JA
+      </button>
+      <span class="text-gray-600">/</span>
+      <button
+        type="button"
+        data-lang-btn="en"
+        class="text-gray-400 hover:text-white transition-colors opacity-60"
+      >
+        EN
+      </button>
+    </div>
+  </div>
+</header>

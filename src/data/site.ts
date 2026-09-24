@@ -1,85 +1,35 @@
-// サイト全体で使う「コンテンツではない」固定UI文言（ボタンラベル・見出しの飾り文字・コピーライト等）。
-// これまで各コンポーネント/ページに直接書かれていたテキストをここに集約し、
-// コードを触らずに文言だけ変更できるようにしている。
-// 人物・旅歴・SNSなどの「コンテンツ」データは引き続き profile.ts に置く。
-export const siteText = {
-  topButtonLabel: '← TOP',
+import type { Language } from './ui';
 
-  music: {
-    label: 'MUSIC',
+export interface SiteConfig {
+  title: string;
+  description: string;
+  author: string;
+  catchphrase: string;
+  bio: string;
+  message: string;
+  contactDescription: string;
+  email: string;
+}
+
+export const siteConfig: Record<Language, SiteConfig> = {
+  ja: {
+    title: '旅人おたつ | Profile & Links',
+    description: '「旅人の日常」をコンセプトに、リアルな旅の記録や装備・アウトドア情報を発信しています。',
+    author: '旅人おたつ',
+    catchphrase: '自転車・ヒッチハイクでの旅の記録',
+    bio: 'はい、どーもー、旅人おたつです。現在は、自転車で世界一周をしています。各SNSでは旅人のリアルな日常をシェアしています。また、旅のお役立ち情報や装備紹介、アウトドア、キャンプ、自転車などの話をしています。よろしくお願いします。',
+    message: '世界のどこかで会いましょう',
+    contactDescription: 'お問い合わせは下記のメールアドレスよりお願いします。',
+    email: 'otatsu1522@gmail.com',
   },
-
-  copyright: '© 2026 otatsu. All rights reserved.',
-
-  portfolioLinkLabel: 'PORTFOLIO',
-
-  sections: {
-    welcome: {
-      eyebrow: "Traveler's Portfolio",
-    },
-    about: {
-      eyebrow: 'About Me',
-      titleJa: '自己紹介',
-      titleEn: 'About',
-    },
-    history: {
-      eyebrow: 'Journey History',
-      titleJa: '旅歴',
-      titleEn: 'Travel History',
-    },
-    galleryJapan: {
-      eyebrow: 'Gallery',
-      titleJa: '自転車日本一周',
-      titleEn: 'Cycling Around Japan',
-    },
-    bicycleJapan: {
-      eyebrow: 'Bicycle',
-      titleJa: '自転車（日本一周）',
-      titleEn: 'Bicycle (Japan)',
-    },
-    galleryWorld: {
-      eyebrow: 'Gallery',
-      titleJa: '自転車世界一周',
-      titleEn: 'Cycling Around the World',
-    },
-    bicycleWorld: {
-      eyebrow: 'Bicycle',
-      titleJa: '自転車（世界一周）',
-      titleEn: 'Bicycle (World)',
-    },
-    gear: {
-      eyebrow: 'Gear',
-      titleJa: '装備',
-      titleEn: 'Gear',
-    },
-    map: {
-      eyebrow: 'Map',
-      titleJa: '地図',
-      titleEn: 'Map',
-    },
-    stats: {
-      eyebrow: 'Stats',
-      titleJa: '統計',
-      titleEn: 'Stats',
-    },
-    // スマホでは地図と統計を1枚の画像・1つの見出しにまとめて表示する
-    mapStats: {
-      eyebrow: 'Map & Stats',
-      titleJa: '地図・統計',
-      titleEn: 'Map & Stats',
-    },
-    recommend: {
-      eyebrow: 'Recommend',
-      titleJa: 'おすすめ動画',
-      titleEn: 'Recommend',
-    },
-    sns: {
-      eyebrow: 'Social Links',
-      titleJa: 'SNS',
-      titleEn: 'Social Networks',
-    },
-    message: {
-      eyebrow: 'Message',
-    },
+  en: {
+    title: 'Otatsu the Traveler | Profile & Links',
+    description: 'Sharing real travel logs, gear reviews, and outdoor adventures.',
+    author: 'Otatsu',
+    catchphrase: 'Travel & Life Log',
+    bio: 'Traveling across Japan and the world by bicycle and hitchhiking. Documenting local culture, gear reviews, and real daily life on the road.',
+    message: 'See you somewhere in the world.',
+    contactDescription: 'For inquiries, please contact me at the email address below.',
+    email: 'otatsu1522@gmail.com',
   },
 };

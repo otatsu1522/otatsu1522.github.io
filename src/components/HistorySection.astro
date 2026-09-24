@@ -1,0 +1,32 @@
+---
+import { travelHistory, type HistoryItem } from '../data/history';
+import { ui } from '../data/ui';
+---
+
+<section id="history" class="pt-20 pb-0">
+  <div class="flex items-baseline gap-2 mb-6">
+    <h2 class="text-2xl font-bold text-white">
+      <span class="lang-ja">{ui.ja.sections.historyTitle}</span>
+      <span class="lang-en">{ui.en.sections.historyTitle}</span>
+    </h2>
+    <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.historySubtitle}</span>
+  </div>
+
+  <!-- 左右均等に真ん中で綺麗に分割されるレイアウト -->
+  <div class="bg-slate-800/50 border border-slate-800 p-6 divide-y divide-slate-800">
+    {travelHistory.map((item: HistoryItem) => (
+      <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-6 items-center">
+        <!-- 左側：期間（右寄せ/左寄せレスポンシブ調整） -->
+        <time class="text-xs font-mono text-gray-400 sm:text-right">
+          <span class="lang-ja">{item.period.ja}</span>
+          <span class="lang-en">{item.period.en}</span>
+        </time>
+        <!-- 右側：タイトル -->
+        <span class="text-sm font-medium text-gray-200 sm:text-left">
+          <span class="lang-ja">{item.title.ja}</span>
+          <span class="lang-en">{item.title.en}</span>
+        </span>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,64 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { ui, type Language } from '../../data/ui';
+
+const posts: CollectionEntry<'posts'>[] = await getCollection('posts');
+
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = a.data.date ?? '';
+  const dateB = b.data.date ?? '';
+  return dateB.localeCompare(dateA);
+});
+
+const lang: Language = 'ja';
+const t = ui[lang];
+---
+
+<Layout title={t.sections.postsListTitle}>
+  <main class="max-w-3xl mx-auto px-4 pt-20 pb-10">
+    <header class="mb-12">
+      <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight">
+        <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
+        <span class="lang-en">{ui.en.sections.postsListTitle}</span>
+      </h1>
+
+      <p class="text-sm text-gray-400 mt-3">
+        <span class="lang-ja">{ui.ja.sections.postsListSubtitle}</span>
+        <span class="lang-en">{ui.en.sections.postsListSubtitle}</span>
+      </p>
+    </header>
+
+    {sortedPosts.length > 0 ? (
+      <div class="space-y-8">
+        {sortedPosts.map((post) => (
+          <a
+            href={`/posts/${post.id}`}
+            class="group block h-52 overflow-hidden bg-slate-800 border border-slate-700 shadow-xl hover:border-slate-600 hover:bg-slate-800/90 transition-all"
+          >
+            <div class="h-full p-6 md:p-7 flex flex-col">
+              {post.data.date && (
+                <time class="text-sm text-gray-400 font-mono">
+                  {post.data.date}
+                </time>
+              )}
+
+              <h2 class="text-xl md:text-2xl font-extrabold text-white mt-3 leading-tight group-hover:text-sky-300 transition-colors line-clamp-2">
+                {post.data.title}
+              </h2>
+
+              <p class="text-gray-300 mt-4 text-sm md:text-base leading-relaxed line-clamp-3">
+                {post.data.summary}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="bg-slate-800 border border-slate-700 p-10 text-center text-sm text-gray-500">
+        <span class="lang-ja">{ui.ja.messages.noPosts}</span>
+        <span class="lang-en">{ui.en.messages.noPosts}</span>
+      </div>
+    )}
+  </main>
+</Layout>

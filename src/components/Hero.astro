@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import { siteConfig } from '../data/site';
+import heroImg from '../assets/images/common/hero.jpg';
+---
+
+<section class="relative w-full h-screen h-[100dvh] overflow-hidden mb-12">
+  <div class="relative w-full h-full">
+    <!-- 画像を全画面表示・中央カバー -->
+    <Image
+      src={heroImg}
+      alt={siteConfig.ja.author}
+      class="w-full h-full object-cover block"
+      loading="eager"
+    />
+
+    <!-- オーバーレイ -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 from-0% via-black/30 via-70% to-slate-950 to-100% pointer-events-none"></div>
+
+    <!-- 中央メッセージ -->
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-20">
+      <div class="text-white tracking-wider drop-shadow-md">
+        <p
+          id="hero-greeting"
+          class="text-lg sm:text-2xl md:text-2xl font-medium mb-4 min-h-[1.2em]"
+        ></p>
+
+        <h1
+          id="hero-name"
+          class="text-6xl sm:text-8xl md:text-9xl font-extrabold min-h-[1.2em]"
+        ></h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const greeting = document.getElementById('hero-greeting');
+  const name = document.getElementById('hero-name');
+
+  if (greeting && name) {
+    const typeText = async (element: HTMLElement, text: string, speed: number) => {
+      for (const character of text) {
+        element.textContent += character;
+        await new Promise((resolve) => setTimeout(resolve, speed));
+      }
+    };
+
+    const startTyping = async () => {
+      await typeText(greeting, 'Hello, World!', 100);
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      await typeText(name, 'OTATSU.', 150);
+    };
+
+    startTyping();
+  }
+</script>

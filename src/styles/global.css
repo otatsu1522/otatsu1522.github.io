@@ -1,96 +1,11 @@
 @import "tailwindcss";
 
-:root {
-  /* サイト全体のフォント。ここを書き換えるだけでサイト全体のフォントを変更できる。
-     既定は外部フォントを読み込まない「機械的」な印象のシステム標準モノスペース体。
-     Webフォントに差し替える場合は、Layout.astroの<head>に<link>を追加した上で
-     ここにフォント名を追加すること（例: "'JetBrains Mono', ui-monospace, ...」）。 */
-  --font-primary: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', 'Roboto Mono', monospace;
-}
-
-html,
-body {
-  /* スクロール端での跳ね返り(オーバースクロール)時に、既定の白背景が
-     一瞬見えてチラつくのを防ぐための保険。各セクション自体は個別に
-     背景色を持っているので、通常はこの色が見えることはない。 */
-  background-color: #000000;
-  overscroll-behavior-y: none;
+html {
+  scroll-behavior: smooth;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  overflow-x: clip;
 }
 
 body {
-  font-family: var(--font-primary);
-}
-
-/* iOS Safari などでは button / input にUA由来の角丸が付くため、
-   サイト全体のデザイン（角ばったスタイル）に合わせて明示的にリセットする。
-   MusicPlayerのボタンだけ角丸に見えていた原因がこれ。 */
-button,
-input,
-select,
-textarea {
-  appearance: none;
-  -webkit-appearance: none;
-  border-radius: 0;
-}
-
-.h-screen > section > *,
-.h-screen > footer > * {
-  position: relative;
-  z-index: 20;
-}
-
-/* マウスカーソルを塗りつぶしのグレー四角形に変更。
-   リンクやボタンのUA標準カーソル(pointer)より*を優先させて全要素に適用する。
-   タッチ端末はそもそもカーソルが表示されないため影響しない。 */
-* {
-  cursor:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Crect width='14' height='14' fill='%23808080'/%3E%3C/svg%3E")
-      7 7,
-    auto;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-/* --- 通常時 (白背景用) --- */
-::-webkit-scrollbar-track {
-  background: #ffffff;
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #000000;
-  border-radius: 0;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #000000 #ffffff;
-}
-
-/* --- 黒背景表示時 (.is-dark-scroll) --- */
-.is-dark-scroll::-webkit-scrollbar-track {
-  background: #000000;
-}
-
-.is-dark-scroll::-webkit-scrollbar-thumb {
-  background: #ffffff;
-}
-
-.is-dark-scroll {
-  scrollbar-color: #ffffff #000000;
-}
-
-/* 表が長くなる自転車/装備セクションなど、個々の<section>にoverflow-y-autoを
-   付けている箇所専用。全体のスクロールバー(#scroll-container側)は表示したまま、
-   その内側にもう1本スクロールバーが二重に見えてしまうのを防ぐ。
-   スクロール自体はできる状態を維持し、見た目だけを消している。 */
-.no-scrollbar {
-  scrollbar-width: none;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-  width: 0;
+  overflow-x: clip;
 }
