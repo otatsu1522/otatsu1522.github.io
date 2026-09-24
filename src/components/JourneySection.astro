@@ -47,7 +47,7 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
         journeys.map((item) => (
           <a
             href={`/journeys/${item.id}`}
-            class="snap-center md:snap-start shrink-0 w-[80vw] md:w-[calc((100%-2rem)/3)] bg-slate-800 border border-slate-700/60 overflow-hidden flex flex-col justify-between transition-all hover:border-slate-500 group/card"
+            class="snap-center md:snap-start shrink-0 w-[80vw] md:w-[calc((100%-2rem)/3)] bg-slate-800/50 border border-slate-700/60 overflow-hidden flex flex-col justify-between transition-all hover:border-slate-500 group/card"
           >
             {item.data.cover && (
               <div class="w-full h-36 overflow-hidden bg-slate-950 shrink-0">
@@ -59,7 +59,7 @@ const journeys: CollectionEntry<'journeys'>[] = await getCollection('journeys');
               </div>
             )}
 
-            <div class="p-4 flex-1 flex flex-col justify-between bg-slate-800">
+            <div class="p-4 flex-1 flex flex-col justify-between bg-slate-800/50">
               <div>
                 {item.data.date && (
                   <span class="text-xs font-mono text-gray-400 block mb-1">
