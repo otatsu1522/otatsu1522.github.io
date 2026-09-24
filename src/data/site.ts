@@ -13,7 +13,7 @@ export interface SiteConfig {
 
 export const siteConfig: Record<Language, SiteConfig> = {
   ja: {
-    title: '旅人おたつ | Profile & Links',
+    title: 'OTATSU PORTFOLIO',
     description: '「旅人の日常」をコンセプトに、リアルな旅の記録や装備・アウトドア情報を発信しています。',
     author: '旅人おたつ',
     catchphrase: '自転車・ヒッチハイクでの旅の記録',
@@ -23,7 +23,7 @@ export const siteConfig: Record<Language, SiteConfig> = {
     email: 'otatsu1522@gmail.com',
   },
   en: {
-    title: 'Otatsu the Traveler | Profile & Links',
+    title: 'OTATSU PORTFOLIO',
     description: 'Sharing real travel logs, gear reviews, and outdoor adventures.',
     author: 'Otatsu',
     catchphrase: 'Travel & Life Log',
