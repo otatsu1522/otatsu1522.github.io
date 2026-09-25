@@ -4,6 +4,8 @@ export function initNavigation(): void {
   );
 
   anchorLinks.forEach((link) => {
+    if (link.dataset.navigationInitialized === 'true') return;
+
     link.addEventListener('click', (event) => {
       const url = new URL(link.href, window.location.href);
 
@@ -38,19 +40,30 @@ export function initNavigation(): void {
         window.location.pathname + window.location.search
       );
     });
+
+    link.dataset.navigationInitialized = 'true';
   });
 
   const scrollTopLink =
     document.getElementById('footer-scroll-top');
 
-  scrollTopLink?.addEventListener('click', (event) => {
-    event.preventDefault();
+  if (
+    scrollTopLink &&
+    scrollTopLink.dataset.navigationInitialized !== 'true'
+  ) {
+    scrollTopLink.addEventListener('click', (event) => {
+      event.preventDefault();
 
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     });
-  });
+
+    scrollTopLink.dataset.navigationInitialized = 'true';
+  }
+
+  initDesktopHeaderBackground();
 
   const pendingTarget = sessionStorage.getItem('navigation-target');
 
@@ -68,4 +81,37 @@ export function initNavigation(): void {
       });
     }
   }
+}
+
+function initDesktopHeaderBackground(): void {
+  const background = document.getElementById('desktop-header-background');
+
+  if (!background) return;
+  if (background.dataset.initialized === 'true') return;
+
+  const update = () => {
+    if (window.innerWidth < 768) {
+      background.style.backgroundColor = 'rgb(0 0 0 / 0)';
+      return;
+    }
+
+    if (window.location.pathname !== '/') {
+      background.style.backgroundColor = 'rgb(0 0 0 / 0.5)';
+      return;
+    }
+
+    const opacity = Math.min(
+      (window.scrollY / window.innerHeight) * 0.5,
+      0.5
+    );
+
+    background.style.backgroundColor = `rgb(0 0 0 / ${opacity})`;
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+
+  update();
+
+  background.dataset.initialized = 'true';
 }

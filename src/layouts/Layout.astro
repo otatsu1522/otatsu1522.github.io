@@ -3,6 +3,8 @@ import '../styles/global.css';
 import '../styles/background.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import LanguageSwitcher from '../components/common/LanguageSwitcher.astro';
+import PageIndicator from '../components/common/PageIndicator.astro';
 import { siteConfig } from '../data/site';
 
 interface Props {
@@ -13,7 +15,6 @@ interface Props {
 
 const { title, description, image = '/ogp.png' } = Astro.props;
 const site = siteConfig.ja;
-const showPageIndicator = Astro.url.pathname === '/';
 
 const pageTitle = title ? `${title} | ${site.author}` : site.title;
 const pageDescription = description || site.description;
@@ -58,6 +59,7 @@ const ogImageURL = new URL(image, Astro.site);
     <script is:inline>
       (function() {
         const saved = localStorage.getItem('preferred-lang');
+
         if (saved === 'en' || saved === 'ja') {
           document.documentElement.setAttribute('data-lang', saved);
           document.documentElement.setAttribute('lang', saved);
@@ -78,26 +80,17 @@ const ogImageURL = new URL(image, Astro.site);
     </style>
   </head>
 
-  <body id="top" class="text-gray-100 min-h-screen flex flex-col font-sans antialiased relative"><Header />
+  <body id="top" class="text-gray-100 min-h-screen flex flex-col font-sans antialiased relative">
+    <!-- PC用ヘッダー背景 -->
+    <div
+      id="desktop-header-background"
+      class="hidden md:block fixed inset-x-0 top-0 h-16 z-40 pointer-events-none"
+      style="background-color: rgb(0 0 0 / 0);"
+    ></div>
 
-    <!-- PC用言語切り替え -->
-    <div class="hidden md:block fixed top-6 right-6 z-60 text-xs font-mono text-gray-400 pointer-events-auto select-none tracking-widest">
-      <button
-        type="button"
-        data-lang-btn="ja"
-        class="text-inherit hover:text-white transition-colors cursor-pointer"
-      >
-        JA
-      </button>
-      {' / '}
-      <button
-        type="button"
-        data-lang-btn="en"
-        class="text-inherit hover:text-white transition-colors cursor-pointer"
-      >
-        EN
-      </button>
-    </div>
+    <Header />
+
+    <LanguageSwitcher variant="desktop" />
 
     <div
       id="background-particles"
@@ -109,12 +102,7 @@ const ogImageURL = new URL(image, Astro.site);
       <slot />
     </div>
 
-    <!-- 右下のページ数 -->
-    {showPageIndicator && (
-      <div class="fixed bottom-6 right-6 z-40 text-xs font-mono text-gray-400 pointer-events-none select-none tracking-widest">
-        <span id="current-page">01</span> / <span id="total-pages">01</span>
-      </div>
-    )}
+    <PageIndicator />
 
     <div class="relative z-10">
       <Footer />

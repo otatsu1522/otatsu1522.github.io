@@ -1,0 +1,9 @@
+---
+const showPageIndicator = Astro.url.pathname === '/';
+---
+
+{showPageIndicator && (
+  <div class="fixed bottom-6 right-6 z-40 text-xs font-mono text-gray-400 pointer-events-none select-none tracking-widest">
+    <span id="current-page">01</span> / <span id="total-pages">01</span>
+  </div>
+)}

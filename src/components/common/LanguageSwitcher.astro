@@ -1,0 +1,45 @@
+---
+interface Props {
+  variant: 'desktop' | 'mobile';
+}
+
+const { variant } = Astro.props;
+---
+
+{variant === 'desktop' ? (
+  <div class="hidden md:block fixed top-6 right-6 z-60 text-xs font-mono text-gray-400 pointer-events-auto select-none tracking-widest">
+    <button
+      type="button"
+      data-lang-btn="ja"
+      class="text-inherit hover:text-white transition-colors cursor-pointer"
+    >
+      JA
+    </button>
+    {' / '}
+    <button
+      type="button"
+      data-lang-btn="en"
+      class="text-inherit hover:text-white transition-colors cursor-pointer"
+    >
+      EN
+    </button>
+  </div>
+) : (
+  <div class="relative z-10 mt-12 pt-6 flex items-center space-x-4 text-sm font-mono">
+    <button
+      type="button"
+      data-lang-btn="ja"
+      class="text-gray-400 hover:text-white transition-colors opacity-60 cursor-pointer"
+    >
+      JA
+    </button>
+    <span class="text-gray-600">/</span>
+    <button
+      type="button"
+      data-lang-btn="en"
+      class="text-gray-400 hover:text-white transition-colors opacity-60 cursor-pointer"
+    >
+      EN
+    </button>
+  </div>
+)}
