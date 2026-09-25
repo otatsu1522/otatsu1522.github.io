@@ -16,8 +16,8 @@ const MAX_DELAY = 0; // 通常の星の初回表示までの最長遅延(秒)
 const SHOOTING_STAR_MIN_INTERVAL = 0; // 流れ星が出現する最短間隔(秒)
 const SHOOTING_STAR_MAX_INTERVAL = 3; // 流れ星が出現する最長間隔(秒)
 
-const SHOOTING_STAR_MIN_DURATION = 0.5; // 流れ星が画面を横切る最短時間(秒)
-const SHOOTING_STAR_MAX_DURATION = 1.0; // 流れ星が画面を横切る最長時間(秒)
+const SHOOTING_STAR_MIN_DURATION = 0.1; // 流れ星が画面を横切る最短時間(秒)
+const SHOOTING_STAR_MAX_DURATION = 0.5; // 流れ星が画面を横切る最長時間(秒)
 
 const SHOOTING_STAR_MIN_LENGTH = 10; // 流れ星の尾の最小長さ(px)
 const SHOOTING_STAR_MAX_LENGTH = 100; // 流れ星の尾の最大長さ(px)

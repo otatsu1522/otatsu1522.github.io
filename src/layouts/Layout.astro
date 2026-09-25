@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import LanguageSwitcher from '../components/common/LanguageSwitcher.astro';
 import PageIndicator from '../components/common/PageIndicator.astro';
+import BigBang from '../components/common/BigBang.astro';
 import { siteConfig } from '../data/site';
 
 interface Props {
@@ -97,6 +98,8 @@ const ogImageURL = new URL(image, Astro.site);
       class="fixed inset-0 z-0 overflow-hidden pointer-events-none"
       aria-hidden="true"
     ></div>
+
+    <BigBang />
 
     <div class="flex-1 relative z-10">
       <slot />
