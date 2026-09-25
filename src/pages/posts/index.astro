@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { ui, type Language } from '../../data/ui';
+import Pagination from '../../components/common/Pagination.astro';
 
 const posts: CollectionEntry<'posts'>[] = (await getCollection('posts')).filter(
   (post) => post.data.published
@@ -31,10 +32,12 @@ const t = ui[lang];
     </header>
 
     {sortedPosts.length > 0 ? (
-      <div class="space-y-8">
-        {sortedPosts.map((post) => (
+      <div class="space-y-3 sm:space-y-4">
+        {sortedPosts.map((post, index) => (
           <a
             href={`/posts/${post.id}`}
+            data-pagination-item="posts"
+            data-pagination-index={index}
             class="group block h-52 overflow-hidden bg-slate-800/50 border border-slate-800 shadow-xl hover:border-slate-600 hover:bg-slate-800 transition-all"
           >
             <div class="h-full p-6 md:p-7 flex flex-col">
@@ -61,5 +64,12 @@ const t = ui[lang];
         <span class="lang-en">{ui.en.messages.noPosts}</span>
       </div>
     )}
+
+    <Pagination
+      target="posts"
+      totalItems={sortedPosts.length}
+      pageSize={10}
+    />
+
   </main>
 </Layout>

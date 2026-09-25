@@ -1,6 +1,6 @@
 export function initNavigation(): void {
   const anchorLinks = document.querySelectorAll<HTMLAnchorElement>(
-    'header a[href*="#"], footer a[href*="#"]'
+    'header a[href*="#"], footer nav a[href*="#"]'
   );
 
   anchorLinks.forEach((link) => {
@@ -40,10 +40,22 @@ export function initNavigation(): void {
     });
   });
 
-  const navigationTarget = sessionStorage.getItem('navigation-target');
+  const scrollTopLink =
+    document.getElementById('footer-scroll-top');
 
-  if (navigationTarget) {
-    const target = document.getElementById(navigationTarget);
+  scrollTopLink?.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  });
+
+  const pendingTarget = sessionStorage.getItem('navigation-target');
+
+  if (pendingTarget) {
+    const target = document.getElementById(pendingTarget);
 
     if (target) {
       sessionStorage.removeItem('navigation-target');

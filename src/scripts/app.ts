@@ -3,6 +3,9 @@ import { initNavigation } from './navigation';
 import { initLanguage } from './language';
 import { initBackgroundParticles } from './background';
 import { initPageIndicator } from './page-indicator';
+import { setupGallery } from './gallery';
+import { setupJourneyScroll } from './journey';
+import { initPagination } from './pagination';
 
 export function initApp(): void {
   initMobileMenu();
@@ -10,6 +13,9 @@ export function initApp(): void {
   initLanguage();
   initBackgroundParticles();
   initPageIndicator();
+  setupGallery();
+  setupJourneyScroll();
+  initPagination();
 }
 
 if (document.readyState === 'loading') {

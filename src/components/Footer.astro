@@ -10,18 +10,29 @@ const currentYear = new Date().getFullYear();
   <div class="max-w-5xl mx-auto px-4 flex flex-col items-center justify-center">
 
     <a
-      href="#top"
-      id="footer-scroll-top"
-      class="group flex flex-col items-center text-gray-500 hover:text-white transition-colors"
-      aria-label={ui.ja.footer.scrollTop}
+    href="#top"
+    id="footer-scroll-top"
+    class="group flex flex-col items-center text-gray-500 hover:text-white transition-colors"
+    aria-label={ui.ja.footer.scrollTop}
     >
-      <span class="text-xl leading-none group-hover:-translate-y-1 transition-transform">
-        &uarr;
-      </span>
-      <span class="text-[10px] font-mono tracking-widest mt-2">
+    <svg
+        class="w-5 h-5 group-hover:-translate-y-1 transition-transform"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+    >
+        <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M5 15l7-7 7 7"
+        ></path>
+    </svg>
+
+    <span class="text-[10px] font-mono tracking-widest mt-2">
         <span class="lang-ja">{ui.ja.footer.scrollTop}</span>
         <span class="lang-en">{ui.en.footer.scrollTop}</span>
-      </span>
+    </span>
     </a>
 
     <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-10">
@@ -44,14 +55,3 @@ const currentYear = new Date().getFullYear();
 
   </div>
 </footer>
-
-<script>
-  const scrollTopLink = document.getElementById('footer-scroll-top');
-  scrollTopLink?.addEventListener('click', (event) => {
-    event.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  });
-</script>

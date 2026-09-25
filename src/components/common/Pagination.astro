@@ -1,0 +1,64 @@
+---
+interface Props {
+  target: string;
+  totalItems: number;
+  pageSize: number;
+}
+
+const { target, totalItems, pageSize } = Astro.props;
+const totalPages = Math.ceil(totalItems / pageSize);
+
+if (totalPages <= 1) {
+  return null;
+}
+---
+
+<nav
+  class="mt-8 flex items-center justify-center gap-2"
+  data-pagination-target={target}
+  data-pagination-page-size={pageSize}
+>
+  <button
+    type="button"
+    data-pagination-prev
+    aria-label="Previous page"
+    class="w-9 h-9 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+    disabled
+  >
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    </svg>
+  </button>
+
+  <div class="flex items-center gap-2">
+    {Array.from({ length: totalPages }, (_, index) => {
+      const page = index + 1;
+
+      return (
+        <button
+          type="button"
+          data-pagination-page={page}
+          class={`px-3 py-2 border text-sm transition-all ${
+            page === 1
+              ? 'border-slate-600 bg-slate-700 text-white'
+              : 'border-slate-700 bg-slate-800/60 text-gray-400 hover:text-white hover:border-slate-500 hover:bg-slate-800'
+          }`}
+          aria-current={page === 1 ? 'page' : undefined}
+        >
+          {page}
+        </button>
+      );
+    })}
+  </div>
+
+  <button
+    type="button"
+    data-pagination-next
+    aria-label="Next page"
+    class="w-9 h-9 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+  >
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
+  </button>
+</nav>
