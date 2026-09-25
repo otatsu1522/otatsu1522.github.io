@@ -22,90 +22,92 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
     <span class="lang-en text-xs text-gray-400">{ui.en.sections.journeySubtitle}</span>
   </div>
 
-  <div class="relative group">
-    <button
-      id="journey-scroll-left"
-      type="button"
-      aria-label="Scroll left"
-      class="absolute left-1 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
-    >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-      </svg>
-    </button>
+  {journeys.length > 0 ? (
+    <>
+      <div class="relative group">
+        <button
+          id="journey-scroll-left"
+          type="button"
+          aria-label="Scroll left"
+          class="absolute left-1 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
 
-    <button
-      id="journey-scroll-right"
-      type="button"
-      aria-label="Scroll right"
-      class="absolute right-1 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
-    >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-      </svg>
-    </button>
+        <button
+          id="journey-scroll-right"
+          type="button"
+          aria-label="Scroll right"
+          class="absolute right-1 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
 
-    <div
-      id="journey-container"
-      class="-mx-4 w-[calc(100%+2rem)] md:mx-0 md:w-auto flex space-x-2 md:space-x-4 overflow-x-auto pb-2 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-    >
-      {journeys.length > 0 ? (
-        journeys.map((item) => (
-          <a
-            href={`/journeys/${item.id}`}
-            class="snap-center md:snap-start shrink-0 w-[80vw] md:w-[calc((100%-2rem)/3)] bg-slate-800/50 border border-slate-800 overflow-hidden flex flex-col justify-between transition-all hover:border-slate-500 group/card"
-          >
-            {item.data.cover && (
-              <div class="w-full h-36 overflow-hidden bg-slate-950 shrink-0">
-                <Image
-                  src={item.data.cover}
-                  alt={item.data.title}
-                  class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
-                />
+        <div
+          id="journey-container"
+          class="-mx-4 w-[calc(100%+2rem)] md:mx-0 md:w-auto flex space-x-2 md:space-x-4 overflow-x-auto pb-2 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {journeys.map((item) => (
+            <a
+              href={`/journeys/${item.id}`}
+              class="snap-center md:snap-start shrink-0 w-[80vw] md:w-[calc((100%-2rem)/3)] bg-slate-800/50 border border-slate-800 overflow-hidden flex flex-col justify-between transition-all hover:border-slate-500 group/card"
+            >
+              {item.data.cover && (
+                <div class="w-full h-36 overflow-hidden bg-slate-950 shrink-0">
+                  <Image
+                    src={item.data.cover}
+                    alt={item.data.title}
+                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              )}
+
+              <div class="p-4 flex-1 flex flex-col justify-between bg-slate-800/50">
+                <div>
+                  {item.data.date && (
+                    <span class="text-xs font-mono text-gray-400 block mb-1">
+                      {item.data.date}
+                    </span>
+                  )}
+
+                  <h3 class="text-sm font-bold text-white group-hover/card:text-blue-400 transition-colors line-clamp-2 mb-2">
+                    {item.data.title}
+                  </h3>
+
+                  <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed">
+                    {item.data.summary}
+                  </p>
+                </div>
+
+                <div class="mt-4 text-xs font-medium text-slate-300 flex items-center gap-1 group-hover/card:translate-x-1 transition-transform">
+                  <span class="lang-ja">{ui.ja.buttons.readArticle}</span>
+                  <span class="lang-en">{ui.en.buttons.readArticle}</span>
+                  <span>&rarr;</span>
+                </div>
               </div>
-            )}
-
-            <div class="p-4 flex-1 flex flex-col justify-between bg-slate-800/50">
-              <div>
-                {item.data.date && (
-                  <span class="text-xs font-mono text-gray-400 block mb-1">
-                    {item.data.date}
-                  </span>
-                )}
-
-                <h3 class="text-sm font-bold text-white group-hover/card:text-blue-400 transition-colors line-clamp-2 mb-2">
-                  {item.data.title}
-                </h3>
-
-                <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed">
-                  {item.data.summary}
-                </p>
-              </div>
-
-              <div class="mt-4 text-xs font-medium text-slate-300 flex items-center gap-1 group-hover/card:translate-x-1 transition-transform">
-                <span class="lang-ja">{ui.ja.buttons.readArticle}</span>
-                <span class="lang-en">{ui.en.buttons.readArticle}</span>
-                <span>&rarr;</span>
-              </div>
-            </div>
-          </a>
-        ))
-      ) : (
-        <div class="text-sm text-gray-500 py-4">
-          <span class="lang-ja">{ui.ja.messages.noJourneys}</span>
-          <span class="lang-en">{ui.en.messages.noJourneys}</span>
+            </a>
+          ))}
         </div>
-      )}
-    </div>
-  </div>
+      </div>
 
-  <div class="mt-6 flex justify-center">
-    <a
-      href="/journeys/"
-      class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-700 bg-slate-800/60 text-sm text-gray-300 hover:text-white hover:border-slate-500 hover:bg-slate-800 transition-all"
-    >
-      <span class="lang-ja">{ui.ja.buttons.viewAllJourneys}</span>
-      <span class="lang-en">{ui.en.buttons.viewAllJourneys}</span>
-    </a>
-  </div>
+      <div class="mt-6 flex justify-center">
+        <a
+          href="/journeys/"
+          class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-700 bg-slate-800/60 text-sm text-gray-300 hover:text-white hover:border-slate-500 hover:bg-slate-800 transition-all"
+        >
+          <span class="lang-ja">{ui.ja.buttons.viewAllJourneys}</span>
+          <span class="lang-en">{ui.en.buttons.viewAllJourneys}</span>
+        </a>
+      </div>
+    </>
+  ) : (
+    <div class="text-sm text-gray-500 py-4">
+      <span class="lang-ja">{ui.ja.messages.noJourneys}</span>
+      <span class="lang-en">{ui.en.messages.noJourneys}</span>
+    </div>
+  )}
 </section>

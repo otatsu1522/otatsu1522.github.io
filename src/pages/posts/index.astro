@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
-import { ui, type Language } from '../../data/ui';
 import Pagination from '../../components/common/Pagination.astro';
+import { ui, type Language } from '../../data/ui';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
 const posts: CollectionEntry<'posts'>[] = (await getCollection('posts')).filter(
   (post) => post.data.published
@@ -20,50 +20,51 @@ const t = ui[lang];
 
 <Layout title={t.sections.postsListTitle}>
   <main class="max-w-3xl mx-auto px-4 pt-20 pb-10">
-    <header class="mb-12">
-      <div class="flex items-baseline gap-2 mb-6">
-        <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight">
-          <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
-          <span class="lang-en">{ui.en.sections.postsListTitle}</span>
-        </h1>
-        <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.postsListSubtitle}</span>
-        <span class="lang-en text-xs text-gray-400">{ui.en.sections.postsListSubtitle}</span>
-      </div>
-    </header>
 
-    {sortedPosts.length > 0 ? (
-      <div class="space-y-3 sm:space-y-4">
-        {sortedPosts.map((post, index) => (
-          <a
-            href={`/posts/${post.id}`}
-            data-pagination-item="posts"
-            data-pagination-index={index}
-            class="group block h-52 overflow-hidden bg-slate-800/50 border border-slate-800 shadow-xl hover:border-slate-600 hover:bg-slate-800 transition-all"
-          >
-            <div class="h-full p-6 md:p-7 flex flex-col">
-              {post.data.date && (
-                <time class="text-sm text-gray-400 font-mono">
-                  {post.data.date}
-                </time>
-              )}
+      <header class="mb-12">
+        <div class="flex items-baseline gap-2 mb-6">
+          <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight">
+            <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
+            <span class="lang-en">{ui.en.sections.postsListTitle}</span>
+          </h1>
+          <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.postsListSubtitle}</span>
+          <span class="lang-en text-xs text-gray-400">{ui.en.sections.postsListSubtitle}</span>
+        </div>
+      </header>
 
-              <h2 class="text-xl md:text-2xl font-extrabold text-white mt-3 leading-tight group-hover:text-sky-300 transition-colors line-clamp-2">
-                {post.data.title}
-              </h2>
+      {sortedPosts.length > 0 ? (
+        <div class="space-y-3 sm:space-y-4">
+          {sortedPosts.map((post, index) => (
+            <a
+              href={`/posts/${post.id}`}
+              data-pagination-item="posts"
+              data-pagination-index={index}
+              class="group block h-52 overflow-hidden bg-slate-800/50 border border-slate-800 shadow-xl hover:border-slate-600 hover:bg-slate-800 transition-all"
+            >
+              <div class="h-full p-6 md:p-7 flex flex-col">
+                {post.data.date && (
+                  <time class="text-sm text-gray-400 font-mono">
+                    {post.data.date}
+                  </time>
+                )}
 
-              <p class="text-gray-300 mt-4 text-sm md:text-base leading-relaxed line-clamp-3">
-                {post.data.summary}
-              </p>
-            </div>
-          </a>
-        ))}
-      </div>
-    ) : (
-      <div class="bg-slate-800/50 border border-slate-800 p-10 text-center text-sm text-gray-500">
-        <span class="lang-ja">{ui.ja.messages.noPosts}</span>
-        <span class="lang-en">{ui.en.messages.noPosts}</span>
-      </div>
-    )}
+                <h2 class="text-xl md:text-2xl font-extrabold text-white mt-3 leading-tight group-hover:text-sky-300 transition-colors line-clamp-2">
+                  {post.data.title}
+                </h2>
+
+                <p class="text-gray-300 mt-4 text-sm md:text-base leading-relaxed line-clamp-3">
+                  {post.data.summary}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="bg-slate-800/50 border border-slate-800 p-10 text-center text-sm text-gray-500">
+          <span class="lang-ja">{ui.ja.messages.noPosts}</span>
+          <span class="lang-en">{ui.en.messages.noPosts}</span>
+        </div>
+      )}
 
     <Pagination
       target="posts"
