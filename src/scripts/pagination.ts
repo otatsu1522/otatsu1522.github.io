@@ -50,12 +50,12 @@ export function initPagination(): void {
         const pageNumber = Number(button.dataset.paginationPage);
         const active = pageNumber === currentPage;
 
-        button.classList.toggle('border-slate-600', active);
-        button.classList.toggle('bg-slate-700', active);
+        button.classList.toggle('border-white/20', active);
+        button.classList.toggle('bg-white/10', active);
         button.classList.toggle('text-white', active);
 
-        button.classList.toggle('border-slate-700', !active);
-        button.classList.toggle('bg-slate-800/60', !active);
+        button.classList.toggle('border-white/15', !active);
+        button.classList.toggle('bg-white/5', !active);
         button.classList.toggle('text-gray-400', !active);
 
         if (active) {

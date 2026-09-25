@@ -13,16 +13,14 @@ import { ui } from '../data/ui';
     <span class="lang-en text-xs text-gray-400">{ui.en.sections.historySubtitle}</span>
   </div>
 
-  <!-- 左右均等に真ん中で綺麗に分割されるレイアウト -->
-  <div class="bg-slate-800/50 border border-slate-800 p-6 divide-y divide-slate-800">
+  <div class="bg-white/5 border border-white/10 p-6 divide-y divide-white/5">
     {travelHistory.map((item: HistoryItem) => (
       <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-6 items-center">
-        <!-- 左側：期間（右寄せ/左寄せレスポンシブ調整） -->
         <time class="text-xs font-mono text-gray-400 sm:text-right">
           <span class="lang-ja">{item.period.ja}</span>
           <span class="lang-en">{item.period.en}</span>
         </time>
-        <!-- 右側：タイトル -->
+
         <span class="text-sm font-medium text-gray-200 sm:text-left">
           <span class="lang-ja">{item.title.ja}</span>
           <span class="lang-en">{item.title.en}</span>

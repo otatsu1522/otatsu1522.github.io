@@ -31,7 +31,7 @@ const ogImageURL = new URL(image, Astro.site);
 
     <!-- Manifest & Theme Color -->
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#020617" />
+    <meta name="theme-color" content="#000000" />
 
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
@@ -81,7 +81,7 @@ const ogImageURL = new URL(image, Astro.site);
   <body id="top" class="text-gray-100 min-h-screen flex flex-col font-sans antialiased relative"><Header />
 
     <!-- PC用言語切り替え -->
-    <div class="hidden md:block fixed top-6 right-6 z-60 text-xs font-mono text-gray-400/80 pointer-events-auto select-none tracking-widest">
+    <div class="hidden md:block fixed top-6 right-6 z-60 text-xs font-mono text-gray-400 pointer-events-auto select-none tracking-widest">
       <button
         type="button"
         data-lang-btn="ja"
@@ -111,7 +111,7 @@ const ogImageURL = new URL(image, Astro.site);
 
     <!-- 右下のページ数 -->
     {showPageIndicator && (
-      <div class="fixed bottom-6 right-6 z-40 text-xs font-mono text-gray-400/80 pointer-events-none select-none tracking-widest">
+      <div class="fixed bottom-6 right-6 z-40 text-xs font-mono text-gray-400 pointer-events-none select-none tracking-widest">
         <span id="current-page">01</span> / <span id="total-pages">01</span>
       </div>
     )}

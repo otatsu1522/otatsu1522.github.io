@@ -30,7 +30,7 @@ const latestPosts = posts
         {latestPosts.map((post) => (
           <a
             href={`/posts/${post.id}`}
-            class="group block p-4 bg-slate-800/50 border border-slate-800 hover:border-slate-600 hover:bg-slate-800 transition-all"
+            class="group block p-4 bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all"
           >
             <div class="flex flex-col">
               <div class="min-w-0">
@@ -40,7 +40,7 @@ const latestPosts = posts
                   </time>
                 )}
 
-                <h3 class="text-base font-bold text-white mt-1 group-hover:text-sky-300 transition-colors">
+                <h3 class="text-base font-bold text-white mt-1 group-hover:text-gray-200 transition-colors">
                   {post.data.title}
                 </h3>
 
@@ -49,7 +49,7 @@ const latestPosts = posts
                 </p>
               </div>
 
-              <div class="mt-4 text-xs font-medium text-slate-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <div class="mt-4 text-xs font-medium text-gray-300 flex items-center gap-1 group-hover:text-white group-hover:translate-x-1 transition-all">
                 <span class="lang-ja">{ui.ja.buttons.readArticle}</span>
                 <span class="lang-en">{ui.en.buttons.readArticle}</span>
                 <span>&rarr;</span>
@@ -62,7 +62,7 @@ const latestPosts = posts
       <div class="mt-6 flex justify-center">
         <a
           href="/posts/"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-700 bg-slate-800/60 text-sm text-gray-300 hover:text-white hover:border-slate-500 hover:bg-slate-800 transition-all"
+          class="inline-flex items-center gap-2 px-5 py-2.5 border border-white/10 bg-white/5 text-sm text-gray-300 hover:text-white hover:border-white/20 hover:bg-white/10 transition-all"
         >
           <span class="lang-ja">{ui.ja.buttons.viewAllPosts}</span>
           <span class="lang-en">{ui.en.buttons.viewAllPosts}</span>

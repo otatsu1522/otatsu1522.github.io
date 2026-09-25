@@ -29,7 +29,7 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
           id="journey-scroll-left"
           type="button"
           aria-label="Scroll left"
-          class="absolute left-1 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
+          class="absolute left-1 md:-left-16 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -40,7 +40,7 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
           id="journey-scroll-right"
           type="button"
           aria-label="Scroll right"
-          class="absolute right-1 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
+          class="absolute right-1 md:-right-16 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -54,10 +54,10 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
           {journeys.map((item) => (
             <a
               href={`/journeys/${item.id}`}
-              class="snap-center md:snap-start shrink-0 w-[80vw] md:w-[calc((100%-2rem)/3)] bg-slate-800/50 border border-slate-800 overflow-hidden flex flex-col justify-between transition-all hover:border-slate-500 group/card"
+              class="snap-center md:snap-start shrink-0 w-[80vw] md:w-[calc((100%-2rem)/3)] bg-white/5 border border-white/10 overflow-hidden flex flex-col justify-between transition-all hover:border-white/20 hover:bg-white/10 group/card"
             >
               {item.data.cover && (
-                <div class="w-full h-36 overflow-hidden bg-slate-950 shrink-0">
+                <div class="w-full h-36 overflow-hidden bg-black shrink-0">
                   <Image
                     src={item.data.cover}
                     alt={item.data.title}
@@ -66,7 +66,7 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
                 </div>
               )}
 
-              <div class="p-4 flex-1 flex flex-col justify-between bg-slate-800/50">
+              <div class="p-4 flex-1 flex flex-col justify-between">
                 <div>
                   {item.data.date && (
                     <span class="text-xs font-mono text-gray-400 block mb-1">
@@ -74,7 +74,7 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
                     </span>
                   )}
 
-                  <h3 class="text-sm font-bold text-white group-hover/card:text-blue-400 transition-colors line-clamp-2 mb-2">
+                  <h3 class="text-sm font-bold text-white group-hover/card:text-gray-200 transition-colors line-clamp-2 mb-2">
                     {item.data.title}
                   </h3>
 
@@ -83,7 +83,7 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
                   </p>
                 </div>
 
-                <div class="mt-4 text-xs font-medium text-slate-300 flex items-center gap-1 group-hover/card:translate-x-1 transition-transform">
+                <div class="mt-4 text-xs font-medium text-gray-300 flex items-center gap-1 group-hover/card:text-white group-hover/card:translate-x-1 transition-all">
                   <span class="lang-ja">{ui.ja.buttons.readArticle}</span>
                   <span class="lang-en">{ui.en.buttons.readArticle}</span>
                   <span>&rarr;</span>
@@ -97,7 +97,7 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
       <div class="mt-6 flex justify-center">
         <a
           href="/journeys/"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-700 bg-slate-800/60 text-sm text-gray-300 hover:text-white hover:border-slate-500 hover:bg-slate-800 transition-all"
+          class="inline-flex items-center gap-2 px-5 py-2.5 border border-white/10 bg-white/5 text-sm text-gray-300 hover:text-white hover:border-white/20 hover:bg-white/10 transition-all"
         >
           <span class="lang-ja">{ui.ja.buttons.viewAllJourneys}</span>
           <span class="lang-en">{ui.en.buttons.viewAllJourneys}</span>
