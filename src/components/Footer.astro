@@ -11,6 +11,7 @@ const currentYear = new Date().getFullYear();
 
     <a
       href="#top"
+      id="footer-scroll-top"
       class="group flex flex-col items-center text-gray-500 hover:text-white transition-colors"
       aria-label={ui.ja.footer.scrollTop}
     >
@@ -38,8 +39,19 @@ const currentYear = new Date().getFullYear();
     <SnsLinks class="mt-8" />
 
     <p class="text-xs font-mono text-gray-500 mt-10">
-      &copy; {currentYear} otatsu. All rights reserved.
+      &copy; {currentYear} {ui.ja.footer.author} <span class="lang-ja">{ui.ja.footer.rights}</span><span class="lang-en">{ui.en.footer.rights}</span>
     </p>
 
   </div>
 </footer>
+
+<script>
+  const scrollTopLink = document.getElementById('footer-scroll-top');
+  scrollTopLink?.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  });
+</script>

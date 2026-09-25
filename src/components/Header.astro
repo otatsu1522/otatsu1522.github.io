@@ -154,41 +154,64 @@ import { ui } from '../data/ui';
     /*
      * PC・モバイル両方のナビゲーション
      */
-    const links = header.querySelectorAll<HTMLAnchorElement>(
-      'a[href^="#"]'
-    );
+    const links = header.querySelectorAll<HTMLAnchorElement>('a[href]');
 
     links.forEach((link) => {
       link.addEventListener('click', (event) => {
-        const href = link.getAttribute('href');
+        const url = new URL(link.href, window.location.href);
 
-        if (!href || href === '#') return;
+        if (!url.hash) return;
 
-        const target = document.querySelector<HTMLElement>(href);
+        const isMobileLink =
+          link.classList.contains('mobile-menu-link');
+
+        if (isMobileLink) {
+          menuButton?.click();
+        }
+
+        // 別ページからトップページへ移動する場合
+        if (url.pathname !== window.location.pathname) {
+          event.preventDefault();
+
+          sessionStorage.setItem(
+            'navigation-target',
+            url.hash.slice(1)
+          );
+
+          window.location.href = url.pathname;
+          return;
+        }
+
+        const target = document.getElementById(url.hash.slice(1));
 
         if (!target) return;
 
         event.preventDefault();
 
-        const isMobileLink =
-          link.classList.contains('mobile-menu-link');
-
-        /*
-         * モバイルメニューの場合は先に閉じる
-         */
-        if (isMobileLink) {
-          menuButton?.click();
-        }
-
-        /*
-         * メニューを閉じた後にスクロールする
-         */
         requestAnimationFrame(() => {
           scrollToTarget(target);
-          history.pushState(null, '', href);
+          history.replaceState(
+            null,
+            '',
+            window.location.pathname + window.location.search
+          );
         });
       });
     });
+
+    const pendingTarget = sessionStorage.getItem('navigation-target');
+
+    if (pendingTarget) {
+      const target = document.getElementById(pendingTarget);
+
+      if (target) {
+        sessionStorage.removeItem('navigation-target');
+
+        requestAnimationFrame(() => {
+          scrollToTarget(target);
+        });
+      }
+    }
 
     header.dataset.navigationInitialized = 'true';
   }

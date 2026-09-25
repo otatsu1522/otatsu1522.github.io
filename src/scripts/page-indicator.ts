@@ -66,5 +66,6 @@ function setupPageIndicator() {
   updateCurrentPage();
 }
 
-setupPageIndicator();
-document.addEventListener('astro:after-swap', setupPageIndicator);
+export function initPageIndicator(): void {
+  setupPageIndicator();
+}

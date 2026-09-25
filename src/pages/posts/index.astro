@@ -20,15 +20,14 @@ const t = ui[lang];
 <Layout title={t.sections.postsListTitle}>
   <main class="max-w-3xl mx-auto px-4 pt-20 pb-10">
     <header class="mb-12">
-      <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight">
-        <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
-        <span class="lang-en">{ui.en.sections.postsListTitle}</span>
-      </h1>
-
-      <p class="text-sm text-gray-400 mt-3">
-        <span class="lang-ja">{ui.ja.sections.postsListSubtitle}</span>
-        <span class="lang-en">{ui.en.sections.postsListSubtitle}</span>
-      </p>
+      <div class="flex items-baseline gap-2 mb-6">
+        <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight">
+          <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
+          <span class="lang-en">{ui.en.sections.postsListTitle}</span>
+        </h1>
+        <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.postsListSubtitle}</span>
+        <span class="lang-en text-xs text-gray-400">{ui.en.sections.postsListSubtitle}</span>
+      </div>
     </header>
 
     {sortedPosts.length > 0 ? (

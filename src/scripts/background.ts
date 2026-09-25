@@ -154,5 +154,6 @@ function setupAllBackgroundParticles() {
   setupBackgroundParticles('mobile-menu-particles', MOBILE_PARTICLE_COUNT);
 }
 
-setupAllBackgroundParticles();
-document.addEventListener('astro:after-swap', setupAllBackgroundParticles);
+export function initBackgroundParticles(): void {
+  setupAllBackgroundParticles();
+}
