@@ -14,7 +14,11 @@ const articleSchema = ({ image }: { image: (...args: any[]) => any }) =>
 
 const makeArticleCollection = (base: string) =>
   defineCollection({
-    loader: glob({ pattern: '**/index.md', base }),
+    loader: glob({
+      pattern: '**/*.md',
+      base,
+      generateId: ({ entry }) => entry.replace(/\/index\.md$/, '').replace(/\.md$/, ''),
+    }),
     schema: articleSchema,
   });
 
