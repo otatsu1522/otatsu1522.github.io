@@ -1,0 +1,16 @@
+{
+  "name": "OTATSU PORTFOLIO",
+  "short_name": "PORTFOLIO",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#020617",
+  "background_color": "#020617",
+  "display": "browser",
+  "start_url": "/"
+}
