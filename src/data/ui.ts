@@ -45,7 +45,7 @@ export const ui = {
       noPosts: '新着情報はありません。',
     },
     footer: {
-      author: 'Otatsu',
+      author: 'OTATSU',
       rights: 'All rights reserved.',
       scrollTop: 'SCROLL TOP',
     },
@@ -96,7 +96,7 @@ export const ui = {
       noPosts: 'No posts available yet.',
     },
     footer: {
-      author: 'Otatsu',
+      author: 'OTATSU',
       rights: 'All rights reserved.',
       scrollTop: 'SCROLL TOP',
     },

@@ -23,7 +23,7 @@ export const siteConfig: Record<Language, SiteConfig> = {
   en: {
     title: 'Portfolio | OTATSU',
     description: 'Sharing real travel logs, gear reviews, and outdoor adventures.',
-    author: 'otatsu',
+    author: 'OTATSU',
     bio: 'Traveling across Japan and the world by bicycle and hitchhiking. Documenting local culture, gear reviews, and real daily life on the road.',
     message: 'See you somewhere in the world.',
     contactDescription: 'For inquiries, please contact me at the email address below.',
