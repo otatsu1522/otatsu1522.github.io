@@ -1,7 +1,7 @@
 const PARTICLE_COUNT = 50; // 通常の星の数
 const MOBILE_PARTICLE_COUNT = 30; // モバイルメニュー内の星の数
 
-const MIN_SIZE = 1; // 通常の星の最小サイズ(px)
+const MIN_SIZE = 0.1; // 通常の星の最小サイズ(px)
 const MAX_SIZE = 5; // 通常の星の最大サイズ(px)
 
 const MIN_DURATION = 1; // 通常の星が1回点滅する最短時間(秒)
@@ -13,20 +13,20 @@ const MAX_OPACITY = 1; // 通常の星の最大透明度
 const MIN_DELAY = -5; // 通常の星の初回表示までの最短遅延(秒)
 const MAX_DELAY = 0; // 通常の星の初回表示までの最長遅延(秒)
 
-const SHOOTING_STAR_MIN_INTERVAL = 1; // 流れ星が出現する最短間隔(秒)
-const SHOOTING_STAR_MAX_INTERVAL = 5; // 流れ星が出現する最長間隔(秒)
+const SHOOTING_STAR_MIN_INTERVAL = 0; // 流れ星が出現する最短間隔(秒)
+const SHOOTING_STAR_MAX_INTERVAL = 3; // 流れ星が出現する最長間隔(秒)
 
 const SHOOTING_STAR_MIN_DURATION = 0.5; // 流れ星が画面を横切る最短時間(秒)
-const SHOOTING_STAR_MAX_DURATION = 1.5; // 流れ星が画面を横切る最長時間(秒)
+const SHOOTING_STAR_MAX_DURATION = 1.0; // 流れ星が画面を横切る最長時間(秒)
 
 const SHOOTING_STAR_MIN_LENGTH = 10; // 流れ星の尾の最小長さ(px)
 const SHOOTING_STAR_MAX_LENGTH = 100; // 流れ星の尾の最大長さ(px)
 
-const SHOOTING_STAR_MIN_DISTANCE = 100; // 流れ星の最短移動距離(px)
+const SHOOTING_STAR_MIN_DISTANCE = 10; // 流れ星の最短移動距離(px)
 const SHOOTING_STAR_MAX_DISTANCE = 500; // 流れ星の最長移動距離(px)
 
 const SHOOTING_STAR_MIN_THICKNESS = 1; // 流れ星の最小太さ(px)
-const SHOOTING_STAR_MAX_THICKNESS = 3; // 流れ星の最大太さ(px)
+const SHOOTING_STAR_MAX_THICKNESS = 5; // 流れ星の最大太さ(px)
 
 const COLORS = [
   'rgba(255,255,255,0.9)',
