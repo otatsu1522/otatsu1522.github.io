@@ -3,7 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { ui, type Language } from '../../data/ui';
 
-const posts: CollectionEntry<'posts'>[] = await getCollection('posts');
+const posts: CollectionEntry<'posts'>[] = (await getCollection('posts')).filter(
+  (post) => post.data.published
+);
 
 const sortedPosts = posts.sort((a, b) => {
   const dateA = a.data.date ?? '';
@@ -34,7 +36,7 @@ const t = ui[lang];
         {sortedPosts.map((post) => (
           <a
             href={`/posts/${post.id}`}
-            class="group block h-52 overflow-hidden bg-slate-800 border border-slate-700 shadow-xl hover:border-slate-600 hover:bg-slate-800/90 transition-all"
+            class="group block h-52 overflow-hidden bg-slate-800/50 border border-slate-800 shadow-xl hover:border-slate-600 hover:bg-slate-800 transition-all"
           >
             <div class="h-full p-6 md:p-7 flex flex-col">
               {post.data.date && (
@@ -55,7 +57,7 @@ const t = ui[lang];
         ))}
       </div>
     ) : (
-      <div class="bg-slate-800 border border-slate-700 p-10 text-center text-sm text-gray-500">
+      <div class="bg-slate-800/50 border border-slate-800 p-10 text-center text-sm text-gray-500">
         <span class="lang-ja">{ui.ja.messages.noPosts}</span>
         <span class="lang-en">{ui.en.messages.noPosts}</span>
       </div>

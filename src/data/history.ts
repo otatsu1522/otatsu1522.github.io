@@ -4,7 +4,6 @@ export interface HistoryItem {
   id: string;
   period: Record<Language, string>;
   title: Record<Language, string>;
-  isCurrent?: boolean;
 }
 
 export const travelHistory: HistoryItem[] = [
@@ -42,6 +41,5 @@ export const travelHistory: HistoryItem[] = [
     id: '7',
     period: { ja: '2024年2月 ~', en: 'Feb 21, 2024 - Present' },
     title: { ja: '自転車で世界一周へ', en: 'Cycling Around the World' },
-    isCurrent: true,
   },
 ];

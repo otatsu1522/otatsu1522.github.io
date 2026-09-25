@@ -18,6 +18,8 @@ export const ui = {
       historySubtitle: '旅歴',
       journeyTitle: 'Journey',
       journeySubtitle: '旅の記録',
+      journeyListTitle: 'Journey',
+      journeyListSubtitle: '旅の記録一覧',
       recommendTitle: 'Recommend',
       recommendSubtitle: 'おすすめ',
       recommendedPlaylistsTitle: 'おすすめの再生リスト',
@@ -34,9 +36,9 @@ export const ui = {
     },
     buttons: {
       toggleMenu: 'メニュー切り替え',
-      sendEmail: 'メールを送る',
       readArticle: '記事を読む',
       viewAllPosts: '記事一覧へ',
+      viewAllJourneys: '旅の記録一覧へ',
     },
     messages: {
       noJourneys: '旅の記事は準備中です。',
@@ -66,6 +68,8 @@ export const ui = {
       historySubtitle: 'History',
       journeyTitle: 'Journey',
       journeySubtitle: 'Travel Log',
+      journeyListTitle: 'Journey',
+      journeyListSubtitle: 'All Journeys',
       recommendTitle: 'Recommend',
       recommendSubtitle: 'Recommended',
       recommendedPlaylistsTitle: 'Recommended Playlists',
@@ -82,9 +86,9 @@ export const ui = {
     },
     buttons: {
       toggleMenu: 'Toggle Menu',
-      sendEmail: 'Send Email',
       readArticle: 'Read article',
       viewAllPosts: 'View all posts',
+      viewAllJourneys: 'View all journeys',
     },
     messages: {
       noJourneys: 'No journey posts available yet.',

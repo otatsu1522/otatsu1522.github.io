@@ -1,6 +1,5 @@
 ---
 import { navigationItems, type NavItem } from '../data/navigation';
-import { siteConfig } from '../data/site';
 import { ui } from '../data/ui';
 import SnsLinks from './common/SnsLinks.astro';
 
@@ -39,12 +38,7 @@ const currentYear = new Date().getFullYear();
     <SnsLinks class="mt-8" />
 
     <p class="text-xs font-mono text-gray-500 mt-10">
-      &copy; {currentYear}{' '}
-      <span class="lang-ja">{siteConfig.ja.author}</span>
-      <span class="lang-en">{siteConfig.en.author}</span>
-      {' '}
-      <span class="lang-ja">{ui.ja.footer.rights}</span>
-      <span class="lang-en">{ui.en.footer.rights}</span>
+      &copy; {currentYear} otatsu. All rights reserved.
     </p>
 
   </div>

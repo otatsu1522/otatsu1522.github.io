@@ -1,0 +1,77 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { ui, type Language } from '../../data/ui';
+
+const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys'))
+  .filter((entry) => entry.data.published)
+  .sort((a, b) => {
+    const dateA = a.data.date ?? '';
+    const dateB = b.data.date ?? '';
+    return dateB.localeCompare(dateA);
+  });
+
+const lang: Language = 'ja';
+const t = ui[lang];
+---
+
+<Layout title={t.sections.journeyListTitle}>
+  <main class="max-w-3xl mx-auto px-4 pt-20 pb-10">
+    <header class="mb-12">
+      <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight">
+        <span class="lang-ja">{ui.ja.sections.journeyListTitle}</span>
+        <span class="lang-en">{ui.en.sections.journeyListTitle}</span>
+      </h1>
+
+      <p class="text-sm text-gray-400 mt-3">
+        <span class="lang-ja">{ui.ja.sections.journeyListSubtitle}</span>
+        <span class="lang-en">{ui.en.sections.journeyListSubtitle}</span>
+      </p>
+    </header>
+
+    {journeys.length > 0 ? (
+      <div class="grid grid-cols-2 gap-3 sm:gap-4">
+        {journeys.map((item) => (
+          <a
+            href={`/journeys/${item.id}`}
+            class="group block bg-slate-800/50 border border-slate-800 overflow-hidden flex flex-col hover:border-slate-600 transition-all"
+          >
+            {item.data.cover && (
+              <div class="w-full h-28 sm:h-40 overflow-hidden bg-slate-950 shrink-0">
+                <Image
+                  src={item.data.cover}
+                  alt={item.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            )}
+
+            <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+              <div>
+                {item.data.date && (
+                  <span class="text-xs font-mono text-gray-400 block mb-1">
+                    {item.data.date}
+                  </span>
+                )}
+
+                <h2 class="text-sm sm:text-base font-bold text-white group-hover:text-blue-400 transition-colors line-clamp-2 mb-1">
+                  {item.data.title}
+                </h2>
+
+                <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed">
+                  {item.data.summary}
+                </p>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="bg-slate-800/50 border border-slate-800 p-10 text-center text-sm text-gray-500">
+        <span class="lang-ja">{ui.ja.messages.noJourneys}</span>
+        <span class="lang-en">{ui.en.messages.noJourneys}</span>
+      </div>
+    )}
+  </main>
+</Layout>

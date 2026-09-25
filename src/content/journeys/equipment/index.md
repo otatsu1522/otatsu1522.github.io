@@ -1,7 +1,6 @@
 ---
-title: "自転車日本一周の旅"
-summary: "日本全国沿岸部を中心に駆け抜けた走行距離約12,000kmの全記録。"
-date: "2021年4月 - 2021年11月"
+title: "旅の荷物"
+summary: "無一文旅から自転車旅までをしてきた最新の装備をまとめました。"
 cover: "./equipment.jpg"
 featured: true
 ---

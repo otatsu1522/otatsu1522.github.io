@@ -5,6 +5,7 @@ import { ui } from '../data/ui';
 const posts: CollectionEntry<'posts'>[] = await getCollection('posts');
 
 const latestPosts = posts
+  .filter((post) => post.data.published)
   .sort((a, b) => {
     const dateA = a.data.date ?? '';
     const dateB = b.data.date ?? '';

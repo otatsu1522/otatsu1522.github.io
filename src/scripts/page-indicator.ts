@@ -1,9 +1,15 @@
+let cleanupHandler: (() => void) | null = null;
+
 function setupPageIndicator() {
   const sections = document.querySelectorAll('section');
   const currentEl = document.getElementById('current-page');
   const totalEl = document.getElementById('total-pages');
 
   if (!sections.length || !currentEl || !totalEl) return;
+
+  if (cleanupHandler) {
+    cleanupHandler();
+  }
 
   totalEl.textContent = String(sections.length).padStart(2, '0');
 
@@ -50,6 +56,12 @@ function setupPageIndicator() {
 
   window.addEventListener('scroll', requestUpdate, { passive: true });
   window.addEventListener('resize', requestUpdate);
+
+  cleanupHandler = () => {
+    window.removeEventListener('scroll', requestUpdate);
+    window.removeEventListener('resize', requestUpdate);
+    cleanupHandler = null;
+  };
 
   updateCurrentPage();
 }
