@@ -46,7 +46,7 @@ export const ui = {
       noPosts: '新着情報はありません。',
     },
     footer: {
-      copyRights: 'OTATSU All rights reserved.',
+      copyRights: 'OTATSU. All rights reserved.',
       scrollTop: 'SCROLL TOP',
     },
   },
@@ -97,7 +97,7 @@ export const ui = {
       noPosts: 'No posts available yet.',
     },
     footer: {
-      rights: 'OTATSU All rights reserved.',
+      rights: 'OTATSU. All rights reserved.',
       scrollTop: 'SCROLL TOP',
     },
   },

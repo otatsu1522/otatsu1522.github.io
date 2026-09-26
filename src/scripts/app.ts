@@ -1,4 +1,4 @@
-import { initMobileMenu } from './mobile-menu';
+import { initMenuMobile } from './menu-mobile';
 import { initNavigation } from './navigation';
 import { initLanguage } from './language';
 import { initBackgroundParticles } from './background';
@@ -10,7 +10,7 @@ import { setupJourneyScroll } from './journey';
 import { initPagination } from './pagination';
 
 export function initApp(): void {
-  initMobileMenu();
+  initMenuMobile();
   initNavigation();
   initLanguage();
   initBackgroundParticles();

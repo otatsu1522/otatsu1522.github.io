@@ -1,4 +1,4 @@
-export function initMobileMenu(): void {
+export function initMenuMobile(): void {
   const button = document.getElementById('mobile-menu-button');
   const menu = document.getElementById('mobile-menu');
   const iconOpen = document.getElementById('icon-open');
