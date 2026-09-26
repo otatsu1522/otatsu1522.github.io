@@ -6,9 +6,17 @@ export function initPagination(): void {
     if (pagination.dataset.initialized === 'true') return;
 
     const target = pagination.dataset.paginationTarget;
-    const pageSize = Number(pagination.dataset.paginationPageSize);
+    const defaultPageSize = Number(
+      pagination.dataset.paginationPageSize
+    );
+    const mobilePageSize = Number(
+      pagination.dataset.paginationPageSizeMobile
+    );
+    const desktopPageSize = Number(
+      pagination.dataset.paginationPageSizeDesktop
+    );
 
-    if (!target || !pageSize) return;
+    if (!target || !defaultPageSize) return;
 
     const items = Array.from(
       document.querySelectorAll<HTMLElement>('[data-pagination-item]')
@@ -31,37 +39,103 @@ export function initPagination(): void {
 
     if (!items.length || !pageButtons.length) return;
 
-    const totalPages = Math.ceil(items.length / pageSize);
+    const getPageSize = () => {
+      if (
+        window.innerWidth >= 768 &&
+        desktopPageSize
+      ) {
+        return desktopPageSize;
+      }
+
+      if (mobilePageSize) {
+        return mobilePageSize;
+      }
+
+      return defaultPageSize;
+    };
+
     let currentPage = 1;
 
-    const update = (page: number) => {
+    const update = (page: number, scroll = false) => {
+      const pageSize = getPageSize();
+      const totalPages = Math.ceil(items.length / pageSize);
       const previousPage = currentPage;
 
-      currentPage = Math.max(1, Math.min(page, totalPages));
+      currentPage = Math.max(
+        1,
+        Math.min(page, totalPages)
+      );
+
+      pagination.classList.toggle(
+        'hidden',
+        totalPages <= 1
+      );
+
+      if (totalPages <= 1) {
+        items.forEach((item) => {
+          item.classList.remove('hidden');
+        });
+        return;
+      }
 
       const start = (currentPage - 1) * pageSize;
       const end = start + pageSize;
 
       items.forEach((item, index) => {
-        item.classList.toggle('hidden', index < start || index >= end);
+        item.classList.toggle(
+          'hidden',
+          index < start || index >= end
+        );
       });
 
       pageButtons.forEach((button) => {
-        const pageNumber = Number(button.dataset.paginationPage);
+        const pageNumber = Number(
+          button.dataset.paginationPage
+        );
+
+        const visible = pageNumber <= totalPages;
         const active = pageNumber === currentPage;
 
-        button.classList.toggle('border-white/20', active);
-        button.classList.toggle('bg-white/10', active);
-        button.classList.toggle('text-white', active);
+        button.classList.toggle(
+          'hidden',
+          !visible
+        );
 
-        button.classList.toggle('border-white/15', !active);
-        button.classList.toggle('bg-white/5', !active);
-        button.classList.toggle('text-gray-400', !active);
+        button.classList.toggle(
+          'border-white/20',
+          active
+        );
+        button.classList.toggle(
+          'bg-white/10',
+          active
+        );
+        button.classList.toggle(
+          'text-white',
+          active
+        );
+
+        button.classList.toggle(
+          'border-white/10',
+          !active
+        );
+        button.classList.toggle(
+          'bg-white/5',
+          !active
+        );
+        button.classList.toggle(
+          'text-gray-400',
+          !active
+        );
 
         if (active) {
-          button.setAttribute('aria-current', 'page');
+          button.setAttribute(
+            'aria-current',
+            'page'
+          );
         } else {
-          button.removeAttribute('aria-current');
+          button.removeAttribute(
+            'aria-current'
+          );
         }
       });
 
@@ -70,10 +144,14 @@ export function initPagination(): void {
       }
 
       if (nextButton) {
-        nextButton.disabled = currentPage === totalPages;
+        nextButton.disabled =
+          currentPage === totalPages;
       }
 
-      if (currentPage !== previousPage) {
+      if (
+        scroll &&
+        currentPage !== previousPage
+      ) {
         window.scrollTo({
           top: 0,
           behavior: 'smooth',
@@ -83,16 +161,23 @@ export function initPagination(): void {
 
     pageButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        update(Number(button.dataset.paginationPage));
+        update(
+          Number(button.dataset.paginationPage),
+          true
+        );
       });
     });
 
     prevButton?.addEventListener('click', () => {
-      update(currentPage - 1);
+      update(currentPage - 1, true);
     });
 
     nextButton?.addEventListener('click', () => {
-      update(currentPage + 1);
+      update(currentPage + 1, true);
+    });
+
+    window.addEventListener('resize', () => {
+      update(currentPage);
     });
 
     update(1);

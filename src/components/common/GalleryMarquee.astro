@@ -10,86 +10,36 @@ const galleryImages = Object.entries(
 )
   .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
   .map(([, module]) => module.default);
-
-const MOBILE_HEIGHT = 120;
-const DESKTOP_HEIGHT = 180;
 ---
 
 {galleryImages.length > 0 && (
-  <div
-    id="gallery-viewport"
-    class="gallery-viewport"
-    style={`--gallery-mobile-height:${MOBILE_HEIGHT}px;--gallery-desktop-height:${DESKTOP_HEIGHT}px;`}
-  >
-    <div id="gallery-track" class="gallery-track">
-      <div id="gallery-set" class="gallery-set">
+  <div id="gallery-viewport" class="relative w-screen -ml-[calc(50vw-50%)] overflow-hidden">
+    <div id="gallery-track" class="flex w-max m-0 p-0 will-change-transform">
+      <div id="gallery-set" class="flex shrink-0 m-0 p-0">
         {galleryImages.map((image, index) => (
-          <div class="gallery-item">
+          <div class="block shrink-0 h-[120px] md:h-[180px] m-0 p-0 overflow-hidden">
             <Image
               src={image}
               alt=""
-              class="gallery-image"
+              class="block w-auto h-full max-w-none m-0 p-0"
               loading={index < 8 ? 'eager' : 'lazy'}
             />
           </div>
         ))}
       </div>
 
-      <div class="gallery-set" aria-hidden="true">
+      <div class="flex shrink-0 m-0 p-0" aria-hidden="true">
         {galleryImages.map((image) => (
-          <div class="gallery-item">
-            <Image src={image} alt="" class="gallery-image" loading="lazy" />
+          <div class="block shrink-0 h-[120px] md:h-[180px] m-0 p-0 overflow-hidden">
+            <Image
+              src={image}
+              alt=""
+              class="block w-auto h-full max-w-none m-0 p-0"
+              loading="lazy"
+            />
           </div>
         ))}
       </div>
     </div>
   </div>
 )}
-
-<style>
-  .gallery-viewport {
-    position: relative;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    overflow: hidden;
-  }
-
-  .gallery-track {
-    display: flex;
-    width: max-content;
-    margin: 0;
-    padding: 0;
-    will-change: transform;
-  }
-
-  .gallery-set {
-    display: flex;
-    flex-shrink: 0;
-    margin: 0;
-    padding: 0;
-  }
-
-  .gallery-item {
-    display: block;
-    flex: 0 0 auto;
-    height: var(--gallery-mobile-height);
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .gallery-image {
-    display: block;
-    width: auto;
-    height: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  @media (min-width: 768px) {
-    .gallery-item {
-      height: var(--gallery-desktop-height);
-    }
-  }
-</style>

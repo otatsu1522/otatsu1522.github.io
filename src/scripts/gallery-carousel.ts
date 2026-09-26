@@ -1,33 +1,35 @@
-// Galleryセクション(id="gallery")用の、中央を大きく・左右をパースで小さく表示する
-// coverflow風カルーセル。無限ループだが自動では動かず、
-// ボタンクリック/スワイプ/ドラッグなど明示的な操作でのみ切り替わる。
+// Galleryセクション(id="gallery")用のカルーセル。
+// 中央を実寸大・最前面にし、左右に75%→50%と縮小しながら少し重なるように後ろへ配置する。
+// スマホは中央+左右が少しだけ重なって見える程度(1:8:1)のシンプルな表示。
+// 無限ループだが自動では動かず、ボタンクリック/スワイプ/ドラッグなど
+// 明示的な操作でのみ切り替わる。
 
 const MOBILE_BREAKPOINT = 767;
 
-// PC: 中心からの距離ごとのtranslateX(px)・scale・rotateY(deg)
+// 中心からの距離ごとのtranslateX(px)とscale。回転(台形パース)は今回無し。
 const DESKTOP_STEPS = [
-  { translate: 0, scale: 1, rotate: 0 },
-  { translate: 230, scale: 0.78, rotate: 32 },
-  { translate: 400, scale: 0.58, rotate: 42 },
+  { translate: 0, scale: 1 },
+  { translate: 150, scale: 0.75 },
+  { translate: 250, scale: 0.5 },
 ];
 
-// スマホ: 中心+隣が少し見える程度のシンプルな表示
+// スマホはtranslateをviewport幅に対する比率で指定(1:8:1程度になる値)
 const MOBILE_STEPS = [
-  { translate: 0, scale: 1, rotate: 0 },
-  { translate: 0.34, scale: 0.82, rotate: 0 }, // translateはviewport幅に対する比率
+  { translate: 0, scale: 1 },
+  { translate: 0.42, scale: 1 },
 ];
 
 export function setupGalleryCarousel(): void {
   const viewport = document.getElementById('gallery-carousel-viewport');
   const track = document.getElementById('gallery-carousel-track');
-  const originalSet = document.getElementById('gallery-carousel-set');
-  const prevBtn = document.getElementById('gallery-carousel-prev');
-  const nextBtn = document.getElementById('gallery-carousel-next');
+  const prevButtons = document.querySelectorAll<HTMLElement>('[data-gallery-prev]');
+  const nextButtons = document.querySelectorAll<HTMLElement>('[data-gallery-next]');
 
-  if (!viewport || !track || !originalSet || !prevBtn || !nextBtn) return;
+  if (!viewport || !track || !prevButtons.length || !nextButtons.length) return;
   if (track.dataset.initialized === 'true') return;
 
-  const originalItems = Array.from(originalSet.children) as HTMLElement[];
+  // trackの直接の子要素(写真1枚1枚)をそのまま使う(ラッパーdivは挟まない)
+  const originalItems = Array.from(track.children) as HTMLElement[];
   if (!originalItems.length) return;
 
   const itemCount = originalItems.length;
@@ -36,7 +38,7 @@ export function setupGalleryCarousel(): void {
   const cloneBefore = originalItems.map((item) => item.cloneNode(true) as HTMLElement);
   const cloneAfter = originalItems.map((item) => item.cloneNode(true) as HTMLElement);
 
-  cloneBefore.forEach((item) => track.insertBefore(item, originalSet));
+  cloneBefore.forEach((item) => track.insertBefore(item, originalItems[0]));
   cloneAfter.forEach((item) => track.appendChild(item));
 
   const allItems = Array.from(track.children) as HTMLElement[];
@@ -46,7 +48,8 @@ export function setupGalleryCarousel(): void {
 
   const render = () => {
     const mobile = isMobile();
-    const maxVisible = mobile ? MOBILE_STEPS.length - 1 : DESKTOP_STEPS.length - 1;
+    const steps = mobile ? MOBILE_STEPS : DESKTOP_STEPS;
+    const maxVisible = steps.length - 1;
 
     allItems.forEach((item, i) => {
       const distance = i - currentIndex;
@@ -54,53 +57,81 @@ export function setupGalleryCarousel(): void {
       const sign = Math.sign(distance);
 
       if (abs > maxVisible) {
+        // 見えない位置でも「その先も同じ規則で続いている」前提の位置を
+        // 持たせておくことで、後で可視域に入ってきた際に
+        // 何も無い場所からアニメーションして飛んでくるのを防ぐ。
+        const last = steps[maxVisible];
+        const extraStep = maxVisible > 0 ? last.translate - steps[maxVisible - 1].translate : last.translate;
+        const extrapolatedTranslate = last.translate + extraStep * (abs - maxVisible);
+
+        const translateX = mobile
+          ? sign * extrapolatedTranslate * viewport!.clientWidth
+          : sign * extrapolatedTranslate;
+
+        item.style.transform =
+          `translate(-50%, -50%) translateX(${translateX}px) scale(${last.scale})`;
         item.style.opacity = '0';
         item.style.pointerEvents = 'none';
         item.style.zIndex = '0';
         return;
       }
 
-      let translateX: number;
-      let scale: number;
-      let rotate: number;
-
-      if (mobile) {
-        const step = MOBILE_STEPS[abs];
-        translateX = sign * step.translate * viewport!.clientWidth;
-        scale = step.scale;
-        rotate = 0;
-      } else {
-        const step = DESKTOP_STEPS[abs];
-        translateX = sign * step.translate;
-        scale = step.scale;
-        rotate = -sign * step.rotate;
-      }
+      const step = steps[abs];
+      const translateX = mobile
+        ? sign * step.translate * viewport!.clientWidth
+        : sign * step.translate;
 
       item.style.transform =
-        `translate(-50%, -50%) translateX(${translateX}px) scale(${scale}) rotateY(${rotate}deg)`;
+        `translate(-50%, -50%) translateX(${translateX}px) scale(${step.scale})`;
       item.style.opacity = '1';
       item.style.pointerEvents = 'auto';
       item.style.zIndex = String(100 - abs);
     });
   };
 
-  const normalize = () => {
+  const normalize = (): boolean => {
     // 中央セットの範囲から大きく外れたら、体感できない位置で元に戻す
     if (currentIndex < itemCount * 0.5) {
       currentIndex += itemCount;
-    } else if (currentIndex >= itemCount * 2.5) {
-      currentIndex -= itemCount;
+      return true;
     }
+
+    if (currentIndex >= itemCount * 2.5) {
+      currentIndex -= itemCount;
+      return true;
+    }
+
+    return false;
   };
 
   const goTo = (index: number) => {
     currentIndex = index;
-    normalize();
-    render();
+    const wrapped = normalize();
+
+    if (wrapped) {
+      // ラップした瞬間は、それまで画面外で一度もtransformを持っていなかった
+      // クローンがいきなり中央付近に「アニメーションしながら」現れてしまい、
+      // 継ぎ目でズレて見えるバグがあった。ラップ発生時だけtransitionを止めて
+      // 瞬時に正しい位置へスナップさせ、その後アニメーションを元に戻す。
+      allItems.forEach((item) => {
+        item.style.transition = 'none';
+      });
+
+      render();
+
+      // スタイル適用を強制的に反映させてからtransitionを戻す
+      void track.offsetWidth;
+
+      allItems.forEach((item) => {
+        item.style.transition = '';
+      });
+    } else {
+      render();
+    }
   };
 
-  prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
-  nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
+  prevButtons.forEach((btn) => btn.addEventListener('click', () => goTo(currentIndex - 1)));
+  nextButtons.forEach((btn) => btn.addEventListener('click', () => goTo(currentIndex + 1)));
 
   // タッチ/マウスドラッグでの明示的な操作にのみ反応する(自動送りはしない)
   let dragging = false;

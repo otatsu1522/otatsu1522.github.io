@@ -5,6 +5,7 @@ import { initBackgroundParticles } from './background';
 import { initPageIndicator } from './page-indicator';
 import { setupGallery } from './gallery';
 import { setupGalleryCarousel } from './gallery-carousel';
+import { setupGalleryLightbox } from './gallery-lightbox';
 import { setupJourneyScroll } from './journey';
 import { initPagination } from './pagination';
 
@@ -16,6 +17,7 @@ export function initApp(): void {
   initPageIndicator();
   setupGallery();
   setupGalleryCarousel();
+  setupGalleryLightbox();
   setupJourneyScroll();
   initPagination();
 }
