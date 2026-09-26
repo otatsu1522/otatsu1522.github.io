@@ -23,6 +23,31 @@ const showPageIndicator = Astro.url.pathname === '/';
     transition: opacity 0.5s ease;
   }
 
+  #big-bang-trigger {
+    isolation: isolate;
+  }
+
+  #big-bang-trigger::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 90px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse at center,
+      rgb(0 0 0 / var(--bom-background-opacity, 0)) 0%,
+      rgb(0 0 0 / calc(var(--bom-background-opacity, 0) * 0.8)) 35%,
+      rgb(0 0 0 / calc(var(--bom-background-opacity, 0) * 0.4)) 55%,
+      rgb(0 0 0 / 0) 100%
+    );
+    filter: blur(8px);
+  }
+
   #big-bang-effect {
     position: fixed;
     inset: 0;
@@ -84,17 +109,17 @@ const showPageIndicator = Astro.url.pathname === '/';
 
       if (!lastSection) return;
 
-      const secondPage = window.scrollY >= window.innerHeight;
-
-      if (!secondPage) {
-        container.style.opacity = '0';
-        container.style.pointerEvents = 'none';
-        return;
-      }
+      const entryProgress = Math.max(
+        0,
+        Math.min(
+          1,
+          window.scrollY / window.innerHeight
+        )
+      );
 
       const rect = lastSection.getBoundingClientRect();
       const fadeStart = window.innerHeight * 0.5;
-      const progress = Math.max(
+      const exitProgress = Math.max(
         0,
         Math.min(
           1,
@@ -102,8 +127,27 @@ const showPageIndicator = Astro.url.pathname === '/';
         )
       );
 
-      container.style.opacity = String(1 - progress);
-      container.style.pointerEvents = progress >= 1 ? 'none' : 'auto';
+      const smoothEntryProgress =
+        entryProgress * entryProgress * (3 - 2 * entryProgress);
+
+      const opacity = smoothEntryProgress * (1 - exitProgress);
+
+      container.style.opacity = String(opacity);
+
+      const backgroundOpacity = Math.min(
+        smoothEntryProgress * 0.75,
+        0.75
+      );
+
+      button.style.setProperty(
+        '--bom-background-opacity',
+        String(backgroundOpacity)
+      );
+
+      container.style.pointerEvents =
+        window.scrollY >= window.innerHeight && opacity > 0
+          ? 'auto'
+          : 'none';
     };
 
     const resize = () => {
@@ -193,12 +237,22 @@ const showPageIndicator = Astro.url.pathname === '/';
         const flashFade = Math.pow(1 - progress, 2);
 
         if (flashProgress < 1) {
-          drawGlow(centerX, centerY, Math.max(window.innerWidth, window.innerHeight) * (0.04 + flashProgress * 0.35), 0.95 * flashFade);
+          drawGlow(
+            centerX,
+            centerY,
+            Math.max(window.innerWidth, window.innerHeight) * (0.04 + flashProgress * 0.35),
+            0.95 * flashFade
+          );
         }
 
         if (progress < 0.32) {
           const shockProgress = progress / 0.32;
-          drawGlow(centerX, centerY, Math.max(window.innerWidth, window.innerHeight) * shockProgress * 0.8, 0.35 * (1 - shockProgress));
+          drawGlow(
+            centerX,
+            centerY,
+            Math.max(window.innerWidth, window.innerHeight) * shockProgress * 0.8,
+            0.35 * (1 - shockProgress)
+          );
         }
 
         for (const particle of particles) {

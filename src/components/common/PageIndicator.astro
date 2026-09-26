@@ -12,6 +12,33 @@ const showPageIndicator = Astro.url.pathname === '/';
   </div>
 )}
 
+<style is:global>
+  #page-indicator {
+    isolation: isolate;
+  }
+
+  #page-indicator::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 90px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse at center,
+      rgb(0 0 0 / var(--page-background-opacity, 0)) 0%,
+      rgb(0 0 0 / calc(var(--page-background-opacity, 0) * 0.8)) 35%,
+      rgb(0 0 0 / calc(var(--page-background-opacity, 0) * 0.4)) 55%,
+      rgb(0 0 0 / 0) 100%
+    );
+    filter: blur(8px);
+  }
+</style>
+
 <script>
   let cleanupHandler: (() => void) | null = null;
 
@@ -41,6 +68,7 @@ const showPageIndicator = Astro.url.pathname === '/';
       if (scrollBottom >= documentBottom - 2) {
         currentEl.textContent = String(sections.length).padStart(2, '0');
         indicator.style.opacity = '0';
+        indicator.style.setProperty('--page-background-opacity', '0');
         ticking = false;
         return;
       }
@@ -74,7 +102,19 @@ const showPageIndicator = Astro.url.pathname === '/';
         )
       );
 
-      indicator.style.opacity = String(1 - progress);
+      const indicatorOpacity = 1 - progress;
+
+      indicator.style.opacity = String(indicatorOpacity);
+
+      const backgroundOpacity = Math.min(
+        (window.scrollY / window.innerHeight) * 0.75,
+        0.75
+      ) * indicatorOpacity;
+
+      indicator.style.setProperty(
+        '--page-background-opacity',
+        String(backgroundOpacity)
+      );
 
       ticking = false;
     };
