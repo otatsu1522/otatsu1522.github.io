@@ -6,7 +6,7 @@ export function setupGalleryCarouselMobile(): void {
   if (!container || !prevBtn || !nextBtn) return;
   if (container.dataset.infiniteInitialized === 'true') return;
 
-  const originalItems = Array.from(container.children);
+  const originalItems = Array.from(container.children) as HTMLElement[];
   if (!originalItems.length) return;
 
   const itemCount = originalItems.length;
@@ -30,27 +30,33 @@ export function setupGalleryCarouselMobile(): void {
 
     if (!firstItem || !secondSetFirstItem) return null;
 
-    const itemStep =
-      secondItem
-        ? secondItem.offsetLeft - firstItem.offsetLeft
-        : secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
+    const itemStep = secondItem
+      ? secondItem.offsetLeft - firstItem.offsetLeft
+      : secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
 
     const setWidth = secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
     const anchor = secondSetFirstItem.offsetLeft;
+
+    if (itemStep <= 0 || setWidth <= 0) return null;
 
     return { itemStep, setWidth, anchor };
   };
 
   const initScrollPosition = () => {
     const layout = getLayout();
-    if (!layout || layout.setWidth <= 0) return;
+    if (!layout) return;
 
+    container.style.scrollSnapType = 'none';
     container.scrollLeft = layout.anchor;
+
+    requestAnimationFrame(() => {
+      container.style.scrollSnapType = '';
+    });
   };
 
   const normalizePosition = () => {
     const layout = getLayout();
-    if (!layout || layout.setWidth <= 0) return;
+    if (!layout) return;
 
     let position = container.scrollLeft;
     let normalized = false;
@@ -60,7 +66,7 @@ export function setupGalleryCarouselMobile(): void {
       normalized = true;
     }
 
-    while (position > layout.anchor + layout.setWidth) {
+    while (position >= layout.anchor + layout.setWidth) {
       position -= layout.setWidth;
       normalized = true;
     }
@@ -85,16 +91,8 @@ export function setupGalleryCarouselMobile(): void {
     normalizeTimer = window.setTimeout(() => {
       normalizeTimer = undefined;
       normalizePosition();
-    }, 100);
+    }, 120);
   };
-
-  const images = container.querySelectorAll('img');
-
-  images.forEach((img) => {
-    if (!img.complete) {
-      img.addEventListener('load', initScrollPosition, { once: true });
-    }
-  });
 
   initScrollPosition();
 
@@ -113,21 +111,14 @@ export function setupGalleryCarouselMobile(): void {
     normalizePosition();
   };
 
-  container.addEventListener('scrollend', () => {
-    if (isButtonScrolling) return;
-    normalizePosition();
-  });
-
   container.addEventListener('scrollend', finishButtonScroll);
 
   const scrollWithButton = (direction: number) => {
     const layout = getLayout();
-    if (!layout || layout.itemStep <= 0) return;
+    if (!layout) return;
 
     let current = container.scrollLeft;
-    const amount = layout.itemStep;
-
-    let target = current + amount * direction;
+    let target = current + layout.itemStep * direction;
 
     while (target < 0) {
       current += layout.setWidth;
