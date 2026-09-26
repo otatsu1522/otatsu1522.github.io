@@ -6,22 +6,20 @@ import { ui } from '../data/ui';
 const galleryImages = Object.entries(
   import.meta.glob<{ default: ImageMetadata }>(
     '../assets/images/gallery/*.{jpg,jpeg,png,webp,avif}',
-    {
-      eager: true,
-    }
+    { eager: true }
   )
 )
   .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
   .map(([, module]) => module.default);
 
-const MOBILE_HEIGHT = 240; // スマホ時の写真の高さ(px)
-const DESKTOP_HEIGHT = 360; // PC時の写真の高さ(px)
+const MOBILE_HEIGHT = 240;
+const DESKTOP_HEIGHT = 360;
 ---
 
 <section
   id="gallery"
   class="pt-20 pb-0"
-  style={`--gallery-mobile-height:${MOBILE_HEIGHT}px;--gallery-desktop-height:${DESKTOP_HEIGHT}px;`}
+  style={`--carousel-mobile-height:${MOBILE_HEIGHT}px;--carousel-desktop-height:${DESKTOP_HEIGHT}px;`}
 >
   <div class="flex items-baseline gap-2 mb-6">
     <h2 class="text-2xl font-bold text-white">
@@ -29,40 +27,46 @@ const DESKTOP_HEIGHT = 360; // PC時の写真の高さ(px)
       <span class="lang-en">{ui.en.sections.galleryTitle}</span>
     </h2>
 
-    <span class="lang-ja text-xs text-gray-400">
-      {ui.ja.sections.gallerySubtitle}
-    </span>
-
-    <span class="lang-en text-xs text-gray-400">
-      {ui.en.sections.gallerySubtitle}
-    </span>
+    <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.gallerySubtitle}</span>
+    <span class="lang-en text-xs text-gray-400">{ui.en.sections.gallerySubtitle}</span>
   </div>
 
   {galleryImages.length > 0 && (
-    <div id="gallery-viewport" class="gallery-viewport">
-      <div id="gallery-track" class="gallery-track">
-        <div id="gallery-set" class="gallery-set">
-          {galleryImages.map((image, index) => (
-            <div class="gallery-item">
-              <Image
-                src={image}
-                alt={`${ui.ja.sections.galleryTitle} ${index + 1}`}
-                class="gallery-image"
-                loading="eager"
-              />
-            </div>
-          ))}
-        </div>
+    <div id="gallery-carousel-viewport" class="gallery-carousel-viewport">
+      <button
+        id="gallery-carousel-prev"
+        type="button"
+        aria-label="Previous"
+        class="gallery-carousel-nav gallery-carousel-nav-left"
+      >
+        <svg class="w-7 h-7 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
 
-        <div class="gallery-set" aria-hidden="true">
-          {galleryImages.map((image) => (
-            <div class="gallery-item">
-              <Image
-                src={image}
-                alt=""
-                class="gallery-image"
-                loading="lazy"
-              />
+      <button
+        id="gallery-carousel-next"
+        type="button"
+        aria-label="Next"
+        class="gallery-carousel-nav gallery-carousel-nav-right"
+      >
+        <svg class="w-7 h-7 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+
+      <div id="gallery-carousel-track" class="gallery-carousel-track">
+        <div id="gallery-carousel-set" class="gallery-carousel-set">
+          {galleryImages.map((image, index) => (
+            <div class="gallery-carousel-item">
+              <div class="gallery-carousel-card">
+                <Image
+                  src={image}
+                  alt={`${ui.ja.sections.galleryTitle} ${index + 1}`}
+                  class="gallery-carousel-image"
+                  loading={index < 3 ? 'eager' : 'lazy'}
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -72,49 +76,92 @@ const DESKTOP_HEIGHT = 360; // PC時の写真の高さ(px)
 </section>
 
 <style>
-  .gallery-viewport {
+  .gallery-carousel-viewport {
     position: relative;
     width: 100vw;
     margin-left: calc(50% - 50vw);
+    height: var(--carousel-mobile-height);
     overflow: hidden;
+    perspective: 1400px;
+    touch-action: pan-y;
   }
 
-  .gallery-track {
-    display: flex;
-    width: max-content;
-    margin: 0;
-    padding: 0;
-    will-change: transform;
+  .gallery-carousel-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
 
-  .gallery-set {
-    display: flex;
-    flex-shrink: 0;
-    margin: 0;
-    padding: 0;
+  .gallery-carousel-set {
+    display: contents;
   }
 
-  .gallery-item {
-    display: block;
-    flex: 0 0 auto;
-    height: var(--gallery-mobile-height);
-    margin: 0;
-    padding: 0;
+  .gallery-carousel-item {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    will-change: transform, opacity;
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.45s ease;
+    cursor: pointer;
+  }
+
+  .gallery-carousel-card {
+    height: 100%;
     overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   }
 
-  .gallery-image {
+  .gallery-carousel-image {
     display: block;
     width: auto;
     height: 100%;
     max-width: none;
-    margin: 0;
-    padding: 0;
+  }
+
+  .gallery-carousel-nav {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    z-index: 50;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .gallery-carousel-nav:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .gallery-carousel-nav-left {
+    left: 0.5rem;
+  }
+
+  .gallery-carousel-nav-right {
+    right: 0.5rem;
   }
 
   @media (min-width: 768px) {
-    .gallery-item {
-      height: var(--gallery-desktop-height);
+    .gallery-carousel-viewport {
+      height: var(--carousel-desktop-height);
+    }
+
+    .gallery-carousel-nav-left {
+      left: 2rem;
+    }
+
+    .gallery-carousel-nav-right {
+      right: 2rem;
     }
   }
 </style>

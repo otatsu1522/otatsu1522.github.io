@@ -91,21 +91,42 @@ function initDesktopHeaderBackground(): void {
 
   const update = () => {
     if (window.innerWidth < 768) {
-      background.style.backgroundColor = 'rgb(0 0 0 / 0)';
+      background.style.background = 'transparent';
       return;
     }
+
+    let opacity = 0;
 
     if (window.location.pathname !== '/') {
-      background.style.backgroundColor = 'rgb(0 0 0 / 0.5)';
-      return;
+      opacity = 0.75;
+    } else {
+      opacity = Math.min(
+        (window.scrollY / window.innerHeight) * 0.75,
+        0.75
+      );
     }
 
-    const opacity = Math.min(
-      (window.scrollY / window.innerHeight) * 0.5,
-      0.5
-    );
+    const stops = [
+      `rgb(0 0 0 / ${opacity}) 0%`,
+      `rgb(0 0 0 / ${opacity}) 75%`,
+    ];
 
-    background.style.backgroundColor = `rgb(0 0 0 / ${opacity})`;
+    for (let position = 76; position <= 100; position++) {
+      const progress = (position - 75) / 25;
+      const smoothstep =
+        progress * progress * (3 - 2 * progress);
+      const currentOpacity =
+        opacity * (1 - smoothstep);
+
+      stops.push(
+        `rgb(0 0 0 / ${currentOpacity}) ${position}%`
+      );
+    }
+
+    background.style.background = `linear-gradient(
+      to bottom,
+      ${stops.join(',\n      ')}
+    )`;
   };
 
   window.addEventListener('scroll', update, { passive: true });
