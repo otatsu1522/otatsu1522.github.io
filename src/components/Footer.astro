@@ -30,15 +30,14 @@ const currentYear = new Date().getFullYear();
       </svg>
 
       <span class="text-[10px] font-mono tracking-widest mt-2">
-        <span class="lang-ja">{ui.ja.footer.scrollTop}</span>
-        <span class="lang-en">{ui.en.footer.scrollTop}</span>
+        <span>{ui.ja.footer.scrollTop}</span>
       </span>
     </a>
 
     <SnsLinks class="mt-24" />
 
     <p class="text-xs font-mono text-gray-400 mt-10">
-      &copy; {currentYear} {ui.ja.footer.author} <span class="lang-ja">{ui.ja.footer.rights}</span><span class="lang-en">{ui.en.footer.rights}</span>
+      <span>&copy; {currentYear} {ui.ja.footer.copyRights}</span>
     </p>
 
   </div>
