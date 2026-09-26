@@ -11,7 +11,6 @@ export function setupJourneyScroll(): void {
 
   const itemCount = originalItems.length;
 
-  // 2セット分クローンを作成（計3セット）
   originalItems.forEach((item) => {
     container.appendChild(item.cloneNode(true));
   });

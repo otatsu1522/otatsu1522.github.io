@@ -12,8 +12,8 @@ export interface SiteConfig {
 
 export const siteConfig: Record<Language, SiteConfig> = {
   ja: {
-    title: 'Portfolio | 旅人おたつ',
-    description: '「旅人の日常」をコンセプトに、リアルな旅の記録や装備・アウトドア情報を発信しています。',
+    title: 'Portfolio | OTATSU',
+    description: '旅人おたつのポートフォリオサイト',
     author: '旅人おたつ',
     bio: '1994年生まれの元エンジニアです。23歳で会社を退職して、現在は自転車で世界一周旅をしています。各SNSでは旅人のリアルな日常をシェアしています。よろしくお願いします。',
     message: '世界のどこかで会いましょう',

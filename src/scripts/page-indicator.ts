@@ -19,7 +19,6 @@ function setupPageIndicator() {
     const scrollBottom = window.scrollY + window.innerHeight;
     const documentBottom = document.documentElement.scrollHeight;
 
-    // ページ最下部では必ず最後のsectionを表示
     if (scrollBottom >= documentBottom - 2) {
       currentEl.textContent = String(sections.length).padStart(2, '0');
       ticking = false;

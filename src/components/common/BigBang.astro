@@ -170,7 +170,6 @@ const showPageIndicator = Astro.url.pathname === '/';
     button.addEventListener('click', start);
   }
 
-  // 初期ロード時およびAstroのページ遷移イベントに対応
   document.addEventListener('DOMContentLoaded', initBigBang);
   document.addEventListener('astro:page-load', initBigBang);
   document.addEventListener('astro:after-swap', initBigBang);
