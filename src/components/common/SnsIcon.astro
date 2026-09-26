@@ -1,0 +1,31 @@
+---
+import { Youtube, Instagram, Twitter } from 'lucide-astro';
+
+interface Props {
+  name: string;
+  class?: string;
+}
+
+const { name, class: className = 'w-5 h-5' } = Astro.props;
+---
+
+{ name === 'youtube' && <Youtube class={className} /> }
+
+{ name === 'instagram' && <Instagram class={className} /> }
+
+{ name === 'twitter' && <Twitter class={className} /> }
+
+{ name === 'tiktok' && (
+  <svg
+    class={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+  </svg>
+)}

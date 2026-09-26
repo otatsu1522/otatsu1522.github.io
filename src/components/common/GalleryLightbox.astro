@@ -1,0 +1,166 @@
+---
+---
+
+<div
+  id="gallery-lightbox"
+  class="hidden fixed inset-0 z-[9999] bg-black/95 flex-col items-center justify-center p-4 md:p-8"
+  aria-hidden="true"
+>
+  <div class="gallery-lightbox-stage">
+    <img
+      id="gallery-lightbox-image"
+      src=""
+      alt=""
+      class="gallery-lightbox-image"
+    />
+  </div>
+  <button
+    id="gallery-lightbox-close"
+    type="button"
+    aria-label="Close"
+    class="fixed top-5 right-4 sm:right-6 z-[10000] p-2 text-gray-300 focus:outline-none cursor-pointer"
+  >
+    <svg
+      class="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M6 18L18 6M6 6l12 12"
+      ></path>
+    </svg>
+  </button>
+</div>
+
+<script>
+  const setupGalleryLightbox = (): void => {
+    const lightbox = document.getElementById('gallery-lightbox');
+    const lightboxImage = document.getElementById('gallery-lightbox-image') as HTMLImageElement | null;
+    const closeBtn = document.getElementById('gallery-lightbox-close');
+
+    if (!lightbox || !lightboxImage || !closeBtn) {
+      return;
+    }
+
+    if (lightbox.dataset.initialized === 'true') {
+      return;
+    }
+
+    if (lightbox.parentElement !== document.body) {
+      document.body.appendChild(lightbox);
+    }
+
+    let prevHtmlOverflow = '';
+    let prevBodyOverflow = '';
+    let activeTrigger: HTMLElement | null = null;
+
+    const open = (fullSrc: string, alt: string, trigger: HTMLElement): void => {
+      activeTrigger = trigger;
+      lightboxImage.src = fullSrc;
+      lightboxImage.alt = alt;
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      lightbox.setAttribute('aria-hidden', 'false');
+      prevHtmlOverflow = document.documentElement.style.overflow;
+      prevBodyOverflow = document.body.style.overflow;
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    };
+
+    const close = (): void => {
+      activeTrigger?.focus();
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.src = '';
+      lightboxImage.alt = '';
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      activeTrigger = null;
+    };
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const trigger = target.closest<HTMLElement>('[data-gallery-open]');
+
+      if (!trigger) {
+        return;
+      }
+
+      const fullSrc = trigger.getAttribute('data-full-src');
+
+      if (!fullSrc) {
+        return;
+      }
+
+      const thumb = trigger.querySelector('img');
+
+      open(fullSrc, thumb?.alt ?? '', trigger);
+    });
+
+    closeBtn.addEventListener('click', close);
+
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) {
+        close();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+        close();
+      }
+    });
+
+    lightbox.dataset.initialized = 'true';
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupGalleryLightbox, { once: true });
+  } else {
+    setupGalleryLightbox();
+  }
+
+  document.addEventListener('astro:after-swap', setupGalleryLightbox);
+</script>
+
+<style is:global>
+  #gallery-lightbox.flex {
+    display: flex;
+  }
+
+  .gallery-lightbox-stage {
+    width: 100%;
+    max-width: calc(100vw - 2rem);
+    height: calc(100dvh - 2rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-lightbox-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  @media (min-width: 768px) {
+    .gallery-lightbox-stage {
+      max-width: calc(100vw - 6rem);
+      height: calc(100dvh - 3rem);
+    }
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import { snsLinks, type SnsLink } from '../data/sns';
 import { ui } from '../data/ui';
+import SnsIcon from './common/SnsIcon.astro';
 ---
 
 <section id="social" class="pt-20 pb-0">
@@ -13,15 +14,28 @@ import { ui } from '../data/ui';
     <span class="lang-en text-xs text-gray-400">{ui.en.sections.socialSubtitle}</span>
   </div>
 
-  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
     {snsLinks.map((sns: SnsLink) => (
       <a
         href={sns.url}
         target="_blank"
         rel="noopener noreferrer"
-        class="block p-3 text-center bg-white/5 border border-white/10 text-sm text-gray-300 hover:text-white hover:border-white/20 hover:bg-white/10 transition-all"
+        class="block p-5 bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:border-white/20 hover:bg-white/10 transition-all"
       >
-        {sns.name}
+        <div class="flex items-center gap-3">
+          <SnsIcon name={sns.icon} class="w-7 h-7 shrink-0" />
+          <div class="text-sm font-medium">
+            {sns.name}
+          </div>
+        </div>
+
+        <p class="lang-ja text-xs text-gray-400 mt-3 leading-relaxed">
+          {sns.description.ja}
+        </p>
+
+        <p class="lang-en text-xs text-gray-400 mt-3 leading-relaxed">
+          {sns.description.en}
+        </p>
       </a>
     ))}
   </div>

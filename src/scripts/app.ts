@@ -4,8 +4,8 @@ import { initLanguage } from './language';
 import { initBackgroundParticles } from './background';
 import { initPageIndicator } from './page-indicator';
 import { setupGalleryMarquee } from './gallery-marqueey';
-import { setupGalleryCarousel } from './gallery-carousel';
-import { setupGalleryLightbox } from './gallery-lightbox';
+import { setupGalleryDesktop } from './gallery-carousel';
+import { setupGalleryCarouselMobile } from './gallery-carousel-mobile';
 import { setupJourneyScroll } from './journey';
 import { initPagination } from './pagination';
 
@@ -16,8 +16,8 @@ export function initApp(): void {
   initBackgroundParticles();
   initPageIndicator();
   setupGalleryMarquee();
-  setupGalleryCarousel();
-  setupGalleryLightbox();
+  setupGalleryDesktop();
+  setupGalleryCarouselMobile();
   setupJourneyScroll();
   initPagination();
 }
