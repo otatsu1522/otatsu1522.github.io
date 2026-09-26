@@ -7,24 +7,38 @@ export function setupGalleryLightbox(): void {
   const closeBtn = document.getElementById('gallery-lightbox-close');
   const triggers = document.querySelectorAll<HTMLElement>('[data-gallery-open]');
 
-  // このページに無い場合は何もしない
   if (!lightbox || !lightboxImage || !closeBtn || !triggers.length) return;
   if (lightbox.dataset.initialized === 'true') return;
 
-  const open = (fullSrc: string, alt: string) => {
+  document.body.appendChild(lightbox);
+
+  let prevHtmlOverflow = '';
+  let prevBodyOverflow = '';
+  let activeTrigger: HTMLElement | null = null;
+
+  const open = (fullSrc: string, alt: string, trigger: HTMLElement) => {
+    activeTrigger = trigger;
     lightboxImage.src = fullSrc;
     lightboxImage.alt = alt;
     lightbox.classList.remove('hidden');
     lightbox.classList.add('flex');
     lightbox.setAttribute('aria-hidden', 'false');
+
+    prevHtmlOverflow = document.documentElement.style.overflow;
+    prevBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
   };
 
   const close = () => {
+    activeTrigger?.focus();
+
     lightbox.classList.add('hidden');
     lightbox.classList.remove('flex');
     lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+
+    document.documentElement.style.overflow = prevHtmlOverflow;
+    document.body.style.overflow = prevBodyOverflow;
   };
 
   triggers.forEach((trigger) => {
@@ -33,7 +47,7 @@ export function setupGalleryLightbox(): void {
       if (!fullSrc) return;
 
       const thumb = trigger.querySelector('img');
-      open(fullSrc, thumb?.alt ?? '');
+      open(fullSrc, thumb?.alt ?? '', trigger);
     });
   });
 

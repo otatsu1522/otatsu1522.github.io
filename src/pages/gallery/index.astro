@@ -112,41 +112,6 @@ const PAGE_SIZE = 10;
   </div>
 </Layout>
 
-<script>
-  const lightbox = document.getElementById('gallery-lightbox');
-
-  if (lightbox) {
-    document.body.appendChild(lightbox);
-
-    let htmlOverflow = '';
-    let bodyOverflow = '';
-
-    const updateScrollLock = () => {
-      const isOpen = !lightbox.classList.contains('hidden');
-
-      if (isOpen) {
-        htmlOverflow = document.documentElement.style.overflow;
-        bodyOverflow = document.body.style.overflow;
-
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.documentElement.style.overflow = htmlOverflow;
-        document.body.style.overflow = bodyOverflow;
-      }
-    };
-
-    const observer = new MutationObserver(updateScrollLock);
-
-    observer.observe(lightbox, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    updateScrollLock();
-  }
-</script>
-
 <style>
   #gallery-lightbox.flex {
     display: flex;
