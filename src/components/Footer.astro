@@ -6,9 +6,8 @@ import SnsLinks from './common/SnsLinks.astro';
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="pt-24 pb-6 bg-gradient-to-b from-transparent via-black/85 to-sky-800/85 text-center relative">
+<footer class="pt-12 pb-6 bg-gradient-to-b from-transparent via-black/85 to-sky-800/85 text-center relative">
   <div class="max-w-5xl mx-auto px-4 flex flex-col items-center justify-center">
-
     <a
       href="#top"
       id="footer-scroll-top"
@@ -34,11 +33,34 @@ const currentYear = new Date().getFullYear();
       </span>
     </a>
 
-    <SnsLinks class="mt-24" />
+    <a
+      href="/"
+      class="group mt-12 inline-flex items-center gap-3 px-6 py-3 border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 hover:bg-white/10 transition-all"
+    >
+      <svg
+        class="w-4 h-4 transition-transform group-hover:-translate-y-0.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.8"
+          d="M3 10.5L12 3l9 7.5M5.5 9v11h13V9M9.5 20v-6h5v6"
+        ></path>
+      </svg>
 
-    <p class="text-xs font-mono text-gray-400 mt-10">
+      <span class="text-xs font-mono tracking-widest">
+        <span class="lang-ja">HOME</span>
+        <span class="lang-en">HOME</span>
+      </span>
+    </a>
+
+    <SnsLinks class="mt-6" />
+
+    <p class="text-xs font-mono text-gray-400 mt-6">
       <span>&copy; {currentYear} {ui.ja.footer.copyRights}</span>
     </p>
-
   </div>
 </footer>

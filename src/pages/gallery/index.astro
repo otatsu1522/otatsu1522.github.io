@@ -26,16 +26,15 @@ const PAGE_SIZE = 10;
 
 <Layout title={ui.ja.sections.galleryTitle}>
   <main class="max-w-3xl mx-auto px-4 pt-20 pb-10">
-    <header class="mb-8">
-      <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight">
-        <span class="lang-ja">{ui.ja.sections.galleryTitle}</span>
-        <span class="lang-en">{ui.en.sections.galleryTitle}</span>
-      </h1>
-
-      <p class="text-sm text-gray-400 mt-3">
-        <span class="lang-ja">{ui.ja.sections.gallerySubtitle}</span>
-        <span class="lang-en">{ui.en.sections.gallerySubtitle}</span>
-      </p>
+    <header class="mb-12">
+      <div class="flex items-baseline gap-2 mb-6">
+        <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight">
+          <span class="lang-ja">{ui.ja.sections.galleryTitle}</span>
+          <span class="lang-en">{ui.en.sections.galleryTitle}</span>
+        </h1>
+        <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.gallerySubtitle}</span>
+        <span class="lang-en text-xs text-gray-400">{ui.en.sections.gallerySubtitle}</span>
+      </div>
     </header>
 
     {galleryImages.length > 0 ? (
