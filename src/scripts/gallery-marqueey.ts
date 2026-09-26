@@ -4,7 +4,7 @@ let animationFrame = 0;
 let resizeHandler: (() => void) | null = null;
 let cleanupHandler: (() => void) | null = null;
 
-export function setupGallery() {
+export function setupGalleryMarquee() {
   const viewport = document.getElementById('gallery-viewport');
   const track = document.getElementById('gallery-track');
   const firstSet = document.getElementById('gallery-set');

@@ -3,7 +3,7 @@ import { initNavigation } from './navigation';
 import { initLanguage } from './language';
 import { initBackgroundParticles } from './background';
 import { initPageIndicator } from './page-indicator';
-import { setupGallery } from './gallery';
+import { setupGalleryMarquee } from './gallery-marqueey';
 import { setupGalleryCarousel } from './gallery-carousel';
 import { setupGalleryLightbox } from './gallery-lightbox';
 import { setupJourneyScroll } from './journey';
@@ -15,7 +15,7 @@ export function initApp(): void {
   initLanguage();
   initBackgroundParticles();
   initPageIndicator();
-  setupGallery();
+  setupGalleryMarquee();
   setupGalleryCarousel();
   setupGalleryLightbox();
   setupJourneyScroll();
