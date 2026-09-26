@@ -11,3 +11,99 @@ const showPageIndicator = Astro.url.pathname === '/';
     <span id="current-page">01</span>/<span id="total-pages">01</span>
   </div>
 )}
+
+<script>
+  let cleanupHandler: (() => void) | null = null;
+
+  function setupPageIndicator() {
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>('section')
+    ).filter((section) => section.id !== 'playlist');
+
+    const currentEl = document.getElementById('current-page');
+    const totalEl = document.getElementById('total-pages');
+    const indicator = document.getElementById('page-indicator');
+
+    if (!sections.length || !currentEl || !totalEl || !indicator) return;
+
+    if (cleanupHandler) {
+      cleanupHandler();
+    }
+
+    totalEl.textContent = String(sections.length).padStart(2, '0');
+
+    let ticking = false;
+
+    const updateCurrentPage = () => {
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const documentBottom = document.documentElement.scrollHeight;
+
+      if (scrollBottom >= documentBottom - 2) {
+        currentEl.textContent = String(sections.length).padStart(2, '0');
+        indicator.style.opacity = '0';
+        ticking = false;
+        return;
+      }
+
+      const viewportCenter = window.scrollY + window.innerHeight / 2;
+
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      sections.forEach((section, index) => {
+        const rect = section.getBoundingClientRect();
+        const sectionCenter = window.scrollY + rect.top + rect.height / 2;
+        const distance = Math.abs(sectionCenter - viewportCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      currentEl.textContent = String(closestIndex + 1).padStart(2, '0');
+
+      const lastSection = sections[sections.length - 1];
+      const rect = lastSection.getBoundingClientRect();
+      const fadeStart = window.innerHeight * 0.5;
+      const progress = Math.max(
+        0,
+        Math.min(
+          1,
+          (window.innerHeight - rect.bottom) / fadeStart
+        )
+      );
+
+      indicator.style.opacity = String(1 - progress);
+
+      ticking = false;
+    };
+
+    const requestUpdate = () => {
+      if (ticking) return;
+
+      ticking = true;
+      requestAnimationFrame(updateCurrentPage);
+    };
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+
+    cleanupHandler = () => {
+      window.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+      cleanupHandler = null;
+    };
+
+    updateCurrentPage();
+    indicator.style.visibility = 'visible';
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupPageIndicator, { once: true });
+  } else {
+    setupPageIndicator();
+  }
+
+  document.addEventListener('astro:after-swap', setupPageIndicator);
+</script>

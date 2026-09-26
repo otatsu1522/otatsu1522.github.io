@@ -2,7 +2,6 @@ import { initMenuMobile } from './menu-mobile';
 import { initNavigation } from './navigation';
 import { initLanguage } from './language';
 import { initBackgroundParticles } from './background';
-import { initPageIndicator } from './page-indicator';
 import { setupGalleryMarquee } from './gallery-marqueey';
 import { setupGalleryDesktop } from './gallery-carousel';
 import { setupGalleryCarouselMobile } from './gallery-carousel-mobile';
@@ -14,7 +13,6 @@ export function initApp(): void {
   initNavigation();
   initLanguage();
   initBackgroundParticles();
-  initPageIndicator();
   setupGalleryMarquee();
   setupGalleryDesktop();
   setupGalleryCarouselMobile();

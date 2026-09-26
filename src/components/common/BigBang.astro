@@ -79,9 +79,31 @@ const showPageIndicator = Astro.url.pathname === '/';
     if (!ctx) return;
 
     const updateVisibility = () => {
-      const visible = window.scrollY >= window.innerHeight;
-      container.classList.toggle('opacity-0', !visible);
-      container.classList.toggle('pointer-events-none', !visible);
+      const sections = document.querySelectorAll<HTMLElement>('main > section');
+      const lastSection = sections[sections.length - 1];
+
+      if (!lastSection) return;
+
+      const secondPage = window.scrollY >= window.innerHeight;
+
+      if (!secondPage) {
+        container.style.opacity = '0';
+        container.style.pointerEvents = 'none';
+        return;
+      }
+
+      const rect = lastSection.getBoundingClientRect();
+      const fadeStart = window.innerHeight * 0.5;
+      const progress = Math.max(
+        0,
+        Math.min(
+          1,
+          (window.innerHeight - rect.bottom) / fadeStart
+        )
+      );
+
+      container.style.opacity = String(1 - progress);
+      container.style.pointerEvents = progress >= 1 ? 'none' : 'auto';
     };
 
     const resize = () => {
