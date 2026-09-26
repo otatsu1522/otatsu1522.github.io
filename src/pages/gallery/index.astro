@@ -43,7 +43,7 @@ const PAGE_SIZE = 10;
           {galleryImages.map((image, index) => (
             <button
               type="button"
-              class="group block w-full aspect-square overflow-hidden bg-slate-950"
+              class="group block w-full aspect-square overflow-hidden bg-gray-500"
               data-gallery-open
               data-full-src={fullImageSrcs[index]}
               data-pagination-item="gallery"
@@ -68,7 +68,7 @@ const PAGE_SIZE = 10;
         />
       </>
     ) : (
-      <div class="bg-slate-800/50 border border-slate-800 p-10 text-center text-sm text-gray-500">
+      <div class="bg-gray-800/50 border border-gray-800 p-10 text-center text-sm text-gray-500">
         <span class="lang-ja">{ui.ja.messages.noPosts}</span>
         <span class="lang-en">{ui.en.messages.noPosts}</span>
       </div>
@@ -111,6 +111,41 @@ const PAGE_SIZE = 10;
     </button>
   </div>
 </Layout>
+
+<script>
+  const lightbox = document.getElementById('gallery-lightbox');
+
+  if (lightbox) {
+    document.body.appendChild(lightbox);
+
+    let htmlOverflow = '';
+    let bodyOverflow = '';
+
+    const updateScrollLock = () => {
+      const isOpen = !lightbox.classList.contains('hidden');
+
+      if (isOpen) {
+        htmlOverflow = document.documentElement.style.overflow;
+        bodyOverflow = document.body.style.overflow;
+
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.documentElement.style.overflow = htmlOverflow;
+        document.body.style.overflow = bodyOverflow;
+      }
+    };
+
+    const observer = new MutationObserver(updateScrollLock);
+
+    observer.observe(lightbox, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    updateScrollLock();
+  }
+</script>
 
 <style>
   #gallery-lightbox.flex {
