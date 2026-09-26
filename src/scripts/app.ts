@@ -1,23 +1,17 @@
-import { initMenuMobile } from './menu-mobile';
-import { initNavigation } from './navigation';
-import { initLanguage } from './language';
 import { initBackgroundParticles } from './background';
-import { setupGalleryMarquee } from './gallery-marqueey';
+import { initNavigation } from './navigation';
+import { initMenuMobile } from './menu-mobile';
+import { setupJourneyScroll } from './journey';
 import { setupGalleryDesktop } from './gallery-carousel';
 import { setupGalleryCarouselMobile } from './gallery-carousel-mobile';
-import { setupJourneyScroll } from './journey';
-import { initPagination } from './pagination';
 
 export function initApp(): void {
-  initMenuMobile();
-  initNavigation();
-  initLanguage();
   initBackgroundParticles();
-  setupGalleryMarquee();
+  initNavigation();
+  initMenuMobile();
+  setupJourneyScroll();
   setupGalleryDesktop();
   setupGalleryCarouselMobile();
-  setupJourneyScroll();
-  initPagination();
 }
 
 if (document.readyState === 'loading') {
