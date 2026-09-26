@@ -1,11 +1,15 @@
 let cleanupHandler: (() => void) | null = null;
 
 function setupPageIndicator() {
-  const sections = document.querySelectorAll('section');
+  const sections = Array.from(
+    document.querySelectorAll<HTMLElement>('section')
+  ).filter((section) => section.id !== 'playlist');
+
   const currentEl = document.getElementById('current-page');
   const totalEl = document.getElementById('total-pages');
+  const indicator = document.getElementById('page-indicator');
 
-  if (!sections.length || !currentEl || !totalEl) return;
+  if (!sections.length || !currentEl || !totalEl || !indicator) return;
 
   if (cleanupHandler) {
     cleanupHandler();
@@ -42,7 +46,6 @@ function setupPageIndicator() {
     });
 
     currentEl.textContent = String(closestIndex + 1).padStart(2, '0');
-
     ticking = false;
   };
 
@@ -63,6 +66,7 @@ function setupPageIndicator() {
   };
 
   updateCurrentPage();
+  indicator.style.visibility = 'visible';
 }
 
 export function initPageIndicator(): void {
