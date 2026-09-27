@@ -1,6 +1,6 @@
 <script>
-  const REVEAL_DURATION = 1.0; // 表示・非表示アニメーション時間（秒）
-  const REVEAL_THRESHOLD = 0.20; // セクションが画面内に入った割合（%）
+  const REVEAL_DURATION = 1.5; // 表示・非表示アニメーション時間（秒）
+  const REVEAL_THRESHOLD = 0.25; // セクションが画面内に入った割合（%）
 
   let observer: IntersectionObserver | null = null;
   let cleanupHandler: (() => void) | null = null;
@@ -59,13 +59,11 @@
 </script>
 
 <style is:global>
-  /* セクション表示前 */
   main > section.section-reveal {
     opacity: 0;
     transition: opacity var(--section-reveal-duration) ease-out;
   }
 
-  /* セクション表示時 */
   main > section.section-reveal.section-reveal-show {
     opacity: 1;
   }

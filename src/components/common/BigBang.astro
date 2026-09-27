@@ -109,11 +109,12 @@ const showPageIndicator = Astro.url.pathname === '/';
 
       if (!lastSection) return;
 
+      const entryStart = window.innerHeight * 0.5; // 表示アニメーション範囲
       const entryProgress = Math.max(
         0,
         Math.min(
           1,
-          window.scrollY / window.innerHeight
+          window.scrollY / entryStart
         )
       );
 
