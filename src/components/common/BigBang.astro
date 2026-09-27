@@ -3,7 +3,7 @@ const showPageIndicator = Astro.url.pathname === '/';
 ---
 
 {showPageIndicator && (
-  <div id="big-bang-container" class="opacity-0 pointer-events-none">
+  <div id="big-bang-container" class="opacity-0 pointer-events-none z-40">
     <div id="big-bang-effect" aria-hidden="true">
       <canvas id="big-bang-canvas"></canvas>
     </div>
@@ -51,7 +51,7 @@ const showPageIndicator = Astro.url.pathname === '/';
   #big-bang-effect {
     position: fixed;
     inset: 0;
-    z-index: 1;
+    z-index: 40;
     overflow: hidden;
     pointer-events: none;
   }

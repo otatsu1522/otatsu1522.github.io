@@ -95,6 +95,11 @@ export async function setupGalleryDesktop(): Promise<void> {
     render();
   };
 
+  const jumpTo = (index: number) => {
+    currentIndex = ((index % itemCount) + itemCount) % itemCount;
+    render();
+  };
+
   prevButtons.forEach((btn) =>
     btn.addEventListener('click', () => goTo(-1))
   );
@@ -102,6 +107,17 @@ export async function setupGalleryDesktop(): Promise<void> {
   nextButtons.forEach((btn) =>
     btn.addEventListener('click', () => goTo(1))
   );
+
+  // 中央以外の写真をクリックしたら、その写真を中央へ移動する
+  // (中央の写真は何もせず、通常通りイベントをバブリングさせてライトボックスを開かせる)
+  items.forEach((item, i) => {
+    item.addEventListener('click', (event) => {
+      if (getCircularDistance(i) !== 0) {
+        event.stopPropagation();
+        jumpTo(i);
+      }
+    });
+  });
 
   let dragging = false;
   let startX = 0;

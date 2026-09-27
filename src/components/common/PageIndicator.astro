@@ -47,11 +47,14 @@ const showPageIndicator = Astro.url.pathname === '/';
       document.querySelectorAll<HTMLElement>('section')
     ).filter((section) => section.id !== 'playlist');
 
+    const fadeSections = document.querySelectorAll<HTMLElement>('main > section');
+    const lastSection = fadeSections[fadeSections.length - 1];
+
     const currentEl = document.getElementById('current-page');
     const totalEl = document.getElementById('total-pages');
     const indicator = document.getElementById('page-indicator');
 
-    if (!sections.length || !currentEl || !totalEl || !indicator) return;
+    if (!sections.length || !lastSection || !currentEl || !totalEl || !indicator) return;
 
     if (cleanupHandler) {
       cleanupHandler();
@@ -62,17 +65,6 @@ const showPageIndicator = Astro.url.pathname === '/';
     let ticking = false;
 
     const updateCurrentPage = () => {
-      const scrollBottom = window.scrollY + window.innerHeight;
-      const documentBottom = document.documentElement.scrollHeight;
-
-      if (scrollBottom >= documentBottom - 2) {
-        currentEl.textContent = String(sections.length).padStart(2, '0');
-        indicator.style.opacity = '0';
-        indicator.style.setProperty('--page-background-opacity', '0');
-        ticking = false;
-        return;
-      }
-
       const viewportCenter = window.scrollY + window.innerHeight / 2;
 
       let closestIndex = 0;
@@ -91,10 +83,10 @@ const showPageIndicator = Astro.url.pathname === '/';
 
       currentEl.textContent = String(closestIndex + 1).padStart(2, '0');
 
-      const lastSection = sections[sections.length - 1];
       const rect = lastSection.getBoundingClientRect();
       const fadeStart = window.innerHeight * 0.5;
-      const progress = Math.max(
+
+      const exitProgress = Math.max(
         0,
         Math.min(
           1,
@@ -102,7 +94,7 @@ const showPageIndicator = Astro.url.pathname === '/';
         )
       );
 
-      const indicatorOpacity = 1 - progress;
+      const indicatorOpacity = 1 - exitProgress;
 
       indicator.style.opacity = String(indicatorOpacity);
 

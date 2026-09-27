@@ -81,14 +81,14 @@ const VIEW_ALL_CLASS =
             {galleryImages.map((image, index) => (
               <button
                 type="button"
-                class="gallery-desktop-item"
+                class="gallery-desktop-item group"
                 data-gallery-open
                 data-full-src={fullImageSrcs[index]}
               >
                 <Image
                   src={image}
                   alt={`${ui.ja.sections.galleryTitle} ${index + 1}`}
-                  class="gallery-desktop-image"
+                  class="gallery-desktop-image group-hover:scale-105 transition-transform duration-300"
                   loading="eager"
                 />
               </button>
@@ -188,6 +188,7 @@ const VIEW_ALL_CLASS =
     opacity 0.4s ease;
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
 }
 
 .gallery-desktop-image {

@@ -158,5 +158,35 @@ export function setupGalleryCarouselMobile(): void {
   prevBtn.addEventListener('click', () => scrollWithButton(-1));
   nextBtn.addEventListener('click', () => scrollWithButton(1));
 
+  // 中央以外の写真をタップしたら、その写真を中央へスクロールする
+  // (中央の写真は何もせず、通常通りイベントをバブリングさせてライトボックスを開かせる)
+  const allItems = Array.from(container.children) as HTMLElement[];
+
+  allItems.forEach((item) => {
+    item.addEventListener('click', (event) => {
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+      const viewCenter = container.scrollLeft + container.clientWidth / 2;
+      const isCentered = Math.abs(itemCenter - viewCenter) < item.offsetWidth * 0.15;
+
+      if (isCentered) return;
+
+      event.stopPropagation();
+
+      isButtonScrolling = true;
+      container.scrollTo({
+        left: itemCenter - container.clientWidth / 2,
+        behavior: 'smooth',
+      });
+
+      if (finishTimer !== undefined) {
+        window.clearTimeout(finishTimer);
+      }
+
+      finishTimer = window.setTimeout(() => {
+        finishButtonScroll();
+      }, 800);
+    });
+  });
+
   container.dataset.infiniteInitialized = 'true';
 }
