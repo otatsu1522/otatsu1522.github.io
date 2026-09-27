@@ -1,7 +1,7 @@
 ---
 title: "サンプル投稿"
 summary: "これはサンプルの投稿です。"
-date: "2030"
+date: ""
 cover: "./bg.jpg"
 published: false
 ---

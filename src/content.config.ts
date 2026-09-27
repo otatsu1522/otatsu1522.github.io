@@ -7,8 +7,7 @@ const articleSchema = ({ image }: { image: (...args: any[]) => any }) =>
     summary: z.string(),
     date: z.string().optional(),
     cover: image().optional(),
-    // カルーセルから外したいだけの記事は false にする(デフォルトは公開=true)
-    published: z.boolean().default(true),
+    published: z.boolean().default(true), // カルーセルから外したいだけの記事は false にする(デフォルトは公開=true)
   });
 
 const makeArticleCollection = (base: string) =>
