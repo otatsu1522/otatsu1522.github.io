@@ -84,7 +84,7 @@ const showPageIndicator = Astro.url.pathname === '/';
       currentEl.textContent = String(closestIndex + 1).padStart(2, '0');
 
       const rect = lastSection.getBoundingClientRect();
-      const fadeStart = window.innerHeight * 0.5;
+      const fadeStart = window.innerHeight * 0.2;
 
       const exitProgress = Math.max(
         0,

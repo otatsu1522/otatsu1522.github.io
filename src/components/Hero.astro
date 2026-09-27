@@ -10,7 +10,7 @@ import heroImg from '../assets/images/common/hero.jpg';
     <Image
       src={heroImg}
       alt={siteConfig.ja.author}
-      class="w-full h-full object-cover block"
+      class="hero-image w-full h-full object-cover block"
       priority
     />
 
@@ -19,32 +19,53 @@ import heroImg from '../assets/images/common/hero.jpg';
 
     <!-- 中央メッセージ -->
     <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-20">
-      <div class="text-white tracking-wider drop-shadow-md">
+      <div class="text-white tracking-wider drop-shadow-md flex flex-col items-center">
         <p
           id="hero-greeting"
-          class="text-lg sm:text-2xl md:text-2xl font-medium mb-4 min-h-[1.2em] whitespace-nowrap origin-center"
+          class="text-xl sm:text-3xl md:text-4xl font-medium mb-2 min-h-[1.2em] whitespace-nowrap"
         ></p>
 
-        <h1
+        <p
           id="hero-name"
-          class="text-6xl sm:text-8xl md:text-9xl font-extrabold min-h-[1.2em] whitespace-nowrap"
-        ></h1>
+          class="text-6xl sm:text-8xl md:text-9xl font-extrabold my-2 min-h-[1.2em] whitespace-nowrap"
+        ></p>
 
         <p
           id="hero-tagline"
-          class="text-lg sm:text-2xl md:text-2xl font-medium mt-4 min-h-[1.2em] whitespace-nowrap origin-center"
+          class="text-xl sm:text-3xl md:text-4xl font-medium mt-2 min-h-[1.2em] whitespace-nowrap -translate-y-2"
         ></p>
       </div>
     </div>
   </div>
 </section>
 
+<style>
+  .hero-image {
+    opacity: 0;
+  }
+
+  .hero-image-show {
+    animation: hero-image-in 1.5s ease-out forwards;
+  }
+
+  @keyframes hero-image-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
 <script>
   const greeting = document.getElementById('hero-greeting');
   const name = document.getElementById('hero-name');
   const tagline = document.getElementById('hero-tagline');
+  const heroImage = document.querySelector('.hero-image');
 
-  if (greeting && name && tagline) {
+  if (greeting && name && tagline && heroImage) {
     const typeText = async (element: HTMLElement, text: string, speed: number) => {
       for (const character of text) {
         element.textContent += character;
@@ -52,23 +73,8 @@ import heroImg from '../assets/images/common/hero.jpg';
       }
     };
 
-    const fitWidth = (element: HTMLElement) => {
-      const targetWidth = name.getBoundingClientRect().width;
-      const currentWidth = element.getBoundingClientRect().width;
-
-      if (currentWidth > 0) {
-        element.style.transform = `scaleX(${targetWidth / currentWidth})`;
-      }
-    };
-
-    const fitAllWidths = () => {
-      fitWidth(greeting);
-      fitWidth(tagline);
-    };
-
     const startTyping = async () => {
       await typeText(greeting, 'HELLO WORLD', 100);
-      fitWidth(greeting);
 
       await new Promise((resolve) => setTimeout(resolve, 400));
 
@@ -77,11 +83,10 @@ import heroImg from '../assets/images/common/hero.jpg';
       await new Promise((resolve) => setTimeout(resolve, 200));
 
       await typeText(tagline, 'JOURNEY IS MY LIFE', 100);
-      fitAllWidths();
+
+      heroImage.classList.add('hero-image-show');
     };
 
     startTyping();
-
-    window.addEventListener('resize', fitAllWidths);
   }
 </script>

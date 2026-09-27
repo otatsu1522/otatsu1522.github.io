@@ -118,7 +118,7 @@ const showPageIndicator = Astro.url.pathname === '/';
       );
 
       const rect = lastSection.getBoundingClientRect();
-      const fadeStart = window.innerHeight * 0.5;
+      const fadeStart = window.innerHeight * 0.2;
       const exitProgress = Math.max(
         0,
         Math.min(
@@ -144,10 +144,10 @@ const showPageIndicator = Astro.url.pathname === '/';
         String(backgroundOpacity)
       );
 
-      container.style.pointerEvents =
-        window.scrollY >= window.innerHeight && opacity > 0
-          ? 'auto'
-          : 'none';
+      const canInteract = opacity >= 1;
+
+      container.style.pointerEvents = canInteract ? 'auto' : 'none';
+      button.disabled = !canInteract || running;
     };
 
     const resize = () => {

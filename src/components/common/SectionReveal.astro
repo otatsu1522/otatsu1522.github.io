@@ -1,0 +1,72 @@
+<script>
+  const REVEAL_DURATION = 1.0; // 表示・非表示アニメーション時間（秒）
+  const REVEAL_THRESHOLD = 0.20; // セクションが画面内に入った割合（%）
+
+  let observer: IntersectionObserver | null = null;
+  let cleanupHandler: (() => void) | null = null;
+
+  function setupSectionReveal() {
+    const sections = document.querySelectorAll<HTMLElement>('main > section');
+
+    if (!sections.length) return;
+
+    if (cleanupHandler) {
+      cleanupHandler();
+    }
+
+    document.documentElement.style.setProperty(
+      '--section-reveal-duration',
+      `${REVEAL_DURATION}s`
+    );
+
+    sections.forEach((section) => {
+      section.classList.add('section-reveal');
+    });
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle(
+            'section-reveal-show',
+            entry.isIntersecting
+          );
+        });
+      },
+      {
+        threshold: REVEAL_THRESHOLD,
+      }
+    );
+
+    sections.forEach((section) => {
+      observer?.observe(section);
+    });
+
+    cleanupHandler = () => {
+      observer?.disconnect();
+      observer = null;
+      cleanupHandler = null;
+    };
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupSectionReveal, { once: true });
+  } else {
+    setupSectionReveal();
+  }
+
+  document.addEventListener('astro:page-load', setupSectionReveal);
+  document.addEventListener('astro:after-swap', setupSectionReveal);
+</script>
+
+<style is:global>
+  /* セクション表示前 */
+  main > section.section-reveal {
+    opacity: 0;
+    transition: opacity var(--section-reveal-duration) ease-out;
+  }
+
+  /* セクション表示時 */
+  main > section.section-reveal.section-reveal-show {
+    opacity: 1;
+  }
+</style>
