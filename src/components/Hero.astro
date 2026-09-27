@@ -24,12 +24,10 @@ import heroImg from '../assets/images/common/hero.jpg';
           id="hero-greeting"
           class="text-xl sm:text-3xl md:text-4xl font-medium mb-2 min-h-[1.2em] whitespace-nowrap"
         ></p>
-
         <p
           id="hero-name"
           class="text-6xl sm:text-8xl md:text-9xl font-extrabold my-2 min-h-[1.2em] whitespace-nowrap"
         ></p>
-
         <p
           id="hero-tagline"
           class="text-xl sm:text-3xl md:text-4xl font-medium mt-2 min-h-[1.2em] whitespace-nowrap -translate-y-2"
@@ -42,6 +40,7 @@ import heroImg from '../assets/images/common/hero.jpg';
 <style>
   .hero-image {
     opacity: 0;
+    clip-path: inset(0 0 100% 0);
   }
 
   .hero-image-show {
@@ -51,10 +50,12 @@ import heroImg from '../assets/images/common/hero.jpg';
   @keyframes hero-image-in {
     from {
       opacity: 0;
+      clip-path: inset(0 0 100% 0);
     }
 
     to {
       opacity: 1;
+      clip-path: inset(0 0 0 0);
     }
   }
 </style>
@@ -74,15 +75,11 @@ import heroImg from '../assets/images/common/hero.jpg';
     };
 
     const startTyping = async () => {
-      await typeText(greeting, 'HELLO WORLD', 100);
-
-      await new Promise((resolve) => setTimeout(resolve, 400));
-
-      await typeText(name, 'OTATSU', 150);
-
-      await new Promise((resolve) => setTimeout(resolve, 200));
-
-      await typeText(tagline, 'JOURNEY IS MY LIFE', 100);
+      await typeText(greeting, 'HELLO WORLD', 50);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      await typeText(name, 'OTATSU', 100);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      await typeText(tagline, 'JOURNEY IS MY LIFE', 50);
 
       heroImage.classList.add('hero-image-show');
     };

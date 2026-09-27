@@ -16,7 +16,6 @@ const makeArticleCollection = (base: string) =>
     loader: glob({
       pattern: '**/*.md',
       base,
-      generateId: ({ entry }) => entry.replace(/\/index\.md$/, '').replace(/\.md$/, ''),
     }),
     schema: articleSchema,
   });

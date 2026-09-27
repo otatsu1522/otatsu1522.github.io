@@ -2,8 +2,8 @@
 date: "2021年4月 - 2021年11月"
 title: "世界一周で使った自転車紹介"
 summary: "世界一周の旅で使用している自転車の仕様を、フレームから駆動系、タイヤ、キャリアまでまとめています。"
-published: true
 cover: "./bicycle-world.jpg"
+published: true
 ---
 
 現在の世界一周の旅で使っている自転車です。
