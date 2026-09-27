@@ -41,7 +41,7 @@ if (totalPages <= 1) {
     class="w-9 h-9 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
     disabled
   >
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 0 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
     </svg>
   </button>
@@ -138,7 +138,30 @@ if (totalPages <= 1) {
 
       let currentPage = 1;
 
-      const update = (page: number, scroll = false) => {
+      const getHistoryPage = (): number => {
+        const paginationState = history.state?.pagination;
+
+        if (
+          !paginationState ||
+          typeof paginationState !== 'object'
+        ) {
+          return 1;
+        }
+
+        const page = Number(
+          paginationState[target]
+        );
+
+        return Number.isFinite(page) && page >= 1
+          ? page
+          : 1;
+      };
+
+      const update = (
+        page: number,
+        scroll = false,
+        pushHistory = false
+      ) => {
         const pageSize = getPageSize();
         const totalPages = Math.ceil(items.length / pageSize);
         const previousPage = currentPage;
@@ -158,6 +181,26 @@ if (totalPages <= 1) {
             item.classList.remove('hidden');
           });
           return;
+        }
+
+        if (
+          pushHistory &&
+          currentPage !== previousPage
+        ) {
+          const previousPaginationState =
+            history.state?.pagination ?? {};
+
+          history.pushState(
+            {
+              ...(history.state ?? {}),
+              pagination: {
+                ...previousPaginationState,
+                [target]: currentPage,
+              },
+            },
+            '',
+            window.location.href
+          );
         }
 
         const start = (currentPage - 1) * pageSize;
@@ -245,24 +288,37 @@ if (totalPages <= 1) {
         button.addEventListener('click', () => {
           update(
             Number(button.dataset.paginationPage),
+            true,
             true
           );
         });
       });
 
       prevButton?.addEventListener('click', () => {
-        update(currentPage - 1, true);
+        update(
+          currentPage - 1,
+          true,
+          true
+        );
       });
 
       nextButton?.addEventListener('click', () => {
-        update(currentPage + 1, true);
+        update(
+          currentPage + 1,
+          true,
+          true
+        );
       });
 
       window.addEventListener('resize', () => {
         update(currentPage);
       });
 
-      update(1);
+      window.addEventListener('popstate', () => {
+        update(getHistoryPage(), true);
+      });
+
+      update(getHistoryPage());
 
       pagination.dataset.initialized = 'true';
     });

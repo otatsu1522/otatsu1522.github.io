@@ -57,8 +57,22 @@
     let prevHtmlOverflow = '';
     let prevBodyOverflow = '';
     let activeTrigger: HTMLElement | null = null;
+    let lightboxHistoryActive = false;
 
     const open = (fullSrc: string, alt: string, trigger: HTMLElement): void => {
+      if (lightbox.classList.contains('hidden')) {
+        history.pushState(
+          {
+            ...(history.state ?? {}),
+            galleryLightbox: true,
+          },
+          '',
+          window.location.href
+        );
+
+        lightboxHistoryActive = true;
+      }
+
       activeTrigger = trigger;
       lightboxImage.src = fullSrc;
       lightboxImage.alt = alt;
@@ -72,7 +86,12 @@
       closeBtn.focus();
     };
 
-    const close = (): void => {
+    const close = (fromHistory = false): void => {
+      if (!fromHistory && lightboxHistoryActive) {
+        history.back();
+        return;
+      }
+
       activeTrigger?.focus();
       lightbox.classList.add('hidden');
       lightbox.classList.remove('flex');
@@ -82,6 +101,7 @@
       document.documentElement.style.overflow = prevHtmlOverflow;
       document.body.style.overflow = prevBodyOverflow;
       activeTrigger = null;
+      lightboxHistoryActive = false;
     };
 
     document.addEventListener('click', (event) => {
@@ -108,7 +128,9 @@
       open(fullSrc, thumb?.alt ?? '', trigger);
     });
 
-    closeBtn.addEventListener('click', close);
+    closeBtn.addEventListener('click', () => {
+      close();
+    });
 
     lightbox.addEventListener('click', (event) => {
       if (event.target === lightbox) {
@@ -119,6 +141,12 @@
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && !lightbox.classList.contains('hidden')) {
         close();
+      }
+    });
+
+    window.addEventListener('popstate', () => {
+      if (lightboxHistoryActive) {
+        close(true);
       }
     });
 

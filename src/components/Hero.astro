@@ -17,6 +17,9 @@ import heroImg from '../assets/images/common/hero.jpg';
     <!-- オーバーレイ -->
     <div class="absolute inset-0 bg-gradient-to-b from-black/60 from-0% via-black/30 via-70% to-black to-100% pointer-events-none"></div>
 
+    <!-- 画像表示用マスク -->
+    <div id="hero-image-mask" class="absolute inset-0 bg-black z-10"></div>
+
     <!-- 中央メッセージ -->
     <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-20">
       <div class="text-white tracking-wider drop-shadow-md flex flex-col items-center">
@@ -38,24 +41,21 @@ import heroImg from '../assets/images/common/hero.jpg';
 </section>
 
 <style>
-  .hero-image {
-    opacity: 0;
-    clip-path: inset(0 0 100% 0);
+  #hero-image-mask {
+    will-change: transform;
   }
 
-  .hero-image-show {
-    animation: hero-image-in 1.5s ease-out forwards;
+  .hero-image-reveal {
+    animation: hero-image-reveal 1.5s linear forwards;
   }
 
-  @keyframes hero-image-in {
+  @keyframes hero-image-reveal {
     from {
-      opacity: 0;
-      clip-path: inset(0 0 100% 0);
+      transform: translateY(0);
     }
 
     to {
-      opacity: 1;
-      clip-path: inset(0 0 0 0);
+      transform: translateY(100%);
     }
   }
 </style>
@@ -64,9 +64,9 @@ import heroImg from '../assets/images/common/hero.jpg';
   const greeting = document.getElementById('hero-greeting');
   const name = document.getElementById('hero-name');
   const tagline = document.getElementById('hero-tagline');
-  const heroImage = document.querySelector('.hero-image');
+  const heroImageMask = document.getElementById('hero-image-mask');
 
-  if (greeting && name && tagline && heroImage) {
+  if (greeting && name && tagline && heroImageMask) {
     const typeText = async (element: HTMLElement, text: string, speed: number) => {
       for (const character of text) {
         element.textContent += character;
@@ -80,8 +80,7 @@ import heroImg from '../assets/images/common/hero.jpg';
       await typeText(name, 'OTATSU', 100);
       await new Promise((resolve) => setTimeout(resolve, 100));
       await typeText(tagline, 'JOURNEY IS MY LIFE', 50);
-
-      heroImage.classList.add('hero-image-show');
+      heroImageMask.classList.add('hero-image-reveal');
     };
 
     startTyping();

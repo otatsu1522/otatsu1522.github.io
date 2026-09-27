@@ -5,9 +5,10 @@ const articleSchema = ({ image }: { image: (...args: any[]) => any }) =>
   z.object({
     title: z.string(),
     summary: z.string(),
-    date: z.string().optional(),
+    date: z.string().nullable().optional().transform((value) => value?.trim() || undefined),
+    showDate: z.boolean().default(true),
     cover: image().optional(),
-    published: z.boolean().default(true), // カルーセルから外したいだけの記事は false にする(デフォルトは公開=true)
+    published: z.boolean().default(true),
   });
 
 const makeArticleCollection = (base: string) =>

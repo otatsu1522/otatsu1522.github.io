@@ -2,6 +2,8 @@
 title: "日本一周で使った自転車紹介"
 summary: "日本一周の旅で使用した自転車の仕様を、フレームからタイヤ、キャリアまでまとめています。"
 cover: "./bicycle-japan.jpg"
+date: "2020/10/10"
+showDate: false
 published: true
 ---
 

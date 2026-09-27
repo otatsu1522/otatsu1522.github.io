@@ -2,15 +2,18 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { ui } from '../data/ui';
 
+const toDateNumber = (date?: string) => {
+  if (!date) return 0;
+  const match = date.trim().match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/);
+  if (!match) return 0;
+  return Number(match[1]) * 10000 + Number(match[2]) * 100 + Number(match[3]);
+};
+
 const posts: CollectionEntry<'posts'>[] = await getCollection('posts');
 
 const latestPosts = posts
   .filter((post) => post.data.published)
-  .sort((a, b) => {
-    const dateA = a.data.date ?? '';
-    const dateB = b.data.date ?? '';
-    return dateB.localeCompare(dateA);
-  })
+  .sort((a, b) => toDateNumber(b.data.date) - toDateNumber(a.data.date))
   .slice(0, 3);
 ---
 
@@ -34,7 +37,7 @@ const latestPosts = posts
           >
             <div class="flex flex-col">
               <div class="min-w-0">
-                {post.data.date && (
+                {post.data.date && post.data.showDate && (
                   <time class="text-xs font-mono text-gray-400 block">
                     {post.data.date}
                   </time>

@@ -8,10 +8,15 @@ const posts: CollectionEntry<'posts'>[] = (await getCollection('posts')).filter(
   (post) => post.data.published
 );
 
+const toDateNumber = (date?: string) => {
+  if (!date) return 0;
+  const match = date.trim().match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/);
+  if (!match) return 0;
+  return Number(match[1]) * 10000 + Number(match[2]) * 100 + Number(match[3]);
+};
+
 const sortedPosts = posts.sort((a, b) => {
-  const dateA = a.data.date ?? '';
-  const dateB = b.data.date ?? '';
-  return dateB.localeCompare(dateA);
+  return toDateNumber(b.data.date) - toDateNumber(a.data.date);
 });
 
 const lang: Language = 'ja';
@@ -41,7 +46,7 @@ const t = ui[lang];
             class="group block h-52 overflow-hidden bg-white/5 border border-white/10 shadow-xl hover:border-white/20 hover:bg-white/15 transition-all"
           >
             <div class="h-full p-6 md:p-7 flex flex-col">
-              {post.data.date && (
+              {post.data.date && post.data.showDate && (
                 <time class="text-sm text-gray-400 font-mono">
                   {post.data.date}
                 </time>
