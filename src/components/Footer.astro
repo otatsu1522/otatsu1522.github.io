@@ -7,7 +7,7 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer class="mt-20 bg-[var(--color-overlay-bg)] text-[var(--color-overlay-text)]">
-  <div class="mx-auto flex max-w-5xl flex-col items-center px-4 py-12 md:py-16">
+  <div class="mx-auto flex max-w-5xl flex-col items-center px-4 pt-12 pb-8 md:pt-16">
     <a
       href="#top"
       id="footer-scroll-top"
@@ -28,18 +28,18 @@ const currentYear = new Date().getFullYear();
         />
       </svg>
 
-      <span class="mt-2 text-[10px] font-mono tracking-[0.18em]">
+      <span class="mt-2 text-[10px] tracking-[0.18em]">
         {ui.ja.footer.scrollTop}
       </span>
     </a>
 
-    <nav class="mt-6 w-full py-6">
+    <nav class="mt-8 w-full">
       <ul class="flex flex-wrap items-center justify-center gap-x-7 gap-y-4 md:gap-x-10">
         {navigationItems.map((item: NavItem) => (
           <li>
             <a
               href={item.href}
-              class="text-xs font-medium tracking-[0.14em] text-white/50 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
+              class="text-sm font-semibold tracking-[0.14em] text-[var(--color-muted)] transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
             >
               <span class="lang-ja">{ui.ja.nav[item.key]}</span>
               <span class="lang-en">{ui.en.nav[item.key]}</span>
@@ -49,11 +49,11 @@ const currentYear = new Date().getFullYear();
       </ul>
     </nav>
 
-    <div class="mt-4">
+    <div class="mt-8">
       <SnsLinks />
     </div>
 
-    <p class="mt-8 text-[10px] font-mono tracking-[0.12em] text-white/40">
+    <p class="mt-8 text-[10px] tracking-[0.12em] text-[var(--color-muted)]">
       &copy; {currentYear} {ui.ja.footer.copyRights}
     </p>
   </div>

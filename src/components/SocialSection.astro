@@ -22,14 +22,14 @@ import socialImg from '../assets/images/common/social.jpg';
         </h2>
       </div>
 
-      <div class="md:px-0">
-        <div class="border-t border-[var(--color-border)]">
+      <div class="px-4 md:px-0">
+        <div>
           {snsLinks.map((sns: SnsLink) => (
             <a
               href={sns.url}
               target="_blank"
               rel="noopener noreferrer"
-              class="group flex items-center gap-5 border-b border-[var(--color-border)] py-5 transition-all duration-300 hover:px-2"
+              class="group flex items-center gap-5 border-b border-[var(--color-border)] py-5 transition-all duration-300 last:border-b-0 hover:px-2"
             >
               <SnsIcon
                 name={sns.icon}

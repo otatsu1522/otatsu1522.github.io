@@ -34,12 +34,17 @@ export const travelHistory: HistoryItem[] = [
   },
   {
     id: '6',
-    period: { ja: '2020年10月 ~ 2023年3月', en: 'Oct-Dec 2020 / Oct 2022-Mar 2023' },
+    period: { ja: '2020年10月 ~ 2023年3月', en: 'Oct-Dec 2020 - Oct 2022-Mar 2023' },
     title: { ja: '自転車日本一周旅', en: 'Cycling Around Japan' },
   },
   {
     id: '7',
-    period: { ja: '2024年2月 ~', en: 'Feb 21, 2024 - Present' },
-    title: { ja: '自転車世界一周旅', en: 'Cycling Around the World' },
+    period: { ja: '2024年2月 ~ 2025年2月', en: 'Feb 21, 2024 - Feb 19, 2025' },
+    title: { ja: '自転車ユーラシア大陸横断旅', en: 'Cycling Around the World' },
+  },
+  {
+    id: '7',
+    period: { ja: '2026年11月 ~', en: 'Nov 1, 2026 -' },
+    title: { ja: '自転車世界一周旅 (後半)', en: 'Cycling Around the World' },
   },
 ];

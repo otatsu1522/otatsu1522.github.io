@@ -33,14 +33,14 @@ const Heading = headingLevel;
 
   <div class="pt-5">
     {entry.data.date && entry.data.showDate && (
-      <time class="block text-[10px] font-mono tracking-[0.2em] text-[var(--color-muted)]">
+      <time class="block text-[10px] tracking-[0.2em] text-[var(--color-muted)]">
         {entry.data.date}
       </time>
     )}
 
     <div class="mt-3 h-px w-10 bg-[var(--color-accent-teal)] transition-all duration-500 group-hover/card:w-16"></div>
 
-    <Heading class="mt-4 text-xl font-bold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover/card:text-[var(--color-accent-teal)] md:text-2xl lg:text-3xl">
+    <Heading class="mt-4 text-xl font-bold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover/card:text-[var(--color-accent-teal)] md:text-xl lg:text-2xl">
       {entry.data.title}
     </Heading>
 

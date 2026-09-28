@@ -28,7 +28,7 @@ const latestPosts = posts
 
   {latestPosts.length > 0 ? (
     <>
-      <div class="border-t border-[var(--color-border)]">
+      <div>
         {latestPosts.map((post) => (
           <PostCard entry={post} />
         ))}

@@ -1,11 +1,11 @@
 import { initMenu } from './menu';
 import { initNavigation } from './navigation';
-import { setupJourneysScroll } from './journeys';
+import { setupFeaturedScroll } from './featured';
 
 export function initApp(): void {
   initMenu();
   initNavigation();
-  setupJourneysScroll();
+  setupFeaturedScroll();
 }
 
 if (document.readyState === 'loading') {

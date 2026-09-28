@@ -14,7 +14,6 @@ const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys')
   .filter((entry) => entry.data.published)
   .sort((a, b) => toDateNumber(b.data.date) - toDateNumber(a.data.date));
 
-// カルーセル内でのカード幅・スナップ設定（レイアウトは配置側の責務）
 const carouselItemClass =
   'w-[80vw] max-w-[80vw] shrink-0 snap-center md:w-[calc((100%_-_3rem)/3)] md:max-w-none md:snap-start';
 ---
@@ -36,11 +35,6 @@ const carouselItemClass =
         {journeys.map((item) => (
           <JourneyCard entry={item} class={carouselItemClass} />
         ))}
-      </div>
-
-      <div class="hidden">
-        <button id="journey-scroll-left" type="button" aria-label="Scroll left"></button>
-        <button id="journey-scroll-right" type="button" aria-label="Scroll right"></button>
       </div>
 
       <div class="mt-5 flex justify-center">
