@@ -32,14 +32,11 @@ const VIEW_ALL_CLASS =
   class="pt-20 pb-0"
   style={`--gallery-desktop-height:${DESKTOP_HEIGHT}px;--gallery-mobile-height:${MOBILE_HEIGHT}px;`}
 >
-  <div class="flex items-baseline gap-2 mb-6">
-    <h2 class="text-2xl font-bold text-[var(--color-text)]">
+  <div class="mb-10">
+    <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl">
       <span class="lang-ja">{ui.ja.sections.galleryTitle}</span>
       <span class="lang-en">{ui.en.sections.galleryTitle}</span>
     </h2>
-
-    <span class="lang-ja text-xs text-[var(--color-muted)]">{ui.ja.sections.gallerySubtitle}</span>
-    <span class="lang-en text-xs text-[var(--color-muted)]">{ui.en.sections.gallerySubtitle}</span>
   </div>
 
   {galleryImages.length > 0 && (
@@ -66,7 +63,7 @@ const VIEW_ALL_CLASS =
               class={`pointer-events-auto absolute right-[-3.5rem] top-[calc(50%_-_40px)] w-[42px] h-[42px] ${NAV_BUTTON_CLASS}`}
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7-7 7 7"></path>
               </svg>
             </button>
           </div>
@@ -149,7 +146,7 @@ const VIEW_ALL_CLASS =
           class={`w-10 h-10 ${NAV_BUTTON_CLASS}`}
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7-7 7 7"></path>
           </svg>
         </button>
       </div>

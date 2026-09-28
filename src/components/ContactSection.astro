@@ -4,30 +4,22 @@ import { ui } from '../data/ui';
 ---
 
 <section id="contact" class="pt-20 pb-0">
-  <div class="flex items-baseline gap-2 mb-6">
-    <h2 class="text-2xl font-bold text-[var(--color-text)]">
+  <div class="mb-10 text-center">
+    <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
       <span class="lang-ja">{ui.ja.sections.contactTitle}</span>
       <span class="lang-en">{ui.en.sections.contactTitle}</span>
     </h2>
-
-    <span class="lang-ja text-xs text-[var(--color-muted)]">
-      {ui.ja.sections.contactSubtitle}
-    </span>
-
-    <span class="lang-en text-xs text-[var(--color-muted)]">
-      {ui.en.sections.contactSubtitle}
-    </span>
   </div>
 
-  <div class="bg-[var(--color-bg)] border border-[var(--color-border)] p-6 md:p-8 text-center">
-    <p class="text-sm sm:text-base text-[var(--color-muted)] mb-6">
+  <div class="border-t border-[var(--color-border)] py-10 text-center md:py-14">
+    <p class="mx-auto max-w-2xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
       <span class="lang-ja">{siteConfig.ja.contactDescription}</span>
       <span class="lang-en">{siteConfig.en.contactDescription}</span>
     </p>
 
     <a
       href={`mailto:${siteConfig.ja.email}`}
-      class="text-base sm:text-lg text-[var(--color-text)] hover:opacity-60 transition-colors break-all"
+      class="mt-8 inline-block break-all text-2xl font-semibold tracking-tight text-[var(--color-text)] transition-colors duration-300 hover:text-[var(--color-accent-teal)] sm:text-3xl md:text-4xl lg:text-5xl"
     >
       {siteConfig.ja.email}
     </a>

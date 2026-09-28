@@ -24,60 +24,62 @@ const t = ui[lang];
 ---
 
 <Layout title={t.sections.postsListTitle}>
-  <main class="max-w-3xl mx-auto px-4 pt-20">
-    <header class="mb-12">
-      <div class="flex items-baseline gap-2 mb-6">
-        <h1 class="text-2xl md:text-4xl font-extrabold text-[var(--color-text)] leading-tight">
-          <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
-          <span class="lang-en">{ui.en.sections.postsListTitle}</span>
-        </h1>
-        <span class="lang-ja text-xs text-[var(--color-muted)]">
-          {ui.ja.sections.postsListSubtitle}
-        </span>
-        <span class="lang-en text-xs text-[var(--color-muted)]">
-          {ui.en.sections.postsListSubtitle}
-        </span>
-      </div>
+  <main class="pt-20 pb-20">
+    <header class="mx-auto mb-14 max-w-5xl px-6 md:mb-16 md:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-6xl">
+        <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
+        <span class="lang-en">{ui.en.sections.postsListTitle}</span>
+      </h1>
     </header>
 
     {sortedPosts.length > 0 ? (
-      <div class="space-y-3 sm:space-y-4">
-        {sortedPosts.map((post, index) => (
-          <a
-            href={`/posts/${post.id}`}
-            data-pagination-item="posts"
-            data-pagination-index={index}
-            class="group block h-52 overflow-hidden bg-[var(--color-bg)] border border-[var(--color-border)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
-          >
-            <div class="h-full p-6 md:p-7 flex flex-col">
-              {post.data.date && post.data.showDate && (
-                <time class="text-sm text-[var(--color-muted)] font-mono">
-                  {post.data.date}
-                </time>
-              )}
+      <div class="mx-auto max-w-5xl px-6 md:px-8">
+        <div class="border-t border-[var(--color-border)]">
+          {sortedPosts.map((post, index) => (
+            <a
+              href={`/posts/${post.id}`}
+              data-pagination-item="posts"
+              data-pagination-index={index}
+              class="group block border-b border-[var(--color-border)] py-6 transition-all duration-300 hover:px-2 md:py-7"
+            >
+              <div class="grid gap-2 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-x-8">
+                <div>
+                  {post.data.date && post.data.showDate && (
+                    <time class="text-[10px] font-mono tracking-[0.15em] text-[var(--color-muted)]">
+                      {post.data.date}
+                    </time>
+                  )}
+                </div>
 
-              <h2 class="text-xl md:text-2xl font-extrabold text-[var(--color-text)] mt-3 leading-tight group-hover:opacity-60 transition-colors line-clamp-2">
-                {post.data.title}
-              </h2>
+                <div class="min-w-0">
+                  <div class="mb-3 h-px w-5 bg-[var(--color-accent-teal)] transition-all duration-300 group-hover:w-8"></div>
 
-              <p class="text-[var(--color-muted)] mt-4 text-sm md:text-base leading-relaxed line-clamp-3">
-                {post.data.summary}
-              </p>
-            </div>
-          </a>
-        ))}
+                  <h2 class="text-xl font-semibold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-2xl">
+                    {post.data.title}
+                  </h2>
+
+                  <p class="mt-3 max-w-3xl line-clamp-3 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+                    {post.data.summary}
+                  </p>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
     ) : (
-      <div class="bg-[var(--color-bg)] border border-[var(--color-border)] p-10 text-center text-sm text-[var(--color-muted)]">
+      <div class="mx-auto max-w-5xl border-t border-[var(--color-border)] px-6 py-6 text-sm text-[var(--color-muted)] md:px-8">
         <span class="lang-ja">{ui.ja.messages.noPosts}</span>
         <span class="lang-en">{ui.en.messages.noPosts}</span>
       </div>
     )}
 
-    <Pagination
-      target="posts"
-      totalItems={sortedPosts.length}
-      pageSize={10}
-    />
+    <div class="mx-auto max-w-5xl px-6 md:px-8">
+      <Pagination
+        target="posts"
+        totalItems={sortedPosts.length}
+        pageSize={10}
+      />
+    </div>
   </main>
 </Layout>

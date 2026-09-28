@@ -4,24 +4,16 @@ import { siteConfig } from '../data/site';
 import profileImg from '../assets/images/common/profile.jpg';
 ---
 
-<section class="py-50">
+<section class="py-60">
   <div class="text-center">
-    <p class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--color-text)]">
+    <p class="text-3xl font-bold tracking-tight text-[var(--color-text)] sm:text-4xl md:text-5xl">
       <span class="lang-ja">{siteConfig.ja.message}</span>
       <span class="lang-en">{siteConfig.en.message}</span>
     </p>
 
-    <div class="mt-8 flex items-center justify-center gap-3 pl-8">
-      <span class="text-sm text-[var(--color-muted)]">BY</span>
-
-      <Image
-        src={profileImg}
-        alt={siteConfig.en.author}
-        class="w-20 h-20 aspect-square object-cover border border-[var(--color-border)]"
-      />
-
-      <span class="text-sm font-medium text-[var(--color-text)]">
-        {siteConfig.en.author}
+    <div class="mt-10 flex items-center justify-center gap-4">
+      <span class="text-xs font-mono tracking-[0.18em] text-[var(--color-muted)]">
+        BY {siteConfig.en.author}
       </span>
     </div>
   </div>

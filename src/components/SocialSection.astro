@@ -1,42 +1,58 @@
 ---
+import { Image } from 'astro:assets';
 import { snsLinks, type SnsLink } from '../data/sns';
 import { ui } from '../data/ui';
 import SnsIcon from './common/SnsIcon.astro';
+import socialImg from '../assets/images/common/social.jpg';
 ---
 
 <section id="social" class="pt-20 pb-0">
-  <div class="flex items-baseline gap-2 mb-6">
-    <h2 class="text-2xl font-bold text-[var(--color-text)]">
-      <span class="lang-ja">{ui.ja.sections.socialTitle}</span>
-      <span class="lang-en">{ui.en.sections.socialTitle}</span>
-    </h2>
-    <span class="lang-ja text-xs text-[var(--color-muted)]">{ui.ja.sections.socialSubtitle}</span>
-    <span class="lang-en text-xs text-[var(--color-muted)]">{ui.en.sections.socialSubtitle}</span>
-  </div>
+  <div class="flex flex-col md:grid md:grid-cols-2 md:items-center md:gap-14 lg:gap-20">
+    <Image
+      src={socialImg}
+      alt="Social"
+      class="order-1 mx-auto mb-10 h-auto w-full max-w-md object-contain md:order-2 md:mx-0 md:mb-0 md:w-full md:max-w-none"
+    />
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-    {snsLinks.map((sns: SnsLink) => (
-      <a
-        href={sns.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="block p-5 bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
-      >
-        <div class="flex items-center gap-3">
-          <SnsIcon name={sns.icon} class="w-7 h-7 shrink-0" />
-          <div class="text-sm font-medium">
-            {sns.name}
-          </div>
+    <div class="order-2 md:order-1">
+      <div class="mb-10">
+        <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
+          <span class="lang-ja">{ui.ja.sections.socialTitle}</span>
+          <span class="lang-en">{ui.en.sections.socialTitle}</span>
+        </h2>
+      </div>
+
+      <div class="px-8 sm:px-12 md:px-0">
+        <div class="border-t border-[var(--color-border)]">
+          {snsLinks.map((sns: SnsLink) => (
+            <a
+              href={sns.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-center gap-5 border-b border-[var(--color-border)] py-5 transition-all duration-300 hover:px-2"
+            >
+              <SnsIcon
+                name={sns.icon}
+                class="h-7 w-7 shrink-0 text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)]"
+              />
+
+              <div class="min-w-0 flex-1">
+                <div class="text-base font-semibold tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)]">
+                  {sns.name}
+                </div>
+
+                <p class="lang-ja mt-1 text-sm leading-relaxed text-[var(--color-muted)]">
+                  {sns.description.ja}
+                </p>
+
+                <p class="lang-en mt-1 text-sm leading-relaxed text-[var(--color-muted)]">
+                  {sns.description.en}
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
-
-        <p class="lang-ja text-xs text-[var(--color-muted)] mt-3 leading-relaxed">
-          {sns.description.ja}
-        </p>
-
-        <p class="lang-en text-xs text-[var(--color-muted)] mt-3 leading-relaxed">
-          {sns.description.en}
-        </p>
-      </a>
-    ))}
+      </div>
+    </div>
   </div>
 </section>

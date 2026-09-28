@@ -1,12 +1,11 @@
 ---
-
 ---
 
 <div class="flex items-center gap-4 font-mono text-sm tracking-widest text-white/90">
   <button
     type="button"
     data-lang-btn="ja"
-    class="cursor-pointer text-inherit opacity-40 transition-opacity hover:opacity-70"
+    class="cursor-pointer text-inherit opacity-40 transition-all duration-300"
   >
     JA
   </button>
@@ -16,7 +15,7 @@
   <button
     type="button"
     data-lang-btn="en"
-    class="cursor-pointer text-inherit opacity-40 transition-opacity hover:opacity-70"
+    class="cursor-pointer text-inherit opacity-40 transition-all duration-300"
   >
     EN
   </button>
@@ -25,6 +24,13 @@
 <style is:global>
   html[data-lang="ja"] [data-lang-btn="ja"],
   html[data-lang="en"] [data-lang-btn="en"] {
+    opacity: 1;
+    cursor: default;
+  }
+
+  html[data-lang="ja"] [data-lang-btn="en"]:hover,
+  html[data-lang="en"] [data-lang-btn="ja"]:hover {
+    color: var(--color-accent-teal);
     opacity: 1;
   }
 </style>

@@ -1,6 +1,8 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import { ui } from '../data/ui';
+import postsBannerImg from '../assets/images/common/posts-banner.jpg';
 
 const toDateNumber = (date?: string) => {
   if (!date) return 0;
@@ -18,62 +20,63 @@ const latestPosts = posts
 ---
 
 <section id="posts" class="pt-20 pb-0">
-  <div class="flex items-baseline gap-2 mb-6">
-    <h2 class="text-2xl font-bold text-[var(--color-text)]">
+  <div class="mb-10">
+    <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
       <span class="lang-ja">{ui.ja.sections.postsTitle}</span>
       <span class="lang-en">{ui.en.sections.postsTitle}</span>
     </h2>
-    <span class="lang-ja text-xs text-[var(--color-muted)]">{ui.ja.sections.postsSubtitle}</span>
-    <span class="lang-en text-xs text-[var(--color-muted)]">{ui.en.sections.postsSubtitle}</span>
   </div>
 
   {latestPosts.length > 0 ? (
     <>
-      <div class="space-y-3">
+      <div class="border-t border-[var(--color-border)]">
         {latestPosts.map((post) => (
           <a
             href={`/posts/${post.id}`}
-            class="group block p-4 bg-[var(--color-bg)] border border-[var(--color-border)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
+            class="group block border-b border-[var(--color-border)] py-5 transition-all duration-300 hover:px-2 md:py-6"
           >
-            <div class="flex flex-col">
-              <div class="min-w-0">
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
                 {post.data.date && post.data.showDate && (
-                  <time class="text-xs font-mono text-[var(--color-muted)] block">
+                  <time class="text-[10px] font-mono tracking-[0.14em] text-[var(--color-muted)]">
                     {post.data.date}
                   </time>
                 )}
 
-                <h3 class="text-base font-bold text-[var(--color-text)] mt-1 group-hover:opacity-60 transition-colors">
-                  {post.data.title}
-                </h3>
-
-                <p class="text-sm text-[var(--color-muted)] mt-1 line-clamp-2">
-                  {post.data.summary}
-                </p>
+                <span class="h-px w-5 bg-[var(--color-accent-teal)] transition-all duration-300 group-hover:w-8"></span>
               </div>
 
-              <div class="mt-4 text-xs font-medium text-[var(--color-muted)] flex items-center gap-1 group-hover:text-[var(--color-text)] group-hover:translate-x-1 transition-all">
-                <span class="lang-ja">{ui.ja.buttons.readArticle}</span>
-                <span class="lang-en">{ui.en.buttons.readArticle}</span>
-                <span>&rarr;</span>
-              </div>
+              <h3 class="mt-2 text-lg font-semibold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-xl">
+                {post.data.title}
+              </h3>
+
+              <p class="mt-2 max-w-3xl line-clamp-2 text-sm leading-relaxed text-[var(--color-muted)]">
+                {post.data.summary}
+              </p>
             </div>
           </a>
         ))}
       </div>
 
-      <div class="mt-6 flex justify-center">
+      <div class="mt-8 flex justify-center">
         <a
           href="/posts/"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--color-border)] bg-[var(--color-bg)] text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
+          class="text-2xl font-bold tracking-[0.16em] text-[var(--color-accent-teal)] transition-opacity duration-300 hover:opacity-50 md:text-3xl"
         >
-          <span class="lang-ja">{ui.ja.buttons.viewAllPosts}</span>
-          <span class="lang-en">{ui.en.buttons.viewAllPosts}</span>
+          MORE
         </a>
+      </div>
+
+      <div class="relative left-1/2 mt-12 w-screen -translate-x-1/2 overflow-hidden">
+        <Image
+          src={postsBannerImg}
+          alt=""
+          class="h-40 w-full object-cover object-center sm:h-48 md:h-[28rem] lg:h-[32rem]"
+        />
       </div>
     </>
   ) : (
-    <div class="text-sm text-[var(--color-muted)] py-4">
+    <div class="border-t border-[var(--color-border)] py-5 text-sm text-[var(--color-muted)]">
       <span class="lang-ja">{ui.ja.messages.noPosts}</span>
       <span class="lang-en">{ui.en.messages.noPosts}</span>
     </div>

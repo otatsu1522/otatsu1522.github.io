@@ -28,7 +28,7 @@ if (totalPages <= 1) {
 ---
 
 <nav
-  class="mt-8 flex items-center justify-center gap-2"
+  class="mt-12 flex items-center justify-center gap-6"
   data-pagination-target={target}
   data-pagination-page-size={defaultPageSize}
   data-pagination-page-size-mobile={mobileSize}
@@ -38,15 +38,25 @@ if (totalPages <= 1) {
     type="button"
     data-pagination-prev
     aria-label="Previous page"
-    class="w-9 h-9 bg-[var(--color-bg)] hover:bg-[var(--color-border)] border border-[var(--color-border)] hover:border-[var(--color-text)] text-[var(--color-text)] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
+    class="flex h-8 w-8 items-center justify-center text-[var(--color-muted)] transition-all duration-300 hover:text-[var(--color-accent-teal)] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
     disabled
   >
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    <svg
+      class="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
+        d="M15 19l-7-7 7-7"
+      />
     </svg>
   </button>
 
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-5">
     {Array.from({ length: totalPages }, (_, index) => {
       const page = index + 1;
 
@@ -54,14 +64,22 @@ if (totalPages <= 1) {
         <button
           type="button"
           data-pagination-page={page}
-          class={`px-3 py-2 border text-sm transition-all cursor-pointer ${
+          class:list={[
+            'relative pb-1 text-xs font-medium tracking-[0.12em] transition-all duration-300 cursor-pointer',
             page === 1
-              ? 'border-[var(--color-text)] bg-[var(--color-text)] text-[var(--color-bg)]'
-              : 'border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)]'
-          }`}
+              ? 'text-[var(--color-accent-teal)]'
+              : 'text-[var(--color-muted)] hover:text-[var(--color-text)]',
+          ]}
           aria-current={page === 1 ? 'page' : undefined}
         >
           {page}
+
+          {page === 1 && (
+            <span
+              class="absolute bottom-0 left-0 h-px w-full bg-[var(--color-accent-teal)]"
+              data-pagination-active-indicator
+            ></span>
+          )}
         </button>
       );
     })}
@@ -71,10 +89,20 @@ if (totalPages <= 1) {
     type="button"
     data-pagination-next
     aria-label="Next page"
-    class="w-9 h-9 bg-[var(--color-bg)] hover:bg-[var(--color-border)] border border-[var(--color-border)] hover:border-[var(--color-text)] text-[var(--color-text)] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
+    class="flex h-8 w-8 items-center justify-center text-[var(--color-muted)] transition-all duration-300 hover:text-[var(--color-accent-teal)] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
   >
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    <svg
+      class="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
+        d="M9 5l7 7-7 7"
+      />
     </svg>
   </button>
 </nav>
@@ -227,40 +255,46 @@ if (totalPages <= 1) {
           );
 
           button.classList.toggle(
-            'border-[var(--color-text)]',
+            'text-[var(--color-accent-teal)]',
             active
-          );
-          button.classList.toggle(
-            'bg-[var(--color-text)]',
-            active
-          );
-          button.classList.toggle(
-            'text-[var(--color-bg)]',
-            active
-          );
-
-          button.classList.toggle(
-            'border-[var(--color-border)]',
-            !active
-          );
-          button.classList.toggle(
-            'bg-[var(--color-bg)]',
-            !active
           );
           button.classList.toggle(
             'text-[var(--color-muted)]',
             !active
           );
 
+          button.classList.toggle(
+            'text-[var(--color-text)]',
+            false
+          );
+
+          const indicator =
+            button.querySelector<HTMLElement>(
+              '[data-pagination-active-indicator]'
+            );
+
           if (active) {
             button.setAttribute(
               'aria-current',
               'page'
             );
+
+            if (!indicator) {
+              const activeIndicator =
+                document.createElement('span');
+
+              activeIndicator.dataset.paginationActiveIndicator = '';
+              activeIndicator.className =
+                'absolute bottom-0 left-0 h-px w-full bg-[var(--color-accent-teal)]';
+
+              button.appendChild(activeIndicator);
+            }
           } else {
             button.removeAttribute(
               'aria-current'
             );
+
+            indicator?.remove();
           }
         });
 

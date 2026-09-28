@@ -28,9 +28,9 @@ export const siteConfig: Record<Language, SiteConfig> = {
     contactDescription: 'お問い合わせは下記のメールアドレスよりお願いします。',
     email: 'otatsu1522@gmail.com',
     hero: {
-      eyebrow: "A TRAVELER'S DAILY LIFE",
+      eyebrow: "A TRAVELER",
       title: 'OTATSU',
-      tagline: 'CYCLING AROUND THE WORLD',
+      tagline: 'JOURNEY IS MY LIFE',
       meta: '2024 — PRESENT',
     },
   },
@@ -43,9 +43,9 @@ export const siteConfig: Record<Language, SiteConfig> = {
     contactDescription: 'For inquiries, please contact me at the email address below.',
     email: 'otatsu1522@gmail.com',
     hero: {
-      eyebrow: "A TRAVELER'S DAILY LIFE",
+      eyebrow: "A TRAVELER",
       title: 'OTATSU',
-      tagline: 'CYCLING AROUND THE WORLD',
+      tagline: 'JOURNEY IS MY LIFE',
       meta: '2024 — PRESENT',
     },
   },

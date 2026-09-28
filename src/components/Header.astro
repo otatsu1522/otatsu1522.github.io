@@ -10,7 +10,7 @@ import { ui } from '../data/ui';
   aria-label={ui.ja.buttons.toggleMenu}
   aria-expanded="false"
   aria-controls="menu-overlay"
-  class="fixed top-5 right-5 z-[100] flex h-12 w-12 flex-col items-center justify-center gap-[7px] bg-transparent text-black cursor-pointer md:top-6 md:right-6 md:h-14 md:w-14"
+  class="fixed top-5 right-5 z-[100] flex h-12 w-12 cursor-pointer flex-col items-center justify-center gap-[7px] bg-transparent text-black transition-colors duration-300 hover:text-[var(--color-accent-teal)] md:top-6 md:right-6 md:h-14 md:w-14"
 >
   <span
     class="menu-line block h-[3px] w-7 bg-current transition-transform duration-300 ease-out md:w-8"
@@ -32,7 +32,7 @@ import { ui } from '../data/ui';
     {navigationItems.map((item) => (
       <a
         href={item.href}
-        class="menu-link text-[clamp(1.5rem,5vh,3rem)] font-bold leading-[0.95] tracking-tight text-white/90 transition-colors hover:text-[var(--color-accent-teal)]"
+        class="menu-link text-[clamp(1.5rem,5vh,3rem)] font-bold leading-[0.95] tracking-tight text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
       >
         <span class="lang-ja">{ui.ja.nav[item.key]}</span>
         <span class="lang-en">{ui.en.nav[item.key]}</span>
@@ -44,5 +44,5 @@ import { ui } from '../data/ui';
     class="mt-10 flex items-center gap-4 font-mono text-sm tracking-widest text-white/50 md:mt-14"
   >
     <LanguageSwitcher />
-   </div>
+  </div>
 </div>
