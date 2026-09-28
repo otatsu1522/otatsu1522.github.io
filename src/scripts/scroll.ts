@@ -1,6 +1,4 @@
-
 const SCROLL_SPEED = 1500; // 移動速度（px/秒）。距離に応じて所要時間が決まる（距離 ÷ 速度）
-
 const MIN_DURATION = 500; // 所要時間の下限（ms）
 const MAX_DURATION = 2000; // 所要時間の上限（ms）
 
