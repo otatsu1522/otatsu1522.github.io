@@ -1,31 +1,20 @@
 ---
-import { Youtube, Instagram, Twitter } from 'lucide-astro';
+import { Icon } from 'astro-icon/components';
+
+const iconMap = {
+  youtube: 'simple-icons:youtube',
+  instagram: 'simple-icons:instagram',
+  twitter: 'simple-icons:x',
+  tiktok: 'simple-icons:tiktok',
+} as const;
 
 interface Props {
-  name: string;
+  name: keyof typeof iconMap | string;
   class?: string;
 }
 
 const { name, class: className = 'w-5 h-5' } = Astro.props;
+const iconName = iconMap[name as keyof typeof iconMap];
 ---
 
-{ name === 'youtube' && <Youtube class={className} strokeWidth={1.5} /> }
-
-{ name === 'instagram' && <Instagram class={className} strokeWidth={1.5} /> }
-
-{ name === 'twitter' && <Twitter class={className} strokeWidth={1.5} /> }
-
-{ name === 'tiktok' && (
-  <svg
-    class={className}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-  </svg>
-)}
+{iconName && <Icon name={iconName} class={className} />}
