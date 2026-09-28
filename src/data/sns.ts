@@ -14,7 +14,7 @@ export const snsLinks: SnsLink[] = [
     url: 'https://www.youtube.com/@otatsu1522',
     icon: 'youtube',
     description: {
-      ja: '旅の記録や自転車世界一周の様子、キャンプ・アウトドアなどを動画で発信。',
+      ja: '旅のリアルな日常や自転車・キャンプ・アウトドアに関して動画で発信してます。',
       en: 'Travel stories, cycling around the world, camping, and outdoor adventures.',
     },
   },
@@ -23,7 +23,7 @@ export const snsLinks: SnsLink[] = [
     url: 'https://www.instagram.com/otatsu1522',
     icon: 'instagram',
     description: {
-      ja: '旅先の風景や日常、自転車旅で出会った場所や出来事を写真で発信。',
+      ja: '旅先の風景や日常、出会った人や行った場所を写真で発信してます。',
       en: 'Travel scenes, daily life, and moments from cycling around the world in photos.',
     },
   },
@@ -32,7 +32,7 @@ export const snsLinks: SnsLink[] = [
     url: 'https://twitter.com/otatsu1522',
     icon: 'twitter',
     description: {
-      ja: '旅の近況や日々の出来事、リアルタイムな旅の情報を発信。',
+      ja: '旅の近況や日々の出来事、旅に関する有益な情報などを発信してます。',
       en: 'Travel updates, daily happenings, and real-time trip information.',
     },
   },
@@ -41,7 +41,7 @@ export const snsLinks: SnsLink[] = [
     url: 'https://www.tiktok.com/@otatsu1522',
     icon: 'tiktok',
     description: {
-      ja: '旅先での出来事や自転車旅の一場面を短い動画で紹介。',
+      ja: '旅の動画を短く見やすく編集したショート動画を発信してます。',
       en: 'Short videos featuring moments from travel and cycling adventures.',
     },
   },

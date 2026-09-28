@@ -2,7 +2,6 @@
 title: "旅の装備"
 summary: "自転車での旅に持っていく装備を、テントやウェア、調理用品、電子機器などに分けて紹介します。"
 cover: "./equipment.jpg"
-date: "2026/9/27"
 showDate: false
 published: true
 ---

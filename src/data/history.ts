@@ -15,7 +15,7 @@ export const travelHistory: HistoryItem[] = [
   {
     id: '2',
     period: { ja: '2018年9月 ~ 2019年9月', en: 'Sep 2018 - Sep 2019' },
-    title: { ja: 'ニュージーランドでゼロ円ワーホリ', en: 'Working Holiday in New Zealand' },
+    title: { ja: 'ニュージーランドゼロ円ワーホリ', en: 'Working Holiday in New Zealand' },
   },
   {
     id: '3',

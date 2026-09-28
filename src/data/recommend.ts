@@ -18,6 +18,15 @@ export type Recommendation = Playlist | RecommendedVideo;
 
 export const recommendedPlaylists: Recommendation[] = [
   {
+    id: 'world-round',
+    type: 'playlist',
+    title: {
+      ja: '自転車世界一周',
+      en: 'Cycling Around the World',
+    },
+    url: 'https://www.youtube.com/playlist?list=PLs9JLAzb3cG4lGI5PjpcUxcAtHU1Bbpv3',
+  },
+  {
     id: 'japan-round',
     type: 'playlist',
     title: {
@@ -27,13 +36,13 @@ export const recommendedPlaylists: Recommendation[] = [
     url: 'https://www.youtube.com/playlist?list=PLs9JLAzb3cG5QiAMN0QEGsgTF5r8Knd4V',
   },
   {
-    id: 'world-round',
+    id: 'north-america',
     type: 'playlist',
     title: {
-      ja: '自転車世界一周',
-      en: 'Cycling Around the World',
+      ja: '無一文北米一周',
+      en: 'Hitchhiking Around North America',
     },
-    url: 'https://www.youtube.com/playlist?list=PLs9JLAzb3cG4lGI5PjpcUxcAtHU1Bbpv3',
+    url: 'https://www.youtube.com/playlist?list=PLs9JLAzb3cG6DS8SIpsXdm9O0XvP9IhQ3',
   },
   {
     id: '3OMFPDpNQsM',

@@ -4,6 +4,7 @@ import { recommendedPlaylists, type Recommendation } from '../data/recommend';
 import { ui } from '../data/ui';
 import playlistJapanImg from '../assets/images/common/playlist-japan-round.jpg';
 import playlistWorldImg from '../assets/images/common/playlist-world-round.jpg';
+import playlistAmericaImg from '../assets/images/common/playlist-north-america.jpg';
 
 const videos = recommendedPlaylists.filter((item) => item.type === 'video');
 const playlists = recommendedPlaylists.filter((item) => item.type === 'playlist');
@@ -16,6 +17,7 @@ const getYouTubeEmbedUrl = (url: string) => {
 const getPlaylistImage = (id: string) => {
   if (id === 'japan-round') return playlistJapanImg;
   if (id === 'world-round') return playlistWorldImg;
+  if (id === 'north-america') return playlistAmericaImg;
   return playlistJapanImg;
 };
 ---
@@ -59,7 +61,7 @@ const getPlaylistImage = (id: string) => {
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
       {playlists.map((item: Recommendation) => (
         item.type === 'playlist' && (
           <a
