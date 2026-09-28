@@ -67,6 +67,13 @@ const t = ui[lang];
                 <p class="mt-4 line-clamp-3 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
                   {item.data.summary}
                 </p>
+
+                <div class="mt-6">
+                  <span class="inline-block border-b border-[var(--color-text)] pb-1 text-xs font-bold tracking-[0.16em] text-[var(--color-text)] transition-colors duration-300 group-hover:border-[var(--color-accent-teal)] group-hover:text-[var(--color-accent-teal)]">
+                    <span class="lang-ja">{ui.ja.buttons.readArticle}</span>
+                    <span class="lang-en">{ui.en.buttons.readArticle}</span>
+                  </span>
+                </div>
               </div>
             </a>
           ))}
