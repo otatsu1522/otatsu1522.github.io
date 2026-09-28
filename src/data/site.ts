@@ -1,5 +1,12 @@
 import type { Language } from './ui';
 
+export interface HeroConfig {
+  eyebrow: string;
+  title: string;
+  tagline: string;
+  meta: string;
+}
+
 export interface SiteConfig {
   title: string;
   description: string;
@@ -8,6 +15,7 @@ export interface SiteConfig {
   message: string;
   contactDescription: string;
   email: string;
+  hero: HeroConfig;
 }
 
 export const siteConfig: Record<Language, SiteConfig> = {
@@ -19,6 +27,12 @@ export const siteConfig: Record<Language, SiteConfig> = {
     message: '世界のどこかで会いましょう',
     contactDescription: 'お問い合わせは下記のメールアドレスよりお願いします。',
     email: 'otatsu1522@gmail.com',
+    hero: {
+      eyebrow: "A TRAVELER'S DAILY LIFE",
+      title: 'OTATSU',
+      tagline: 'CYCLING AROUND THE WORLD',
+      meta: '2024 — PRESENT',
+    },
   },
   en: {
     title: 'Portfolio | OTATSU',
@@ -28,5 +42,11 @@ export const siteConfig: Record<Language, SiteConfig> = {
     message: 'See you somewhere in the world.',
     contactDescription: 'For inquiries, please contact me at the email address below.',
     email: 'otatsu1522@gmail.com',
+    hero: {
+      eyebrow: "A TRAVELER'S DAILY LIFE",
+      title: 'OTATSU',
+      tagline: 'CYCLING AROUND THE WORLD',
+      meta: '2024 — PRESENT',
+    },
   },
 };

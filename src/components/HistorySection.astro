@@ -5,23 +5,27 @@ import { ui } from '../data/ui';
 
 <section id="history" class="pt-20 pb-0">
   <div class="flex items-baseline gap-2 mb-6">
-    <h2 class="text-2xl font-bold text-white">
+    <h2 class="text-2xl font-bold text-[var(--color-text)]">
       <span class="lang-ja">{ui.ja.sections.historyTitle}</span>
       <span class="lang-en">{ui.en.sections.historyTitle}</span>
     </h2>
-    <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.historySubtitle}</span>
-    <span class="lang-en text-xs text-gray-400">{ui.en.sections.historySubtitle}</span>
+    <span class="lang-ja text-xs text-[var(--color-muted)]">
+      {ui.ja.sections.historySubtitle}
+    </span>
+    <span class="lang-en text-xs text-[var(--color-muted)]">
+      {ui.en.sections.historySubtitle}
+    </span>
   </div>
 
-  <div class="bg-white/5 border border-white/10 p-6 divide-y divide-white/5">
+  <div class="bg-[var(--color-bg)] border border-[var(--color-border)] p-6 divide-y divide-[var(--color-border)]">
     {travelHistory.map((item: HistoryItem) => (
       <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-6 items-center">
-        <time class="text-xs font-mono text-gray-400 sm:text-right">
+        <time class="text-xs font-mono text-[var(--color-muted)] sm:text-right">
           <span class="lang-ja">{item.period.ja}</span>
           <span class="lang-en">{item.period.en}</span>
         </time>
 
-        <span class="text-sm font-medium text-gray-200 sm:text-left">
+        <span class="text-sm font-medium text-[var(--color-text)] sm:text-left">
           <span class="lang-ja">{item.title.ja}</span>
           <span class="lang-en">{item.title.en}</span>
         </span>

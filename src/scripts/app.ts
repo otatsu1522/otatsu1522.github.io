@@ -1,14 +1,12 @@
-import { initBackgroundParticles } from './background';
 import { initNavigation } from './navigation';
-import { initMenuMobile } from './menu-mobile';
+import { initMenu } from './menu';
 import { setupJourneyScroll } from './journey';
 import { setupGalleryDesktop } from './gallery-carousel';
 import { setupGalleryCarouselMobile } from './gallery-carousel-mobile';
 
 export function initApp(): void {
-  initBackgroundParticles();
   initNavigation();
-  initMenuMobile();
+  initMenu();
   setupJourneyScroll();
   setupGalleryDesktop();
   setupGalleryCarouselMobile();

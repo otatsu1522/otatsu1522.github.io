@@ -1,17 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --site-background: #000000;
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-muted: #6b7280;
+  --color-border: #e5e5e5;
+
+  --color-accent-teal: #0e7c86;
+  --color-accent-green: #2f6f4f;
+  --color-overlay-bg: #0a0a0a;
+  --color-overlay-text: #ffffff;
 }
 
 html {
   scroll-behavior: smooth;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Oxygen, Cantarell, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   overflow-x: clip;
-  background-color: var(--site-background);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 body {
   overflow-x: clip;
-  background-color: var(--site-background);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
+
+.text-accent-teal { color: var(--color-accent-teal); }
+.text-accent-green { color: var(--color-accent-green); }
+.bg-accent-teal { background-color: var(--color-accent-teal); }
+.bg-accent-green { background-color: var(--color-accent-green); }
+.border-accent-teal { border-color: var(--color-accent-teal); }

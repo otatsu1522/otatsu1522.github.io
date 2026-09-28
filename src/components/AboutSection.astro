@@ -8,36 +8,40 @@ import profileImg from '../assets/images/common/profile.jpg';
 
 <section id="about" class="pt-20 pb-0">
   <div class="flex items-baseline gap-2 mb-6">
-    <h2 class="text-2xl font-bold text-white">
+    <h2 class="text-2xl font-bold text-[var(--color-text)]">
       <span class="lang-ja">{ui.ja.sections.aboutTitle}</span>
       <span class="lang-en">{ui.en.sections.aboutTitle}</span>
     </h2>
-    <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.aboutSubtitle}</span>
-    <span class="lang-en text-xs text-gray-400">{ui.en.sections.aboutSubtitle}</span>
+    <span class="lang-ja text-xs text-[var(--color-muted)]">
+      {ui.ja.sections.aboutSubtitle}
+    </span>
+    <span class="lang-en text-xs text-[var(--color-muted)]">
+      {ui.en.sections.aboutSubtitle}
+    </span>
   </div>
 
-  <div class="bg-white/5 p-6 md:p-8 border border-white/10">
+  <div class="bg-[var(--color-bg)] p-6 md:p-8 border border-[var(--color-border)]">
     <div class="flex flex-col md:flex-row items-center gap-6">
       <Image
         src={profileImg}
         alt={siteConfig.ja.author}
-        class="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border border-white/15 shrink-0"
+        class="w-48 h-48 md:w-56 md:h-56 aspect-square object-cover border border-[var(--color-border)] shrink-0"
       />
 
       <div class="space-y-3">
-        <h3 class="text-xl font-bold text-white">
+        <h3 class="text-xl font-bold text-[var(--color-text)]">
           <span class="lang-ja">{siteConfig.ja.author}</span>
           <span class="lang-en">{siteConfig.en.author}</span>
         </h3>
 
-        <p class="text-gray-300 whitespace-pre-line leading-relaxed text-sm md:text-base">
+        <p class="text-[var(--color-muted)] whitespace-pre-line leading-relaxed text-sm md:text-base">
           <span class="lang-ja">{siteConfig.ja.bio}</span>
           <span class="lang-en">{siteConfig.en.bio}</span>
         </p>
       </div>
     </div>
 
-    <div class="mt-8 pt-6 border-t border-white/15">
+    <div class="mt-8 pt-6 border-t border-[var(--color-border)]">
       <SnsLinks />
     </div>
   </div>

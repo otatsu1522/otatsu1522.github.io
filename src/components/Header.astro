@@ -1,62 +1,48 @@
 ---
-import { navigationItems, type NavItem } from '../data/navigation';
+import LanguageSwitcher from '../components/common/LanguageSwitcher.astro';
+import { navigationItems } from '../data/navigation';
 import { ui } from '../data/ui';
-import LanguageSwitcher from './common/LanguageSwitcher.astro';
 ---
 
-<header class="w-full bg-transparent fixed top-0 left-0 z-50">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-end md:justify-center relative">
-    <!-- PC用ナビゲーション -->
-    <nav class="desktop-header-menu hidden md:flex items-center space-x-6 -translate-y-2.5">
-      {navigationItems.map((item: NavItem) => (
-        <a
-          href={item.href}
-          class="text-sm font-medium text-gray-300 hover:text-white transition-colors"
-        >
-          <span class="lang-ja">{ui.ja.nav[item.key]}</span>
-          <span class="lang-en">{ui.en.nav[item.key]}</span>
-        </a>
-      ))}
-    </nav>
+<button
+  id="menu-toggle"
+  type="button"
+  aria-label={ui.ja.buttons.toggleMenu}
+  aria-expanded="false"
+  aria-controls="menu-overlay"
+  class="fixed top-5 right-5 z-[100] flex h-12 w-12 flex-col items-center justify-center gap-[7px] bg-transparent text-black cursor-pointer md:top-6 md:right-6 md:h-14 md:w-14"
+>
+  <span
+    class="menu-line block h-[3px] w-7 bg-current transition-transform duration-300 ease-out md:w-8"
+  ></span>
+  <span
+    class="menu-line block h-[3px] w-7 bg-current transition-transform duration-300 ease-out md:w-8"
+  ></span>
+</button>
 
-    <!-- モバイル用メニューボタン -->
-    <button
-      id="mobile-menu-button"
-      class="md:hidden p-2 text-gray-300 focus:outline-none relative z-50 cursor-pointer"
-      aria-label={ui.ja.buttons.toggleMenu}
-    >
-      <svg id="icon-open" class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-      <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-    </button>
-  </div>
+<div
+  id="menu-overlay"
+  class="fixed inset-0 z-[90] flex h-[100dvh] w-[100dvw] max-w-[100dvw] flex-col items-center justify-center overflow-hidden
+         bg-[var(--color-overlay-bg)] text-[var(--color-overlay-text)]
+         translate-x-full opacity-0 pointer-events-none
+         transition-[transform,opacity] duration-500 ease-in-out"
+  aria-hidden="true"
+>
+  <nav class="flex flex-col items-center gap-3 text-center md:gap-4">
+    {navigationItems.map((item) => (
+      <a
+        href={item.href}
+        class="menu-link text-[clamp(1.5rem,5vh,3rem)] font-bold leading-[0.95] tracking-tight text-white/90 transition-colors hover:text-[var(--color-accent-teal)]"
+      >
+        <span class="lang-ja">{ui.ja.nav[item.key]}</span>
+        <span class="lang-en">{ui.en.nav[item.key]}</span>
+      </a>
+    ))}
+  </nav>
 
-  <!-- モバイルメニュー -->
   <div
-    id="mobile-menu"
-    class="hidden fixed inset-0 bg-black backdrop-blur-md z-40 flex flex-col justify-center items-center px-6 overflow-hidden"
+    class="mt-10 flex items-center gap-4 font-mono text-sm tracking-widest text-white/50 md:mt-14"
   >
-    <div
-      id="mobile-menu-particles"
-      class="absolute inset-0 z-0 pointer-events-none"
-      aria-hidden="true"
-    ></div>
-
-    <nav class="relative z-10 pt-10 flex flex-col items-center space-y-6 text-center">
-      {navigationItems.map((item: NavItem) => (
-        <a
-          href={item.href}
-          class="mobile-menu-link text-xl font-bold text-gray-200 hover:text-white transition-colors"
-        >
-          <span class="lang-ja">{ui.ja.nav[item.key]}</span>
-          <span class="lang-en">{ui.en.nav[item.key]}</span>
-        </a>
-      ))}
-    </nav>
-
-    <LanguageSwitcher variant="mobile" />
-  </div>
-</header>
+    <LanguageSwitcher />
+   </div>
+</div>

@@ -17,7 +17,7 @@ const { class: className = '' } = Astro.props;
       rel="noopener noreferrer"
       aria-label={sns.name}
       title={sns.name}
-      class="w-10 h-10 border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/20 hover:bg-white/10 transition-all"
+      class="w-10 h-10 border border-[var(--color-border)] bg-[var(--color-bg)] flex items-center justify-center text-[var(--color-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
     >
       <SnsIcon name={sns.icon} />
     </a>

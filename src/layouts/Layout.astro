@@ -1,11 +1,7 @@
 ---
 import '../styles/global.css';
-import '../styles/background.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import LanguageSwitcher from '../components/common/LanguageSwitcher.astro';
-import PageIndicator from '../components/common/PageIndicator.astro';
-import BigBang from '../components/common/BigBang.astro';
 import { siteConfig } from '../data/site';
 
 interface Props {
@@ -91,7 +87,6 @@ const ogImageURL = new URL(image, Astro.site);
 
     <Header />
 
-    <LanguageSwitcher variant="desktop" />
 
     <div
       id="background-particles"
@@ -99,13 +94,11 @@ const ogImageURL = new URL(image, Astro.site);
       aria-hidden="true"
     ></div>
 
-    <BigBang />
 
     <div class="flex-1 relative z-10">
       <slot />
     </div>
 
-    <PageIndicator />
 
     <div class="relative z-10">
       <Footer />

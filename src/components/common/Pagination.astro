@@ -38,10 +38,10 @@ if (totalPages <= 1) {
     type="button"
     data-pagination-prev
     aria-label="Previous page"
-    class="w-9 h-9 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
+    class="w-9 h-9 bg-[var(--color-bg)] hover:bg-[var(--color-border)] border border-[var(--color-border)] hover:border-[var(--color-text)] text-[var(--color-text)] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
     disabled
   >
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 0 24">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
     </svg>
   </button>
@@ -56,8 +56,8 @@ if (totalPages <= 1) {
           data-pagination-page={page}
           class={`px-3 py-2 border text-sm transition-all cursor-pointer ${
             page === 1
-              ? 'border-white/20 bg-white/10 text-white'
-              : 'border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/20 hover:bg-white/10'
+              ? 'border-[var(--color-text)] bg-[var(--color-text)] text-[var(--color-bg)]'
+              : 'border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)]'
           }`}
           aria-current={page === 1 ? 'page' : undefined}
         >
@@ -71,7 +71,7 @@ if (totalPages <= 1) {
     type="button"
     data-pagination-next
     aria-label="Next page"
-    class="w-9 h-9 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
+    class="w-9 h-9 bg-[var(--color-bg)] hover:bg-[var(--color-border)] border border-[var(--color-border)] hover:border-[var(--color-text)] text-[var(--color-text)] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-60 disabled:pointer-events-none"
   >
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -227,28 +227,28 @@ if (totalPages <= 1) {
           );
 
           button.classList.toggle(
-            'border-white/20',
+            'border-[var(--color-text)]',
             active
           );
           button.classList.toggle(
-            'bg-white/10',
+            'bg-[var(--color-text)]',
             active
           );
           button.classList.toggle(
-            'text-white',
+            'text-[var(--color-bg)]',
             active
           );
 
           button.classList.toggle(
-            'border-white/10',
+            'border-[var(--color-border)]',
             !active
           );
           button.classList.toggle(
-            'bg-white/5',
+            'bg-[var(--color-bg)]',
             !active
           );
           button.classList.toggle(
-            'text-gray-400',
+            'text-[var(--color-muted)]',
             !active
           );
 

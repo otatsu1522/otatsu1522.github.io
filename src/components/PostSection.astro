@@ -19,12 +19,12 @@ const latestPosts = posts
 
 <section id="posts" class="pt-20 pb-0">
   <div class="flex items-baseline gap-2 mb-6">
-    <h2 class="text-2xl font-bold text-white">
+    <h2 class="text-2xl font-bold text-[var(--color-text)]">
       <span class="lang-ja">{ui.ja.sections.postsTitle}</span>
       <span class="lang-en">{ui.en.sections.postsTitle}</span>
     </h2>
-    <span class="lang-ja text-xs text-gray-400">{ui.ja.sections.postsSubtitle}</span>
-    <span class="lang-en text-xs text-gray-400">{ui.en.sections.postsSubtitle}</span>
+    <span class="lang-ja text-xs text-[var(--color-muted)]">{ui.ja.sections.postsSubtitle}</span>
+    <span class="lang-en text-xs text-[var(--color-muted)]">{ui.en.sections.postsSubtitle}</span>
   </div>
 
   {latestPosts.length > 0 ? (
@@ -33,26 +33,26 @@ const latestPosts = posts
         {latestPosts.map((post) => (
           <a
             href={`/posts/${post.id}`}
-            class="group block p-4 bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all"
+            class="group block p-4 bg-[var(--color-bg)] border border-[var(--color-border)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
           >
             <div class="flex flex-col">
               <div class="min-w-0">
                 {post.data.date && post.data.showDate && (
-                  <time class="text-xs font-mono text-gray-400 block">
+                  <time class="text-xs font-mono text-[var(--color-muted)] block">
                     {post.data.date}
                   </time>
                 )}
 
-                <h3 class="text-base font-bold text-white mt-1 group-hover:text-gray-200 transition-colors">
+                <h3 class="text-base font-bold text-[var(--color-text)] mt-1 group-hover:opacity-60 transition-colors">
                   {post.data.title}
                 </h3>
 
-                <p class="text-sm text-gray-300 mt-1 line-clamp-2">
+                <p class="text-sm text-[var(--color-muted)] mt-1 line-clamp-2">
                   {post.data.summary}
                 </p>
               </div>
 
-              <div class="mt-4 text-xs font-medium text-gray-300 flex items-center gap-1 group-hover:text-white group-hover:translate-x-1 transition-all">
+              <div class="mt-4 text-xs font-medium text-[var(--color-muted)] flex items-center gap-1 group-hover:text-[var(--color-text)] group-hover:translate-x-1 transition-all">
                 <span class="lang-ja">{ui.ja.buttons.readArticle}</span>
                 <span class="lang-en">{ui.en.buttons.readArticle}</span>
                 <span>&rarr;</span>
@@ -65,7 +65,7 @@ const latestPosts = posts
       <div class="mt-6 flex justify-center">
         <a
           href="/posts/"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-white/10 bg-white/5 text-sm text-gray-300 hover:text-white hover:border-white/20 hover:bg-white/10 transition-all"
+          class="inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--color-border)] bg-[var(--color-bg)] text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
         >
           <span class="lang-ja">{ui.ja.buttons.viewAllPosts}</span>
           <span class="lang-en">{ui.en.buttons.viewAllPosts}</span>
@@ -73,7 +73,7 @@ const latestPosts = posts
       </div>
     </>
   ) : (
-    <div class="text-sm text-gray-500 py-4">
+    <div class="text-sm text-[var(--color-muted)] py-4">
       <span class="lang-ja">{ui.ja.messages.noPosts}</span>
       <span class="lang-en">{ui.en.messages.noPosts}</span>
     </div>

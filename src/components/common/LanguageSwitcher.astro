@@ -1,48 +1,33 @@
 ---
-interface Props {
-  variant: 'desktop' | 'mobile';
-}
 
-const { variant } = Astro.props;
 ---
 
-{variant === 'desktop' ? (
-  <div class="hidden md:block fixed top-6 right-6 z-60 text-xs font-mono text-gray-400 pointer-events-auto select-none tracking-widest">
-    <button
-      type="button"
-      data-lang-btn="ja"
-      class="text-inherit hover:text-white transition-colors cursor-pointer"
-    >
-      JA
-    </button>
-    {' / '}
-    <button
-      type="button"
-      data-lang-btn="en"
-      class="text-inherit hover:text-white transition-colors cursor-pointer"
-    >
-      EN
-    </button>
-  </div>
-) : (
-  <div class="relative z-10 mt-6 pt-6 flex items-center space-x-4 text-sm font-mono">
-    <button
-      type="button"
-      data-lang-btn="ja"
-      class="text-gray-400 hover:text-white transition-colors opacity-60 cursor-pointer"
-    >
-      JA
-    </button>
-    <span class="text-gray-600">/</span>
-    <button
-      type="button"
-      data-lang-btn="en"
-      class="text-gray-400 hover:text-white transition-colors opacity-60 cursor-pointer"
-    >
-      EN
-    </button>
-  </div>
-)}
+<div class="flex items-center gap-4 font-mono text-sm tracking-widest text-white/90">
+  <button
+    type="button"
+    data-lang-btn="ja"
+    class="cursor-pointer text-inherit opacity-40 transition-opacity hover:opacity-70"
+  >
+    JA
+  </button>
+
+  <span class="opacity-25">/</span>
+
+  <button
+    type="button"
+    data-lang-btn="en"
+    class="cursor-pointer text-inherit opacity-40 transition-opacity hover:opacity-70"
+  >
+    EN
+  </button>
+</div>
+
+<style is:global>
+  html[data-lang="ja"] [data-lang-btn="ja"],
+  html[data-lang="en"] [data-lang-btn="en"] {
+    opacity: 1;
+  }
+</style>
 
 <script>
   function initLanguage(): void {
@@ -50,15 +35,19 @@ const { variant } = Astro.props;
       document.querySelectorAll<HTMLButtonElement>('[data-lang-btn]');
 
     langButtons.forEach((btn) => {
+      if (btn.dataset.languageInitialized === 'true') return;
+
       btn.addEventListener('click', () => {
         const targetLang = btn.getAttribute('data-lang-btn');
 
-        if (targetLang === 'ja' || targetLang === 'en') {
-          document.documentElement.setAttribute('data-lang', targetLang);
-          document.documentElement.setAttribute('lang', targetLang);
-          localStorage.setItem('preferred-lang', targetLang);
-        }
+        if (targetLang !== 'ja' && targetLang !== 'en') return;
+
+        document.documentElement.setAttribute('data-lang', targetLang);
+        document.documentElement.setAttribute('lang', targetLang);
+        localStorage.setItem('preferred-lang', targetLang);
       });
+
+      btn.dataset.languageInitialized = 'true';
     });
   }
 
