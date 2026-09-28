@@ -44,12 +44,6 @@ export function initMenu(): void {
     const distance = targetY - startY;
     const startTime = performance.now();
 
-    const easeInOut = (progress: number) => {
-      return progress < 0.5
-        ? 2 * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-    };
-
     const animate = (currentTime: number) => {
       const progress = Math.min(
         (currentTime - startTime) / duration,
@@ -58,7 +52,7 @@ export function initMenu(): void {
 
       window.scrollTo(
         0,
-        startY + distance * easeInOut(progress)
+        startY + distance * progress
       );
 
       if (progress < 1) {
@@ -74,9 +68,10 @@ export function initMenu(): void {
 
     isOpen = open;
     toggle.setAttribute('aria-expanded', String(open));
-    overlay.setAttribute('aria-hidden', String(!open));
 
     if (open) {
+      overlay.setAttribute('aria-hidden', 'false');
+
       overlay.classList.remove(
         'translate-x-full',
         'opacity-0',
@@ -102,6 +97,9 @@ export function initMenu(): void {
       lockScroll();
       return;
     }
+
+    toggle.focus();
+    overlay.setAttribute('aria-hidden', 'true');
 
     overlay.classList.remove(
       'translate-x-0',

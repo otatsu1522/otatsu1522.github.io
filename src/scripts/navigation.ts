@@ -8,18 +8,14 @@ export function initNavigation(): void {
     const distance = targetY - startY;
     const startTime = performance.now();
 
-    const easeInOut = (progress: number) => {
-      return progress < 0.5
-        ? 2 * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-    };
-
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeInOut(progress);
 
-      window.scrollTo(0, startY + distance * easedProgress);
+      window.scrollTo(
+        0,
+        startY + distance * progress
+      );
 
       if (progress < 1) {
         requestAnimationFrame(animate);
