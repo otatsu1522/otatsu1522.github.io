@@ -3,9 +3,7 @@ export const ui = {
     nav: {
       home: 'Home',
       about: 'About',
-      history: 'History',
       featured: 'Featured',
-      recommend: 'Recommend',
       latest: 'Latest',
       social: 'Social',
       contact: 'Contact',
@@ -25,9 +23,6 @@ export const ui = {
     buttons: {
       toggleMenu: 'メニュー切り替え',
       readArticle: '記事を読む',
-      viewAllPosts: '記事一覧へ',
-      viewAllJourneys: '旅の記録一覧へ',
-      viewAllGallery: '写真一覧へ',
     },
     messages: {
       noJourneys: '旅の記事は準備中です。',
@@ -42,9 +37,7 @@ export const ui = {
     nav: {
       home: 'Home',
       about: 'About',
-      history: 'History',
       featured: 'Featured',
-      recommend: 'Recommend',
       gallery: 'Gallery',
       latest: 'Latest',
       social: 'Social',
@@ -66,9 +59,6 @@ export const ui = {
     buttons: {
       toggleMenu: 'Toggle Menu',
       readArticle: 'Read article',
-      viewAllPosts: 'View all posts',
-      viewAllJourneys: 'View all journeys',
-      viewAllGallery: 'View all photos',
     },
     messages: {
       noJourneys: 'No journey posts available yet.',
