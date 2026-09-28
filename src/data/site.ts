@@ -23,7 +23,7 @@ export const siteConfig: Record<Language, SiteConfig> = {
     description: '旅人おたつのポートフォリオサイトです。',
     author: '旅人おたつ',
     bio: '1994年生まれの元エンジニアです。23歳で会社を退職して、現在は自転車で世界一周旅をしています。SNSでは旅人のリアルな日常をシェアしています。よろしくお願いします。',
-    contactDescription: 'ご連絡はこちらから。',
+    contactDescription: 'お問い合わせはこちらからお願いします。',
     contactAction: 'GET IN TOUCH',
     email: 'otatsu1522@gmail.com',
     message: '世界のどこかで会いましょう',
@@ -38,7 +38,7 @@ export const siteConfig: Record<Language, SiteConfig> = {
     author: 'OTATSU',
     bio: 'Traveling across Japan and the world by bicycle and hitchhiking. Documenting local culture, gear reviews, and real daily life on the road.',
     contactDescription: 'For travel, projects, and general inquiries.',
-    contactAction: 'Get in Touch',
+    contactAction: 'GET IN TOUCH',
     email: 'otatsu1522@gmail.com',
     message: 'See you somewhere in the world.',
     hero: {

@@ -2,25 +2,17 @@
 interface Props {
   target: string;
   totalItems: number;
-  pageSize: number;
   mobilePageSize?: number;
   desktopPageSize?: number;
 }
 
-const {
-  target,
-  totalItems,
-  pageSize,
-  mobilePageSize,
-  desktopPageSize,
-} = Astro.props;
-
-const defaultPageSize = pageSize;
-const mobileSize = mobilePageSize ?? defaultPageSize;
-const desktopSize = desktopPageSize ?? defaultPageSize;
-
-const minPageSize = Math.min(mobileSize, desktopSize);
-const totalPages = Math.ceil(totalItems / minPageSize);
+const { target, totalItems, mobilePageSize = 0, desktopPageSize = 0 } = Astro.props;
+const totalPages = mobilePageSize > 0 && desktopPageSize > 0
+  ? Math.max(
+      Math.ceil(totalItems / mobilePageSize),
+      Math.ceil(totalItems / desktopPageSize)
+    )
+  : 0;
 
 if (totalPages <= 1) {
   return null;
@@ -30,42 +22,30 @@ if (totalPages <= 1) {
 <nav
   class="mt-12 flex items-center justify-center gap-6"
   data-pagination-target={target}
-  data-pagination-page-size={defaultPageSize}
-  data-pagination-page-size-mobile={mobileSize}
-  data-pagination-page-size-desktop={desktopSize}
+  data-pagination-page-size-mobile={mobilePageSize}
+  data-pagination-page-size-desktop={desktopPageSize}
 >
   <button
     type="button"
     data-pagination-prev
     aria-label="Previous page"
-    class="flex h-8 w-8 items-center justify-center text-[var(--color-muted)] transition-all duration-300 hover:text-[var(--color-accent-teal)] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+    class="flex h-8 w-8 cursor-pointer items-center justify-center text-[var(--color-muted)] transition-all duration-300 hover:text-[var(--color-accent-teal)] disabled:pointer-events-none disabled:opacity-30"
     disabled
   >
-    <svg
-      class="h-4 w-4"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
-        d="M15 19l-7-7 7-7"
-      />
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
     </svg>
   </button>
 
   <div class="flex items-center gap-5">
     {Array.from({ length: totalPages }, (_, index) => {
       const page = index + 1;
-
       return (
         <button
           type="button"
           data-pagination-page={page}
           class:list={[
-            'relative pb-1 text-xs font-medium tracking-[0.12em] transition-all duration-300 cursor-pointer',
+            'relative cursor-pointer pb-1 text-xs font-medium tracking-[0.12em] transition-all duration-300',
             page === 1
               ? 'text-[var(--color-accent-teal)]'
               : 'text-[var(--color-muted)] hover:text-[var(--color-text)]',
@@ -73,7 +53,6 @@ if (totalPages <= 1) {
           aria-current={page === 1 ? 'page' : undefined}
         >
           {page}
-
           {page === 1 && (
             <span
               class="absolute bottom-0 left-0 h-px w-full bg-[var(--color-accent-teal)]"
@@ -89,135 +68,65 @@ if (totalPages <= 1) {
     type="button"
     data-pagination-next
     aria-label="Next page"
-    class="flex h-8 w-8 items-center justify-center text-[var(--color-muted)] transition-all duration-300 hover:text-[var(--color-accent-teal)] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+    class="flex h-8 w-8 cursor-pointer items-center justify-center text-[var(--color-muted)] transition-all duration-300 hover:text-[var(--color-accent-teal)] disabled:pointer-events-none disabled:opacity-30"
   >
-    <svg
-      class="h-4 w-4"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
-        d="M9 5l7 7-7 7"
-      />
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
     </svg>
   </button>
 </nav>
 
 <script>
   function initPagination(): void {
-    const paginations =
-      document.querySelectorAll<HTMLElement>('[data-pagination-target]');
+    const paginations = document.querySelectorAll<HTMLElement>('[data-pagination-target]');
 
     paginations.forEach((pagination) => {
       if (pagination.dataset.initialized === 'true') return;
 
       const target = pagination.dataset.paginationTarget;
-      const defaultPageSize = Number(
-        pagination.dataset.paginationPageSize
-      );
-      const mobilePageSize = Number(
-        pagination.dataset.paginationPageSizeMobile
-      );
-      const desktopPageSize = Number(
-        pagination.dataset.paginationPageSizeDesktop
-      );
+      const mobilePageSize = Number(pagination.dataset.paginationPageSizeMobile);
+      const desktopPageSize = Number(pagination.dataset.paginationPageSizeDesktop);
 
-      if (!target || !defaultPageSize) return;
+      if (!target || !mobilePageSize || !desktopPageSize) return;
 
       const items = Array.from(
         document.querySelectorAll<HTMLElement>('[data-pagination-item]')
       ).filter((item) => item.dataset.paginationItem === target);
 
-      const pageButtons =
-        pagination.querySelectorAll<HTMLButtonElement>(
-          '[data-pagination-page]'
-        );
-
-      const prevButton =
-        pagination.querySelector<HTMLButtonElement>(
-          '[data-pagination-prev]'
-        );
-
-      const nextButton =
-        pagination.querySelector<HTMLButtonElement>(
-          '[data-pagination-next]'
-        );
+      const pageButtons = pagination.querySelectorAll<HTMLButtonElement>('[data-pagination-page]');
+      const prevButton = pagination.querySelector<HTMLButtonElement>('[data-pagination-prev]');
+      const nextButton = pagination.querySelector<HTMLButtonElement>('[data-pagination-next]');
 
       if (!items.length || !pageButtons.length) return;
 
-      const getPageSize = () => {
-        if (
-          window.innerWidth >= 768 &&
-          desktopPageSize
-        ) {
-          return desktopPageSize;
-        }
-
-        if (mobilePageSize) {
-          return mobilePageSize;
-        }
-
-        return defaultPageSize;
-      };
+      const getPageSize = () =>
+        window.innerWidth >= 768 ? desktopPageSize : mobilePageSize;
 
       let currentPage = 1;
 
       const getHistoryPage = (): number => {
         const paginationState = history.state?.pagination;
+        if (!paginationState || typeof paginationState !== 'object') return 1;
 
-        if (
-          !paginationState ||
-          typeof paginationState !== 'object'
-        ) {
-          return 1;
-        }
-
-        const page = Number(
-          paginationState[target]
-        );
-
-        return Number.isFinite(page) && page >= 1
-          ? page
-          : 1;
+        const page = Number(paginationState[target]);
+        return Number.isFinite(page) && page >= 1 ? page : 1;
       };
 
-      const update = (
-        page: number,
-        scroll = false,
-        pushHistory = false
-      ) => {
+      const update = (page: number, scroll = false, pushHistory = false) => {
         const pageSize = getPageSize();
         const totalPages = Math.ceil(items.length / pageSize);
         const previousPage = currentPage;
 
-        currentPage = Math.max(
-          1,
-          Math.min(page, totalPages)
-        );
-
-        pagination.classList.toggle(
-          'hidden',
-          totalPages <= 1
-        );
+        currentPage = Math.max(1, Math.min(page, totalPages));
+        pagination.classList.toggle('hidden', totalPages <= 1);
 
         if (totalPages <= 1) {
-          items.forEach((item) => {
-            item.classList.remove('hidden');
-          });
+          items.forEach((item) => item.classList.remove('hidden'));
           return;
         }
 
-        if (
-          pushHistory &&
-          currentPage !== previousPage
-        ) {
-          const previousPaginationState =
-            history.state?.pagination ?? {};
-
+        if (pushHistory && currentPage !== previousPage) {
+          const previousPaginationState = history.state?.pagination ?? {};
           history.pushState(
             {
               ...(history.state ?? {}),
@@ -235,113 +144,56 @@ if (totalPages <= 1) {
         const end = start + pageSize;
 
         items.forEach((item, index) => {
-          item.classList.toggle(
-            'hidden',
-            index < start || index >= end
-          );
+          item.classList.toggle('hidden', index < start || index >= end);
         });
 
         pageButtons.forEach((button) => {
-          const pageNumber = Number(
-            button.dataset.paginationPage
-          );
-
+          const pageNumber = Number(button.dataset.paginationPage);
           const visible = pageNumber <= totalPages;
           const active = pageNumber === currentPage;
 
-          button.classList.toggle(
-            'hidden',
-            !visible
-          );
+          button.classList.toggle('hidden', !visible);
+          button.classList.toggle('text-[var(--color-accent-teal)]', active);
+          button.classList.toggle('text-[var(--color-muted)]', !active);
 
-          button.classList.toggle(
-            'text-[var(--color-accent-teal)]',
-            active
-          );
-          button.classList.toggle(
-            'text-[var(--color-muted)]',
-            !active
-          );
-
-          button.classList.toggle(
-            'text-[var(--color-text)]',
-            false
-          );
-
-          const indicator =
-            button.querySelector<HTMLElement>(
-              '[data-pagination-active-indicator]'
-            );
+          const indicator = button.querySelector<HTMLElement>('[data-pagination-active-indicator]');
 
           if (active) {
-            button.setAttribute(
-              'aria-current',
-              'page'
-            );
+            button.setAttribute('aria-current', 'page');
 
             if (!indicator) {
-              const activeIndicator =
-                document.createElement('span');
-
+              const activeIndicator = document.createElement('span');
               activeIndicator.dataset.paginationActiveIndicator = '';
               activeIndicator.className =
                 'absolute bottom-0 left-0 h-px w-full bg-[var(--color-accent-teal)]';
-
               button.appendChild(activeIndicator);
             }
           } else {
-            button.removeAttribute(
-              'aria-current'
-            );
-
+            button.removeAttribute('aria-current');
             indicator?.remove();
           }
         });
 
-        if (prevButton) {
-          prevButton.disabled = currentPage === 1;
-        }
+        if (prevButton) prevButton.disabled = currentPage === 1;
+        if (nextButton) nextButton.disabled = currentPage === totalPages;
 
-        if (nextButton) {
-          nextButton.disabled =
-            currentPage === totalPages;
-        }
-
-        if (
-          scroll &&
-          currentPage !== previousPage
-        ) {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
+        if (scroll && currentPage !== previousPage) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       };
 
       pageButtons.forEach((button) => {
         button.addEventListener('click', () => {
-          update(
-            Number(button.dataset.paginationPage),
-            true,
-            true
-          );
+          update(Number(button.dataset.paginationPage), true, true);
         });
       });
 
       prevButton?.addEventListener('click', () => {
-        update(
-          currentPage - 1,
-          true,
-          true
-        );
+        update(currentPage - 1, true, true);
       });
 
       nextButton?.addEventListener('click', () => {
-        update(
-          currentPage + 1,
-          true,
-          true
-        );
+        update(currentPage + 1, true, true);
       });
 
       window.addEventListener('resize', () => {
@@ -353,7 +205,6 @@ if (totalPages <= 1) {
       });
 
       update(getHistoryPage());
-
       pagination.dataset.initialized = 'true';
     });
   }
