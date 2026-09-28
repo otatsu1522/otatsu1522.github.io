@@ -4,13 +4,7 @@ import Pagination from '../../components/common/Pagination.astro';
 import JourneyCard from '../../components/common/JourneyCard.astro';
 import { ui, type Language } from '../../data/ui';
 import { getCollection, type CollectionEntry } from 'astro:content';
-
-const toDateNumber = (date?: string) => {
-  if (!date) return 0;
-  const match = date.trim().match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/);
-  if (!match) return 0;
-  return Number(match[1]) * 10000 + Number(match[2]) * 100 + Number(match[3]);
-};
+import { toDateNumber } from '../../utils/date';
 
 const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys'))
   .filter((entry) => entry.data.published)

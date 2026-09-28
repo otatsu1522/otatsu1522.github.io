@@ -1,17 +1,12 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import PostCard from './common/PostCard.astro';
+import SectionHeading from './common/SectionHeading.astro';
+import MoreLink from './common/MoreLink.astro';
 import { ui } from '../data/ui';
-
-const toDateNumber = (date?: string) => {
-  if (!date) return 0;
-  const match = date.trim().match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/);
-  if (!match) return 0;
-  return Number(match[1]) * 10000 + Number(match[2]) * 100 + Number(match[3]);
-};
+import { toDateNumber } from '../utils/date';
 
 const posts: CollectionEntry<'posts'>[] = await getCollection('posts');
-
 const latestPosts = posts
   .filter((post) => post.data.published)
   .sort((a, b) => toDateNumber(b.data.date) - toDateNumber(a.data.date))
@@ -19,12 +14,10 @@ const latestPosts = posts
 ---
 
 <section id="latest" class="pt-20 pb-0">
-  <div class="mb-10">
-    <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      <span class="lang-ja">{ui.ja.sections.postsTitle}</span>
-      <span class="lang-en">{ui.en.sections.postsTitle}</span>
-    </h2>
-  </div>
+  <SectionHeading
+    ja={ui.ja.sections.postsTitle}
+    en={ui.en.sections.postsTitle}
+  />
 
   {latestPosts.length > 0 ? (
     <>
@@ -35,12 +28,7 @@ const latestPosts = posts
       </div>
 
       <div class="mt-5 flex justify-center">
-        <a
-          href="/posts/"
-          class="inline-block text-4xl font-bold tracking-[0.16em] text-[var(--color-accent-green)] transition-all duration-300 hover:-translate-y-1 hover:text-[var(--color-accent-teal)] md:text-5xl"
-        >
-          MORE
-        </a>
+        <MoreLink href="/posts/" />
       </div>
     </>
   ) : (

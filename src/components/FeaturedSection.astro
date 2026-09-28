@@ -1,14 +1,10 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import JourneyCard from './common/JourneyCard.astro';
+import SectionHeading from './common/SectionHeading.astro';
+import MoreLink from './common/MoreLink.astro';
 import { ui } from '../data/ui';
-
-const toDateNumber = (date?: string) => {
-  if (!date) return 0;
-  const match = date.trim().match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/);
-  if (!match) return 0;
-  return Number(match[1]) * 10000 + Number(match[2]) * 100 + Number(match[3]);
-};
+import { toDateNumber } from '../utils/date';
 
 const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys'))
   .filter((entry) => entry.data.published)
@@ -19,12 +15,11 @@ const carouselItemClass =
 ---
 
 <section id="featured" class="pt-20 pb-0">
-  <div class="mb-10 text-left md:text-center">
-    <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      <span class="lang-ja">{ui.ja.sections.journeyTitle}</span>
-      <span class="lang-en">{ui.en.sections.journeyTitle}</span>
-    </h2>
-  </div>
+  <SectionHeading
+    ja={ui.ja.sections.journeyTitle}
+    en={ui.en.sections.journeyTitle}
+    class="text-left md:text-center"
+  />
 
   {journeys.length > 0 ? (
     <div class="relative">
@@ -38,12 +33,7 @@ const carouselItemClass =
       </div>
 
       <div class="mt-5 flex justify-center">
-        <a
-          href="/journeys/"
-          class="inline-block text-4xl font-bold tracking-[0.16em] text-[var(--color-accent-green)] transition-all duration-300 hover:text-[var(--color-accent-teal)] hover:-translate-y-1 md:text-5xl"
-        >
-          MORE
-        </a>
+        <MoreLink href="/journeys/" />
       </div>
     </div>
   ) : (
