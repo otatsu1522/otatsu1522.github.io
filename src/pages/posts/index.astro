@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Pagination from '../../components/common/Pagination.astro';
+import PostCard from '../../components/common/PostCard.astro';
 import { ui, type Language } from '../../data/ui';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
@@ -36,34 +37,12 @@ const t = ui[lang];
       <div class="mx-auto max-w-5xl px-6 md:px-8">
         <div class="border-t border-[var(--color-border)]">
           {sortedPosts.map((post, index) => (
-            <a
-              href={`/posts/${post.id}`}
+            <PostCard
+              entry={post}
+              headingLevel="h2"
               data-pagination-item="posts"
               data-pagination-index={index}
-              class="group block border-b border-[var(--color-border)] py-6 transition-all duration-300 hover:px-2 md:py-7"
-            >
-              <div class="grid gap-2 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-x-8">
-                <div>
-                  {post.data.date && post.data.showDate && (
-                    <time class="text-[10px] font-mono tracking-[0.15em] text-[var(--color-muted)]">
-                      {post.data.date}
-                    </time>
-                  )}
-                </div>
-
-                <div class="min-w-0">
-                  <div class="mb-3 h-px w-5 bg-[var(--color-accent-teal)] transition-all duration-300 group-hover:w-8"></div>
-
-                  <h2 class="text-xl font-semibold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-2xl">
-                    {post.data.title}
-                  </h2>
-
-                  <p class="mt-3 max-w-3xl line-clamp-3 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
-                    {post.data.summary}
-                  </p>
-                </div>
-              </div>
-            </a>
+            />
           ))}
         </div>
       </div>

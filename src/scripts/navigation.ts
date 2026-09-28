@@ -1,29 +1,9 @@
+import { smoothScrollTo } from './scroll';
+
 export function initNavigation(): void {
   const anchorLinks = document.querySelectorAll<HTMLAnchorElement>(
     'footer nav a[href*="#"]'
   );
-
-  const smoothScrollTo = (targetY: number, duration = 800) => {
-    const startY = window.scrollY;
-    const distance = targetY - startY;
-    const startTime = performance.now();
-
-    const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      window.scrollTo(
-        0,
-        startY + distance * progress
-      );
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    requestAnimationFrame(animate);
-  };
 
   anchorLinks.forEach((link) => {
     if (link.dataset.navigationInitialized === 'true') return;
@@ -54,7 +34,7 @@ export function initNavigation(): void {
       const targetY =
         target.getBoundingClientRect().top + window.scrollY;
 
-      smoothScrollTo(targetY, 800);
+      smoothScrollTo(targetY);
 
       history.replaceState(
         null,
@@ -76,7 +56,7 @@ export function initNavigation(): void {
     scrollTopLink.addEventListener('click', (event) => {
       event.preventDefault();
 
-      smoothScrollTo(0, 800);
+      smoothScrollTo(0);
 
       history.replaceState(
         null,
@@ -101,7 +81,7 @@ export function initNavigation(): void {
         const targetY =
           target.getBoundingClientRect().top + window.scrollY;
 
-        smoothScrollTo(targetY, 800);
+        smoothScrollTo(targetY);
       });
     }
   }

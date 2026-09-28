@@ -1,3 +1,5 @@
+import { smoothScrollTo } from './scroll';
+
 export function initMenu(): void {
   const toggle = document.getElementById('menu-toggle');
   const overlay = document.getElementById('menu-overlay');
@@ -9,14 +11,18 @@ export function initMenu(): void {
   const links = overlay.querySelectorAll<HTMLAnchorElement>('.menu-link');
 
   let isOpen = false;
-  let scrollAnimationFrame = 0;
 
   const preventScroll = (event: Event) => {
     if (isOpen) event.preventDefault();
   };
 
-  const preventKeyboardScroll = (event: KeyboardEvent) => {
+  const handleKeydown = (event: KeyboardEvent) => {
     if (!isOpen) return;
+
+    if (event.key === 'Escape') {
+      setOpen(false);
+      return;
+    }
 
     const scrollKeys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
 
@@ -25,42 +31,18 @@ export function initMenu(): void {
     }
   };
 
+  // Escape 用のリスナーも開閉に合わせて付け外しする
+  // （astro:after-swap で initMenu が再実行されても document にリスナーが溜まらない）
   const lockScroll = () => {
     document.addEventListener('wheel', preventScroll, { passive: false });
     document.addEventListener('touchmove', preventScroll, { passive: false });
-    document.addEventListener('keydown', preventKeyboardScroll);
+    document.addEventListener('keydown', handleKeydown);
   };
 
   const unlockScroll = () => {
     document.removeEventListener('wheel', preventScroll);
     document.removeEventListener('touchmove', preventScroll);
-    document.removeEventListener('keydown', preventKeyboardScroll);
-  };
-
-  const smoothScrollTo = (targetY: number, duration = 800) => {
-    cancelAnimationFrame(scrollAnimationFrame);
-
-    const startY = window.scrollY;
-    const distance = targetY - startY;
-    const startTime = performance.now();
-
-    const animate = (currentTime: number) => {
-      const progress = Math.min(
-        (currentTime - startTime) / duration,
-        1
-      );
-
-      window.scrollTo(
-        0,
-        startY + distance * progress
-      );
-
-      if (progress < 1) {
-        scrollAnimationFrame = requestAnimationFrame(animate);
-      }
-    };
-
-    scrollAnimationFrame = requestAnimationFrame(animate);
+    document.removeEventListener('keydown', handleKeydown);
   };
 
   const setOpen = (open: boolean) => {
@@ -98,7 +80,7 @@ export function initMenu(): void {
       return;
     }
 
-    toggle.focus();
+    toggle.focus({ preventScroll: true });
     overlay.setAttribute('aria-hidden', 'true');
 
     overlay.classList.remove(
@@ -141,7 +123,7 @@ export function initMenu(): void {
         target.getBoundingClientRect().top + window.scrollY;
 
       setOpen(false);
-      smoothScrollTo(targetY, 800);
+      smoothScrollTo(targetY);
 
       history.replaceState(
         null,
@@ -149,12 +131,6 @@ export function initMenu(): void {
         window.location.pathname + window.location.search
       );
     });
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && isOpen) {
-      setOpen(false);
-    }
   });
 
   toggle.dataset.initialized = 'true';

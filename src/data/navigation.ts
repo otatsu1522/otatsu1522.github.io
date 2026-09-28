@@ -8,8 +8,8 @@ export interface NavItem {
 export const navigationItems: NavItem[] = [
   { key: 'home', href: '/#top' },
   { key: 'about', href: '/#about' },
-  { key: 'featured', href: '/#journey' },
-  { key: 'posts', href: '/#posts' },
+  { key: 'featured', href: '/#featured' },
+  { key: 'latest', href: '/#latest' },
   { key: 'social', href: '/#social' },
   { key: 'contact', href: '/#contact' },
 ];

@@ -3,6 +3,7 @@ title: "ポートフォリオサイトサイトに関して"
 summary: "このプロジェクトのREADMEです。"
 date: "2026-09-27"
 cover: "./ogp.png"
+published: false
 ---
 
 ## tabibito (otatsu1522.github.io)

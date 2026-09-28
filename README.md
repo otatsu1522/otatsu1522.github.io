@@ -8,7 +8,7 @@
 
 - **高速な静的サイト生成**: Astroを利用したSSG構成
 - **バイリンガル対応**: 日本語・英語の切り替えおよび表示機能
-- **画像最適化**: ビルド時に `astro:assets` と Sharp を用いて `src/assets/images/` 配下の画像を WebP 形式へ自動変換・圧縮
+- **画像最適化**: ビルド時に `astro:assets` と Sharp を用いて写真を WebP 形式へ自動変換・圧縮
 - **レスポンシブデザイン**: Tailwind CSS v4 によるモバイル・PC双方に最適化したレイアウト
 - **CI/CD自動化**: GitHub Actionsを用いた GitHub Pages への自動ビルド・デプロイ
 
@@ -22,8 +22,7 @@
 │   └── workflows/          # GitHub Actions (デプロイワークフロー)
 ├── public/                 # 静的ファイル (Favicon)
 ├── src/
-│   ├── assets/             # ビルド時に最適化されるアセット (画像)
-│   │   └── images/
+│   ├── assets/
 │   ├── components/         # Astroコンポーネント
 │   ├── data/               # コンテンツデータ (TypeScript)
 │   ├── pages/              # ページルーティング

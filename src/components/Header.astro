@@ -32,7 +32,7 @@ import { ui } from '../data/ui';
     {navigationItems.map((item) => (
       <a
         href={item.href}
-        class="menu-link text-[clamp(1.8rem,6vh,3.5rem)] font-bold leading-[0.95] tracking-tight text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)] md:text-[clamp(2.5rem,10vh,5rem)]"
+        class="menu-link text-[clamp(1.8rem,6vh,3rem)] font-bold leading-[0.95] tracking-tight text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)] md:text-[clamp(2rem,8vh,4rem)]"
       >
         <span class="lang-ja">{ui.ja.nav[item.key]}</span>
         <span class="lang-en">{ui.en.nav[item.key]}</span>
@@ -41,7 +41,7 @@ import { ui } from '../data/ui';
   </nav>
 
   <div
-    class="mt-10 flex items-center gap-4 font-mono text-sm tracking-widest text-white/50 md:mt-14"
+    class="mt-16 flex items-center gap-4 font-mono text-sm tracking-widest text-white/50 md:mt-18"
   >
     <LanguageSwitcher />
   </div>

@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import type { HTMLAttributes } from 'astro/types';
+import type { CollectionEntry } from 'astro:content';
+import { ui } from '../../data/ui';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'href'> {
+  entry: CollectionEntry<'journeys'>;
+  /** カード内タイトルの見出しレベル（セクション内は h3、一覧ページは h2） */
+  headingLevel?: 'h2' | 'h3';
+}
+
+// class は配置側（カルーセル / グリッド）のレイアウト用。
+// data-pagination-* などその他の属性は rest 経由で <a> にそのまま渡す。
+const { entry, headingLevel = 'h3', class: className, ...rest } = Astro.props;
+const Heading = headingLevel;
+---
+
+<a
+  {...rest}
+  href={`/journeys/${entry.id}`}
+  class:list={['group/card flex flex-col', className]}
+>
+  {entry.data.cover && (
+    <div class="aspect-[4/3] w-full shrink-0 overflow-hidden bg-[var(--color-border)]">
+      <Image
+        src={entry.data.cover}
+        alt={entry.data.title}
+        class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
+      />
+    </div>
+  )}
+
+  <div class="pt-5">
+    {entry.data.date && entry.data.showDate && (
+      <time class="block text-[10px] font-mono tracking-[0.2em] text-[var(--color-muted)]">
+        {entry.data.date}
+      </time>
+    )}
+
+    <div class="mt-3 h-px w-10 bg-[var(--color-accent-teal)] transition-all duration-500 group-hover/card:w-16"></div>
+
+    <Heading class="mt-4 text-xl font-bold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover/card:text-[var(--color-accent-teal)] md:text-2xl lg:text-3xl">
+      {entry.data.title}
+    </Heading>
+
+    <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+      {entry.data.summary}
+    </p>
+
+    <div class="mt-6">
+      <span class="inline-block border-b border-[var(--color-text)] pb-1 text-xs font-bold tracking-[0.16em] text-[var(--color-text)] transition-colors duration-300 group-hover/card:border-[var(--color-accent-teal)] group-hover/card:text-[var(--color-accent-teal)]">
+        <span class="lang-ja">{ui.ja.buttons.readArticle}</span>
+        <span class="lang-en">{ui.en.buttons.readArticle}</span>
+      </span>
+    </div>
+  </div>
+</a>

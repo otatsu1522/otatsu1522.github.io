@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
+import PostCard from './common/PostCard.astro';
 import { ui } from '../data/ui';
 import postsBannerImg from '../assets/images/common/posts-banner.jpg';
 
@@ -19,7 +20,7 @@ const latestPosts = posts
   .slice(0, 3);
 ---
 
-<section id="posts" class="pt-20 pb-0">
+<section id="latest" class="pt-20 pb-0">
   <div class="mb-10">
     <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
       <span class="lang-ja">{ui.ja.sections.postsTitle}</span>
@@ -31,30 +32,7 @@ const latestPosts = posts
     <>
       <div class="border-t border-[var(--color-border)]">
         {latestPosts.map((post) => (
-          <a
-            href={`/posts/${post.id}`}
-            class="group block border-b border-[var(--color-border)] py-5 transition-all duration-300 hover:px-2 md:py-6"
-          >
-            <div class="min-w-0">
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
-                {post.data.date && post.data.showDate && (
-                  <time class="text-[10px] font-mono tracking-[0.14em] text-[var(--color-muted)]">
-                    {post.data.date}
-                  </time>
-                )}
-
-                <span class="h-px w-5 bg-[var(--color-accent-teal)] transition-all duration-300 group-hover:w-8"></span>
-              </div>
-
-              <h3 class="mt-2 text-lg font-semibold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-xl">
-                {post.data.title}
-              </h3>
-
-              <p class="mt-2 max-w-3xl line-clamp-2 text-sm leading-relaxed text-[var(--color-muted)]">
-                {post.data.summary}
-              </p>
-            </div>
-          </a>
+          <PostCard entry={post} />
         ))}
       </div>
 
