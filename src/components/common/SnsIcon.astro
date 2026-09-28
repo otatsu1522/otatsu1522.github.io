@@ -9,11 +9,11 @@ interface Props {
 const { name, class: className = 'w-5 h-5' } = Astro.props;
 ---
 
-{ name === 'youtube' && <Youtube class={className} /> }
+{ name === 'youtube' && <Youtube class={className} strokeWidth={1.5} /> }
 
-{ name === 'instagram' && <Instagram class={className} /> }
+{ name === 'instagram' && <Instagram class={className} strokeWidth={1.5} /> }
 
-{ name === 'twitter' && <Twitter class={className} /> }
+{ name === 'twitter' && <Twitter class={className} strokeWidth={1.5} /> }
 
 { name === 'tiktok' && (
   <svg
@@ -21,7 +21,7 @@ const { name, class: className = 'w-5 h-5' } = Astro.props;
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
+    stroke-width="1.5"
     stroke-linecap="round"
     stroke-linejoin="round"
     aria-hidden="true"

@@ -9,7 +9,7 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<div class={`flex items-center justify-center gap-6 ${className}`}>
+<div class={`flex items-center justify-center gap-4 ${className}`}>
   {snsLinks.map((sns: SnsLink) => (
     <a
       href={sns.url}
@@ -17,11 +17,11 @@ const { class: className = '' } = Astro.props;
       rel="noopener noreferrer"
       aria-label={sns.name}
       title={sns.name}
-      class="group px-1 text-[var(--color-muted)] transition-all duration-300 hover:-translate-y-1 hover:text-[var(--color-accent-teal)]"
+      class="group flex h-12 w-12 items-center justify-center border border-[var(--color-border)] text-[var(--color-muted)] transition-all duration-300 hover:border-[var(--color-accent-teal)] hover:bg-[var(--color-accent-teal)] hover:text-white"
     >
       <SnsIcon
         name={sns.icon}
-        class="h-8 w-8 transition-transform duration-300 group-hover:scale-110"
+        class="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
       />
     </a>
   ))}
