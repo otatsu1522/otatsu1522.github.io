@@ -1,15 +1,11 @@
-import { initNavigation } from './navigation';
 import { initMenu } from './menu';
-import { setupJourneyScroll } from './journey';
-import { setupGalleryDesktop } from './gallery-carousel';
-import { setupGalleryCarouselMobile } from './gallery-carousel-mobile';
+import { initNavigation } from './navigation';
+import { setupJourneysScroll } from './journeys';
 
 export function initApp(): void {
-  initNavigation();
   initMenu();
-  setupJourneyScroll();
-  setupGalleryDesktop();
-  setupGalleryCarouselMobile();
+  initNavigation();
+  setupJourneysScroll();
 }
 
 if (document.readyState === 'loading') {

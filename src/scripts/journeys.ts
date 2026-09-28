@@ -1,13 +1,13 @@
-export function setupGalleryCarouselMobile(): void {
-  const container = document.getElementById('gallery-mobile-container');
-  const prevBtn = document.querySelector<HTMLElement>('[data-gallery-mobile-prev]');
-  const nextBtn = document.querySelector<HTMLElement>('[data-gallery-mobile-next]');
+export function setupJourneysScroll(): void {
+  const container = document.getElementById('journey-container');
+  const leftBtn = document.getElementById('journey-scroll-left');
+  const rightBtn = document.getElementById('journey-scroll-right');
 
-  if (!container || !prevBtn || !nextBtn) return;
+  if (!container || !leftBtn || !rightBtn) return;
   if (container.dataset.infiniteInitialized === 'true') return;
 
-  const originalItems = Array.from(container.children) as HTMLElement[];
-  if (!originalItems.length) return;
+  const originalItems = Array.from(container.children);
+  if (!originalItems.length || container.querySelector('.text-gray-500')) return;
 
   const itemCount = originalItems.length;
 
@@ -30,33 +30,41 @@ export function setupGalleryCarouselMobile(): void {
 
     if (!firstItem || !secondSetFirstItem) return null;
 
-    const itemStep = secondItem
-      ? secondItem.offsetLeft - firstItem.offsetLeft
-      : secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
-    const setWidth = secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
-    const anchor = secondSetFirstItem.offsetLeft;
+    const itemStep =
+      secondItem
+        ? secondItem.offsetLeft - firstItem.offsetLeft
+        : secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
 
-    if (itemStep <= 0 || setWidth <= 0) return null;
+    const setWidth =
+      secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
 
-    return { itemStep, setWidth, anchor };
+    const centerOffset = isMobile
+      ? (container.clientWidth - secondSetFirstItem.offsetWidth) / 2
+      : 0;
+
+    const anchor =
+      secondSetFirstItem.offsetLeft - centerOffset;
+
+    return {
+      isMobile,
+      itemStep,
+      setWidth,
+      anchor,
+    };
   };
 
   const initScrollPosition = () => {
     const layout = getLayout();
-    if (!layout) return;
+    if (!layout || layout.setWidth <= 0) return;
 
-    container.style.scrollSnapType = 'none';
     container.scrollLeft = layout.anchor;
-
-    requestAnimationFrame(() => {
-      container.style.scrollSnapType = '';
-    });
   };
 
   const normalizePosition = () => {
     const layout = getLayout();
-    if (!layout) return;
+    if (!layout || layout.setWidth <= 0) return;
 
     let position = container.scrollLeft;
     let normalized = false;
@@ -66,7 +74,7 @@ export function setupGalleryCarouselMobile(): void {
       normalized = true;
     }
 
-    while (position >= layout.anchor + layout.setWidth) {
+    while (position > layout.anchor + layout.setWidth) {
       position -= layout.setWidth;
       normalized = true;
     }
@@ -91,12 +99,25 @@ export function setupGalleryCarouselMobile(): void {
     normalizeTimer = window.setTimeout(() => {
       normalizeTimer = undefined;
       normalizePosition();
-    }, 120);
+    }, 100);
   };
+
+  const images = container.querySelectorAll('img');
+
+  images.forEach((img) => {
+    if (!img.complete) {
+      img.addEventListener('load', initScrollPosition, { once: true });
+    }
+  });
 
   initScrollPosition();
 
   container.addEventListener('scroll', scheduleNormalize, { passive: true });
+
+  container.addEventListener('scrollend', () => {
+    if (isButtonScrolling) return;
+    normalizePosition();
+  });
 
   const finishButtonScroll = () => {
     if (!isButtonScrolling) return;
@@ -115,10 +136,13 @@ export function setupGalleryCarouselMobile(): void {
 
   const scrollWithButton = (direction: number) => {
     const layout = getLayout();
-    if (!layout) return;
+    if (!layout || layout.itemStep <= 0) return;
 
     let current = container.scrollLeft;
-    let target = current + layout.itemStep * direction;
+
+    const amount = layout.itemStep;
+
+    let target = current + amount * direction;
 
     while (target < 0) {
       current += layout.setWidth;
@@ -155,37 +179,18 @@ export function setupGalleryCarouselMobile(): void {
     }, 800);
   };
 
-  prevBtn.addEventListener('click', () => scrollWithButton(-1));
-  nextBtn.addEventListener('click', () => scrollWithButton(1));
+  leftBtn.addEventListener('click', () => {
+    const layout = getLayout();
+    if (!layout) return;
 
-  // 中央以外の写真をタップしたら、その写真を中央へスクロールする
-  // (中央の写真は何もせず、通常通りイベントをバブリングさせてライトボックスを開かせる)
-  const allItems = Array.from(container.children) as HTMLElement[];
+    scrollWithButton(-1);
+  });
 
-  allItems.forEach((item) => {
-    item.addEventListener('click', (event) => {
-      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
-      const viewCenter = container.scrollLeft + container.clientWidth / 2;
-      const isCentered = Math.abs(itemCenter - viewCenter) < item.offsetWidth * 0.15;
+  rightBtn.addEventListener('click', () => {
+    const layout = getLayout();
+    if (!layout) return;
 
-      if (isCentered) return;
-
-      event.stopPropagation();
-
-      isButtonScrolling = true;
-      container.scrollTo({
-        left: itemCenter - container.clientWidth / 2,
-        behavior: 'smooth',
-      });
-
-      if (finishTimer !== undefined) {
-        window.clearTimeout(finishTimer);
-      }
-
-      finishTimer = window.setTimeout(() => {
-        finishButtonScroll();
-      }, 800);
-    });
+    scrollWithButton(1);
   });
 
   container.dataset.infiniteInitialized = 'true';

@@ -1,10 +1,8 @@
 import type { Language } from './ui';
 
 export interface HeroConfig {
-  eyebrow: string;
   title: string;
   tagline: string;
-  meta: string;
 }
 
 export interface SiteConfig {
@@ -28,10 +26,8 @@ export const siteConfig: Record<Language, SiteConfig> = {
     contactDescription: 'お問い合わせは下記のメールアドレスよりお願いします。',
     email: 'otatsu1522@gmail.com',
     hero: {
-      eyebrow: "A TRAVELER",
       title: 'OTATSU',
-      tagline: 'JOURNEY IS MY LIFE',
-      meta: '2024 — PRESENT',
+      tagline: 'JOURNEY IS MY LIFE'
     },
   },
   en: {
@@ -43,10 +39,8 @@ export const siteConfig: Record<Language, SiteConfig> = {
     contactDescription: 'For inquiries, please contact me at the email address below.',
     email: 'otatsu1522@gmail.com',
     hero: {
-      eyebrow: "A TRAVELER",
       title: 'OTATSU',
       tagline: 'JOURNEY IS MY LIFE',
-      meta: '2024 — PRESENT',
     },
   },
 };

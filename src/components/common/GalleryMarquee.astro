@@ -4,7 +4,7 @@ import type { ImageMetadata } from 'astro';
 
 const galleryImages = Object.entries(
   import.meta.glob<{ default: ImageMetadata }>(
-    '../../assets/images/gallery/*.{jpg,jpeg,png,webp,avif}',
+    '../../assets/images/common/*.{jpg,jpeg,png,webp,avif}',
     { eager: true }
   )
 )
@@ -45,7 +45,7 @@ const galleryImages = Object.entries(
 )}
 
 <script>
-  const GALLERY_SPEED = 70; // 横スクロール速度(px/秒)
+  const GALLERY_SPEED = 50; // 横スクロール速度(px/秒)
 
   let animationFrame = 0;
   let resizeHandler: (() => void) | null = null;
