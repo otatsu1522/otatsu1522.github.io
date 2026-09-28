@@ -65,7 +65,7 @@ export const ui = {
       noPosts: 'No posts available yet.',
     },
     footer: {
-      rights: 'OTATSU. All rights reserved.',
+      rights: ' OTATSU. All rights reserved.',
       scrollTop: 'SCROLL TOP',
     },
   },
