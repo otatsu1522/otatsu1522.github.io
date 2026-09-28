@@ -28,11 +28,11 @@ import { ui } from '../data/ui';
          transition-[transform,opacity] duration-300 ease-in-out"
   aria-hidden="true"
 >
-  <nav class="flex flex-col items-center gap-3 text-center md:gap-4">
+  <nav class="flex translate-y-4 flex-col items-center gap-3 text-center md:translate-y-6 md:gap-4">
     {navigationItems.map((item) => (
       <a
         href={item.href}
-        class="menu-link text-[clamp(1.5rem,5vh,3rem)] font-bold leading-[0.95] tracking-tight text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
+        class="menu-link text-[clamp(1.8rem,6vh,3.5rem)] font-bold leading-[0.95] tracking-tight text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)] md:text-[clamp(2.5rem,10vh,5rem)]"
       >
         <span class="lang-ja">{ui.ja.nav[item.key]}</span>
         <span class="lang-en">{ui.en.nav[item.key]}</span>
