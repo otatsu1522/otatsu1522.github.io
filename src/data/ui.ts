@@ -16,7 +16,7 @@ export const ui = {
       aboutSubtitle: 'プロフィール',
       historyTitle: 'History',
       historySubtitle: '旅歴',
-      journeyTitle: 'Featured Journeys',
+      journeyTitle: 'Journeys',
       journeySubtitle: '旅の記録',
       journeyListTitle: 'Journeys',
       journeyListSubtitle: '旅の記録一覧',

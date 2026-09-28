@@ -9,24 +9,16 @@ export function initMenu(): void {
   const links = overlay.querySelectorAll<HTMLAnchorElement>('.menu-link');
 
   let isOpen = false;
+  let scrollAnimationFrame = 0;
 
   const preventScroll = (event: Event) => {
-    if (!isOpen) return;
-    event.preventDefault();
+    if (isOpen) event.preventDefault();
   };
 
   const preventKeyboardScroll = (event: KeyboardEvent) => {
     if (!isOpen) return;
 
-    const scrollKeys = [
-      'ArrowUp',
-      'ArrowDown',
-      'PageUp',
-      'PageDown',
-      'Home',
-      'End',
-      ' ',
-    ];
+    const scrollKeys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
 
     if (scrollKeys.includes(event.key)) {
       event.preventDefault();
@@ -34,14 +26,8 @@ export function initMenu(): void {
   };
 
   const lockScroll = () => {
-    document.addEventListener('wheel', preventScroll, {
-      passive: false,
-    });
-
-    document.addEventListener('touchmove', preventScroll, {
-      passive: false,
-    });
-
+    document.addEventListener('wheel', preventScroll, { passive: false });
+    document.addEventListener('touchmove', preventScroll, { passive: false });
     document.addEventListener('keydown', preventKeyboardScroll);
   };
 
@@ -52,6 +38,8 @@ export function initMenu(): void {
   };
 
   const smoothScrollTo = (targetY: number, duration = 1000) => {
+    cancelAnimationFrame(scrollAnimationFrame);
+
     const startY = window.scrollY;
     const distance = targetY - startY;
     const startTime = performance.now();
@@ -63,23 +51,28 @@ export function initMenu(): void {
     };
 
     const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeInOut(progress);
+      const progress = Math.min(
+        (currentTime - startTime) / duration,
+        1
+      );
 
-      window.scrollTo(0, startY + distance * easedProgress);
+      window.scrollTo(
+        0,
+        startY + distance * easeInOut(progress)
+      );
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        scrollAnimationFrame = requestAnimationFrame(animate);
       }
     };
 
-    requestAnimationFrame(animate);
+    scrollAnimationFrame = requestAnimationFrame(animate);
   };
 
   const setOpen = (open: boolean) => {
-    isOpen = open;
+    if (isOpen === open) return;
 
+    isOpen = open;
     toggle.setAttribute('aria-expanded', String(open));
     overlay.setAttribute('aria-hidden', String(!open));
 
@@ -89,7 +82,6 @@ export function initMenu(): void {
         'opacity-0',
         'pointer-events-none'
       );
-
       overlay.classList.add(
         'translate-x-0',
         'opacity-100'
@@ -102,7 +94,6 @@ export function initMenu(): void {
         'transform',
         'translateY(5px) rotate(45deg)'
       );
-
       lines[1]?.style.setProperty(
         'transform',
         'translateY(-5px) rotate(-45deg)'
@@ -112,15 +103,14 @@ export function initMenu(): void {
       return;
     }
 
+    overlay.classList.remove(
+      'translate-x-0',
+      'opacity-100'
+    );
     overlay.classList.add(
       'translate-x-full',
       'opacity-0',
       'pointer-events-none'
-    );
-
-    overlay.classList.remove(
-      'translate-x-0',
-      'opacity-100'
     );
 
     toggle.classList.remove('text-white');
@@ -141,7 +131,6 @@ export function initMenu(): void {
       const url = new URL(link.href, window.location.href);
 
       if (!url.hash) return;
-
       if (url.pathname !== window.location.pathname) return;
 
       const target = document.getElementById(url.hash.slice(1));
