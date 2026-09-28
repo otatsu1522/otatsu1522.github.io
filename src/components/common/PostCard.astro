@@ -4,7 +4,6 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props extends Omit<HTMLAttributes<'a'>, 'href'> {
   entry: CollectionEntry<'posts'>;
-  /** カード内タイトルの見出しレベル（セクション内は h3、一覧ページは h2） */
   headingLevel?: 'h2' | 'h3';
 }
 
@@ -16,26 +15,32 @@ const Heading = headingLevel;
   {...rest}
   href={`/posts/${entry.id}`}
   class:list={[
-    'group block border-b border-[var(--color-border)] py-5 transition-all duration-300 hover:px-2 last:border-b-0 md:py-6',
+    'group block border-b border-[var(--color-border)] py-5 transition-all duration-300 last:border-b-0 hover:px-2 md:py-6',
     className,
   ]}
 >
   <div class="min-w-0">
     <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
-      {entry.data.date && entry.data.showDate && (
-        <time class="text-[10px] tracking-[0.14em] text-[var(--color-muted)]">
-          {entry.data.date}
-        </time>
-      )}
+      {
+        entry.data.date && entry.data.showDate && (
+          <time class="text-[10px] tracking-[0.14em] text-[var(--color-muted)]">
+            {entry.data.date}
+          </time>
+        )
+      }
 
-      <span class="h-px w-5 bg-[var(--color-accent-teal)] transition-all duration-300 group-hover:w-8"></span>
+      <span
+        class="h-px w-5 bg-[var(--color-accent-teal)] transition-all duration-300 group-hover:w-8"
+      ></span>
     </div>
 
-    <Heading class="mt-2 text-lg font-semibold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-xl">
+    <Heading
+      class="mt-2 text-lg font-semibold leading-tight tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-xl"
+    >
       {entry.data.title}
     </Heading>
 
-    <p class="mt-2 max-w-3xl line-clamp-2 text-sm leading-relaxed text-[var(--color-muted)]">
+    <p class="mt-2 line-clamp-2 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)]">
       {entry.data.summary}
     </p>
   </div>

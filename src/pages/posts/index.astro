@@ -6,7 +6,7 @@ import { ui, type Language } from '../../data/ui';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 const posts: CollectionEntry<'posts'>[] = (await getCollection('posts')).filter(
-  (post) => post.data.published
+  (post) => post.data.published,
 );
 
 const toDateNumber = (date?: string) => {
@@ -25,7 +25,7 @@ const t = ui[lang];
 ---
 
 <Layout title={t.sections.postsListTitle}>
-  <main class="pt-20 pb-20">
+  <main class="pb-20 pt-20">
     <header class="mx-auto mb-14 max-w-5xl px-6 md:mb-16 md:px-8">
       <h1 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-6xl">
         <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
@@ -33,25 +33,27 @@ const t = ui[lang];
       </h1>
     </header>
 
-    {sortedPosts.length > 0 ? (
-      <div class="mx-auto max-w-5xl px-6 md:px-8">
-        <div>
-          {sortedPosts.map((post, index) => (
-            <PostCard
-              entry={post}
-              headingLevel="h2"
-              data-pagination-item="posts"
-              data-pagination-index={index}
-            />
-          ))}
+    {
+      sortedPosts.length > 0 ? (
+        <div class="mx-auto max-w-5xl px-6 md:px-8">
+          <div>
+            {sortedPosts.map((post, index) => (
+              <PostCard
+                entry={post}
+                headingLevel="h2"
+                data-pagination-item="posts"
+                data-pagination-index={index}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    ) : (
-      <div class="mx-auto max-w-5xl px-6 py-6 text-sm text-[var(--color-muted)] md:px-8">
-        <span class="lang-ja">{ui.ja.messages.noPosts}</span>
-        <span class="lang-en">{ui.en.messages.noPosts}</span>
-      </div>
-    )}
+      ) : (
+        <div class="mx-auto max-w-5xl px-6 py-6 text-sm text-[var(--color-muted)] md:px-8">
+          <span class="lang-ja">{ui.ja.messages.noPosts}</span>
+          <span class="lang-en">{ui.en.messages.noPosts}</span>
+        </div>
+      )
+    }
 
     <div class="mx-auto max-w-5xl px-6 md:px-8">
       <Pagination

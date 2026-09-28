@@ -13,28 +13,27 @@ const latestPosts = posts
   .slice(0, 3);
 ---
 
-<section id="latest" class="pt-20 pb-0">
-  <SectionHeading
-    ja={ui.ja.sections.postsTitle}
-    en={ui.en.sections.postsTitle}
-  />
+<section id="latest" class="pb-0 pt-20">
+  <SectionHeading ja={ui.ja.sections.postsTitle} en={ui.en.sections.postsTitle} />
 
-  {latestPosts.length > 0 ? (
-    <>
-      <div>
-        {latestPosts.map((post) => (
-          <PostCard entry={post} />
-        ))}
-      </div>
+  {
+    latestPosts.length > 0 ? (
+      <>
+        <div>
+          {latestPosts.map((post) => (
+            <PostCard entry={post} />
+          ))}
+        </div>
 
-      <div class="mt-5 flex justify-center">
-        <MoreLink href="/posts/" />
+        <div class="mt-5 flex justify-center">
+          <MoreLink href="/posts/" />
+        </div>
+      </>
+    ) : (
+      <div class="border-t border-[var(--color-border)] py-5 text-sm text-[var(--color-muted)]">
+        <span class="lang-ja">{ui.ja.messages.noPosts}</span>
+        <span class="lang-en">{ui.en.messages.noPosts}</span>
       </div>
-    </>
-  ) : (
-    <div class="border-t border-[var(--color-border)] py-5 text-sm text-[var(--color-muted)]">
-      <span class="lang-ja">{ui.ja.messages.noPosts}</span>
-      <span class="lang-en">{ui.en.messages.noPosts}</span>
-    </div>
-  )}
+    )
+  }
 </section>

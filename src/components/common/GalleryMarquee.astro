@@ -5,44 +5,46 @@ import type { ImageMetadata } from 'astro';
 const galleryImages = Object.entries(
   import.meta.glob<{ default: ImageMetadata }>(
     '../../assets/images/common/*.{jpg,jpeg,png,webp,avif}',
-    { eager: true }
-  )
+    { eager: true },
+  ),
 )
   .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
   .map(([, module]) => module.default);
 ---
 
-{galleryImages.length > 0 && (
-  <div id="gallery-viewport" class="relative w-screen -ml-[calc(50vw-50%)] overflow-hidden">
-    <div id="gallery-track" class="flex w-max m-0 p-0 will-change-transform">
-      <div id="gallery-set" class="flex shrink-0 m-0 p-0">
-        {galleryImages.map((image, index) => (
-          <div class="block shrink-0 h-[120px] md:h-[180px] m-0 p-0 overflow-hidden">
-            <Image
-              src={image}
-              alt=""
-              class="block w-auto h-full max-w-none m-0 p-0"
-              loading={index < 8 ? 'eager' : 'lazy'}
-            />
-          </div>
-        ))}
-      </div>
+{
+  galleryImages.length > 0 && (
+    <div id="gallery-viewport" class="relative -ml-[calc(50vw-50%)] w-screen overflow-hidden">
+      <div id="gallery-track" class="m-0 flex w-max p-0 will-change-transform">
+        <div id="gallery-set" class="m-0 flex shrink-0 p-0">
+          {galleryImages.map((image, index) => (
+            <div class="m-0 block h-[120px] shrink-0 overflow-hidden p-0 md:h-[180px]">
+              <Image
+                src={image}
+                alt=""
+                class="m-0 block h-full w-auto max-w-none p-0"
+                loading={index < 8 ? 'eager' : 'lazy'}
+              />
+            </div>
+          ))}
+        </div>
 
-      <div class="flex shrink-0 m-0 p-0" aria-hidden="true">
-        {galleryImages.map((image) => (
-          <div class="block shrink-0 h-[120px] md:h-[180px] m-0 p-0 overflow-hidden">
-            <Image
-              src={image}
-              alt=""
-              class="block w-auto h-full max-w-none m-0 p-0"
-              loading="lazy"
-            />
-          </div>
-        ))}
+        <div class="m-0 flex shrink-0 p-0" aria-hidden="true">
+          {galleryImages.map((image) => (
+            <div class="m-0 block h-[120px] shrink-0 overflow-hidden p-0 md:h-[180px]">
+              <Image
+                src={image}
+                alt=""
+                class="m-0 block h-full w-auto max-w-none p-0"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-)}
+  )
+}
 
 <script>
   const GALLERY_SPEED = 50; // 横スクロール速度(px/秒)
@@ -90,7 +92,7 @@ const galleryImages = Object.entries(
       previousTime = time;
 
       if (loopWidth > 0) {
-        position -= GALLERY_SPEED * delta / 1000;
+        position -= (GALLERY_SPEED * delta) / 1000;
 
         if (position <= -loopWidth) {
           position += loopWidth;

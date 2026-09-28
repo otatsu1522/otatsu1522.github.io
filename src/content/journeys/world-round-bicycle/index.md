@@ -1,8 +1,8 @@
 ---
-title: "世界一周で使った自転車紹介"
-summary: "世界一周の旅で使用している自転車の仕様を、フレームから駆動系、タイヤ、キャリアまでまとめています。"
-cover: "./bicycle-world.jpg"
-date: "2024/2/2"
+title: '世界一周で使った自転車紹介'
+summary: '世界一周の旅で使用している自転車の仕様を、フレームから駆動系、タイヤ、キャリアまでまとめています。'
+cover: './bicycle-world.jpg'
+date: '2024/2/2'
 showDate: false
 published: true
 ---

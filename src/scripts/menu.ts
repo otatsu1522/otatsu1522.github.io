@@ -31,8 +31,6 @@ export function initMenu(): void {
     }
   };
 
-  // Escape 用のリスナーも開閉に合わせて付け外しする
-  // （astro:after-swap で initMenu が再実行されても document にリスナーが溜まらない）
   const lockScroll = () => {
     document.addEventListener('wheel', preventScroll, { passive: false });
     document.addEventListener('touchmove', preventScroll, { passive: false });
@@ -54,27 +52,14 @@ export function initMenu(): void {
     if (open) {
       overlay.setAttribute('aria-hidden', 'false');
 
-      overlay.classList.remove(
-        'translate-x-full',
-        'opacity-0',
-        'pointer-events-none'
-      );
-      overlay.classList.add(
-        'translate-x-0',
-        'opacity-100'
-      );
+      overlay.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
+      overlay.classList.add('translate-x-0', 'opacity-100');
 
       toggle.classList.remove('text-black');
       toggle.classList.add('text-white');
 
-      lines[0]?.style.setProperty(
-        'transform',
-        'translateY(5px) rotate(45deg)'
-      );
-      lines[1]?.style.setProperty(
-        'transform',
-        'translateY(-5px) rotate(-45deg)'
-      );
+      lines[0]?.style.setProperty('transform', 'translateY(5px) rotate(45deg)');
+      lines[1]?.style.setProperty('transform', 'translateY(-5px) rotate(-45deg)');
 
       lockScroll();
       return;
@@ -83,15 +68,8 @@ export function initMenu(): void {
     toggle.focus({ preventScroll: true });
     overlay.setAttribute('aria-hidden', 'true');
 
-    overlay.classList.remove(
-      'translate-x-0',
-      'opacity-100'
-    );
-    overlay.classList.add(
-      'translate-x-full',
-      'opacity-0',
-      'pointer-events-none'
-    );
+    overlay.classList.remove('translate-x-0', 'opacity-100');
+    overlay.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
 
     toggle.classList.remove('text-white');
     toggle.classList.add('text-black');
@@ -119,17 +97,12 @@ export function initMenu(): void {
 
       event.preventDefault();
 
-      const targetY =
-        target.getBoundingClientRect().top + window.scrollY;
+      const targetY = target.getBoundingClientRect().top + window.scrollY;
 
       setOpen(false);
       smoothScrollTo(targetY);
 
-      history.replaceState(
-        null,
-        '',
-        window.location.pathname + window.location.search
-      );
+      history.replaceState(null, '', window.location.pathname + window.location.search);
     });
   });
 

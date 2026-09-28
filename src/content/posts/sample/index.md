@@ -1,8 +1,8 @@
 ---
-title: "サンプル投稿"
-summary: "これはサンプルの投稿です。"
-date: ""
-cover: "./bg.jpg"
+title: 'サンプル投稿'
+summary: 'これはサンプルの投稿です。'
+date: ''
+cover: './bg.jpg'
 published: false
 ---
 

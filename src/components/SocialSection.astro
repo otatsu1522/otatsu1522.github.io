@@ -6,7 +6,7 @@ import SnsIcon from './common/SnsIcon.astro';
 import socialImg from '../assets/images/common/social.jpg';
 ---
 
-<section id="social" class="pt-20 pb-0">
+<section id="social" class="pb-0 pt-20">
   <div class="flex flex-col md:grid md:grid-cols-2 md:items-center md:gap-14 lg:gap-20">
     <Image
       src={socialImg}
@@ -16,7 +16,9 @@ import socialImg from '../assets/images/common/social.jpg';
 
     <div class="order-2 md:order-1">
       <div class="mb-10">
-        <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
+        <h2
+          class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl"
+        >
           <span class="lang-ja">{ui.ja.sections.socialTitle}</span>
           <span class="lang-en">{ui.en.sections.socialTitle}</span>
         </h2>
@@ -24,33 +26,35 @@ import socialImg from '../assets/images/common/social.jpg';
 
       <div class="px-4 md:px-0">
         <div>
-          {snsLinks.map((sns: SnsLink) => (
-            <a
-              href={sns.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group flex items-center gap-5 border-b border-[var(--color-border)] py-5 transition-all duration-300 last:border-b-0 hover:px-2"
-            >
-              <SnsIcon
-                name={sns.icon}
-                class="h-7 w-7 shrink-0 text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)]"
-              />
+          {
+            snsLinks.map((sns: SnsLink) => (
+              <a
+                href={sns.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center gap-5 border-b border-[var(--color-border)] py-5 transition-all duration-300 last:border-b-0 hover:px-2"
+              >
+                <SnsIcon
+                  name={sns.icon}
+                  class="h-7 w-7 shrink-0 text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)]"
+                />
 
-              <div class="min-w-0 flex-1">
-                <div class="text-xl font-bold tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-2xl">
-                  {sns.name}
+                <div class="min-w-0 flex-1">
+                  <div class="text-xl font-bold tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-2xl">
+                    {sns.name}
+                  </div>
+
+                  <p class="lang-ja mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
+                    {sns.description.ja}
+                  </p>
+
+                  <p class="lang-en mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
+                    {sns.description.en}
+                  </p>
                 </div>
-
-                <p class="lang-ja mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
-                  {sns.description.ja}
-                </p>
-
-                <p class="lang-en mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
-                  {sns.description.en}
-                </p>
-              </div>
-            </a>
-          ))}
+              </a>
+            ))
+          }
         </div>
       </div>
     </div>

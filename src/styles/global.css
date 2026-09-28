@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --color-bg: #ffffff;
@@ -14,7 +14,9 @@
 
 html {
   scroll-behavior: smooth;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   overflow-x: clip;
   background: var(--color-bg);
   color: var(--color-text);
@@ -26,8 +28,18 @@ body {
   color: var(--color-text);
 }
 
-.text-accent-teal { color: var(--color-accent-teal); }
-.text-accent-green { color: var(--color-accent-green); }
-.bg-accent-teal { background-color: var(--color-accent-teal); }
-.bg-accent-green { background-color: var(--color-accent-green); }
-.border-accent-teal { border-color: var(--color-accent-teal); }
+.text-accent-teal {
+  color: var(--color-accent-teal);
+}
+.text-accent-green {
+  color: var(--color-accent-green);
+}
+.bg-accent-teal {
+  background-color: var(--color-accent-teal);
+}
+.bg-accent-green {
+  background-color: var(--color-accent-green);
+}
+.border-accent-teal {
+  border-color: var(--color-accent-teal);
+}

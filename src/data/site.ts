@@ -45,6 +45,5 @@ export const siteConfig: Record<Language, SiteConfig> = {
     contactAction: 'GET IN TOUCH',
     email: 'otatsu1522@gmail.com',
     message: 'See you somewhere in the world.',
-
   },
 };

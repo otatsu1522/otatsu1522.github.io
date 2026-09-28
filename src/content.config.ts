@@ -5,7 +5,11 @@ const articleSchema = ({ image }: { image: (...args: any[]) => any }) =>
   z.object({
     title: z.string(),
     summary: z.string(),
-    date: z.string().nullable().optional().transform((value) => value?.trim() || undefined),
+    date: z
+      .string()
+      .nullable()
+      .optional()
+      .transform((value) => value?.trim() || undefined),
     showDate: z.boolean().default(true),
     cover: image().optional(),
     published: z.boolean().default(true),

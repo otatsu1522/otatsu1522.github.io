@@ -7,7 +7,7 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer class="mt-20 bg-[var(--color-overlay-bg)] text-[var(--color-overlay-text)]">
-  <div class="mx-auto flex max-w-5xl flex-col items-center px-4 pt-12 pb-8 md:pt-16">
+  <div class="mx-auto flex max-w-5xl flex-col items-center px-4 pb-8 pt-12 md:pt-16">
     <a
       href="#top"
       id="footer-scroll-top"
@@ -20,12 +20,8 @@ const currentYear = new Date().getFullYear();
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.5"
-          d="M5 15l7-7 7 7"
-        />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 15l7-7 7 7"
+        ></path>
       </svg>
 
       <span class="mt-2 text-[10px] tracking-[0.18em]">
@@ -35,17 +31,19 @@ const currentYear = new Date().getFullYear();
 
     <nav class="mt-8 w-full">
       <ul class="flex flex-wrap items-center justify-center gap-x-7 gap-y-4 md:gap-x-10">
-        {navigationItems.map((item: NavItem) => (
-          <li>
-            <a
-              href={item.href}
-              class="text-sm font-semibold tracking-[0.14em] text-[var(--color-muted)] transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
-            >
-              <span class="lang-ja">{ui.ja.nav[item.key]}</span>
-              <span class="lang-en">{ui.en.nav[item.key]}</span>
-            </a>
-          </li>
-        ))}
+        {
+          navigationItems.map((item: NavItem) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-sm font-semibold tracking-[0.14em] text-[var(--color-muted)] transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
+              >
+                <span class="lang-ja">{ui.ja.nav[item.key]}</span>
+                <span class="lang-en">{ui.en.nav[item.key]}</span>
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
 
@@ -54,7 +52,8 @@ const currentYear = new Date().getFullYear();
     </div>
 
     <p class="mt-8 text-[10px] tracking-[0.12em] text-[var(--color-muted)]">
-      &copy; {currentYear} {ui.ja.footer.copyRights}
+      &copy; {currentYear}
+      {ui.ja.footer.copyRights}
     </p>
   </div>
 </footer>

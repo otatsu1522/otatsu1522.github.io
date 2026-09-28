@@ -22,27 +22,23 @@ export function setupFeaturedScroll(): void {
   const getLayout = () => {
     const firstItem = container.children[0] as HTMLElement | undefined;
     const secondItem = container.children[1] as HTMLElement | undefined;
-    const secondSetFirstItem =
-      container.children[itemCount] as HTMLElement | undefined;
+    const secondSetFirstItem = container.children[itemCount] as HTMLElement | undefined;
 
     if (!firstItem || !secondSetFirstItem) return null;
 
     const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
-    const itemStep =
-      secondItem
-        ? secondItem.offsetLeft - firstItem.offsetLeft
-        : secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
+    const itemStep = secondItem
+      ? secondItem.offsetLeft - firstItem.offsetLeft
+      : secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
 
-    const setWidth =
-      secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
+    const setWidth = secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
 
     const centerOffset = isMobile
       ? (container.clientWidth - secondSetFirstItem.offsetWidth) / 2
       : 0;
 
-    const anchor =
-      secondSetFirstItem.offsetLeft - centerOffset;
+    const anchor = secondSetFirstItem.offsetLeft - centerOffset;
 
     return {
       itemStep,
@@ -96,9 +92,7 @@ export function setupFeaturedScroll(): void {
     }, 100);
   };
 
-  const images = Array.from(
-    container.querySelectorAll<HTMLImageElement>('img')
-  );
+  const images = Array.from(container.querySelectorAll<HTMLImageElement>('img'));
 
   let remainingImages = images.filter((img) => !img.complete).length;
 

@@ -1,9 +1,7 @@
 import { smoothScrollTo } from './scroll';
 
 export function initNavigation(): void {
-  const anchorLinks = document.querySelectorAll<HTMLAnchorElement>(
-    'footer nav a[href*="#"]'
-  );
+  const anchorLinks = document.querySelectorAll<HTMLAnchorElement>('footer nav a[href*="#"]');
 
   anchorLinks.forEach((link) => {
     if (link.dataset.navigationInitialized === 'true') return;
@@ -16,10 +14,7 @@ export function initNavigation(): void {
       if (url.pathname !== window.location.pathname) {
         event.preventDefault();
 
-        sessionStorage.setItem(
-          'navigation-target',
-          url.hash.slice(1)
-        );
+        sessionStorage.setItem('navigation-target', url.hash.slice(1));
 
         window.location.href = url.pathname;
         return;
@@ -31,45 +26,31 @@ export function initNavigation(): void {
 
       event.preventDefault();
 
-      const targetY =
-        target.getBoundingClientRect().top + window.scrollY;
+      const targetY = target.getBoundingClientRect().top + window.scrollY;
 
       smoothScrollTo(targetY);
 
-      history.replaceState(
-        null,
-        '',
-        window.location.pathname + window.location.search
-      );
+      history.replaceState(null, '', window.location.pathname + window.location.search);
     });
 
     link.dataset.navigationInitialized = 'true';
   });
 
-  const scrollTopLink =
-    document.getElementById('footer-scroll-top');
+  const scrollTopLink = document.getElementById('footer-scroll-top');
 
-  if (
-    scrollTopLink &&
-    scrollTopLink.dataset.navigationInitialized !== 'true'
-  ) {
+  if (scrollTopLink && scrollTopLink.dataset.navigationInitialized !== 'true') {
     scrollTopLink.addEventListener('click', (event) => {
       event.preventDefault();
 
       smoothScrollTo(0);
 
-      history.replaceState(
-        null,
-        '',
-        window.location.pathname + window.location.search
-      );
+      history.replaceState(null, '', window.location.pathname + window.location.search);
     });
 
     scrollTopLink.dataset.navigationInitialized = 'true';
   }
 
-  const pendingTarget =
-    sessionStorage.getItem('navigation-target');
+  const pendingTarget = sessionStorage.getItem('navigation-target');
 
   if (pendingTarget) {
     const target = document.getElementById(pendingTarget);
@@ -78,8 +59,7 @@ export function initNavigation(): void {
       sessionStorage.removeItem('navigation-target');
 
       requestAnimationFrame(() => {
-        const targetY =
-          target.getBoundingClientRect().top + window.scrollY;
+        const targetY = target.getBoundingClientRect().top + window.scrollY;
 
         smoothScrollTo(targetY);
       });

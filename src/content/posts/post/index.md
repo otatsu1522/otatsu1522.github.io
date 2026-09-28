@@ -1,8 +1,8 @@
 ---
-title: "ポートフォリオサイトサイトに関して"
-summary: "このプロジェクトのREADMEです。"
-date: "2026-09-27"
-cover: "./ogp.png"
+title: 'ポートフォリオサイトサイトに関して'
+summary: 'このプロジェクトのREADMEです。'
+date: '2026-09-27'
+cover: './ogp.png'
 published: false
 ---
 
@@ -44,16 +44,16 @@ published: false
 
 ## 使用技術
 
-| カテゴリ | ツール / ライブラリ | バージョン / 詳細 | 用途 |
-| --- | --- | --- | --- |
-| フレームワーク | [Astro](https://astro.build/) | v7.3.2 | 静的サイト生成（SSG） |
-| スタイリング | [Tailwind CSS](https://tailwindcss.com/) | v4.3.3 (`@tailwindcss/vite`) | UIデザイン・レイアウト |
-| 言語 | TypeScript | v5.7.3 | 型安全な開発環境 |
-| Node管理 | fnm (Fast Node Manager) | - | Node.js バージョン管理 (`>=22.12.0`) |
-| パッケージマネージャ | pnpm | v10.5.2 | 依存関係管理 |
-| 画像最適化 | Sharp / `astro:assets`  | v0.35.4 | WebP変換・高解像度画像の圧縮処理 |
-| コード整形・診断 | Prettier / `@astrojs/check` | v3.4.2 / v0.9.4 | Astro・Tailwind対応コード整形と型診断 |
-| ホスティング | GitHub Pages | - | Webサイトの自動配信 |
+| カテゴリ             | ツール / ライブラリ                      | バージョン / 詳細            | 用途                                  |
+| -------------------- | ---------------------------------------- | ---------------------------- | ------------------------------------- |
+| フレームワーク       | [Astro](https://astro.build/)            | v7.3.2                       | 静的サイト生成（SSG）                 |
+| スタイリング         | [Tailwind CSS](https://tailwindcss.com/) | v4.3.3 (`@tailwindcss/vite`) | UIデザイン・レイアウト                |
+| 言語                 | TypeScript                               | v5.7.3                       | 型安全な開発環境                      |
+| Node管理             | fnm (Fast Node Manager)                  | -                            | Node.js バージョン管理 (`>=22.12.0`)  |
+| パッケージマネージャ | pnpm                                     | v10.5.2                      | 依存関係管理                          |
+| 画像最適化           | Sharp / `astro:assets`                   | v0.35.4                      | WebP変換・高解像度画像の圧縮処理      |
+| コード整形・診断     | Prettier / `@astrojs/check`              | v3.4.2 / v0.9.4              | Astro・Tailwind対応コード整形と型診断 |
+| ホスティング         | GitHub Pages                             | -                            | Webサイトの自動配信                   |
 
 ---
 

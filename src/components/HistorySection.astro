@@ -5,8 +5,10 @@ import { ui } from '../data/ui';
 import historyImg from '../assets/images/common/history.jpg';
 ---
 
-<section id="history" class="pt-20 pb-0">
-  <div class="flex flex-col md:relative md:left-1/2 md:w-screen md:-translate-x-1/2 md:grid md:grid-cols-3 md:items-center">
+<section id="history" class="pb-0 pt-20">
+  <div
+    class="flex flex-col md:relative md:left-1/2 md:grid md:w-screen md:-translate-x-1/2 md:grid-cols-3 md:items-center"
+  >
     <div class="order-2 mt-10 w-full md:order-2 md:col-span-1 md:mt-0">
       <div class="mb-10 md:px-10 lg:px-16">
         <h2 class="text-4xl font-bold text-[var(--color-text)] md:text-5xl">
@@ -17,29 +19,27 @@ import historyImg from '../assets/images/common/history.jpg';
 
       <div class="px-0 md:px-10 lg:px-16">
         <div class="divide-y divide-[var(--color-border)]">
-          {travelHistory.map((item: HistoryItem) => (
-            <div class="py-3 first:pt-0 last:pb-0">
-              <time class="block text-sm text-[var(--color-muted)]">
-                <span class="lang-ja">{item.period.ja}</span>
-                <span class="lang-en">{item.period.en}</span>
-              </time>
+          {
+            travelHistory.map((item: HistoryItem) => (
+              <div class="py-3 first:pt-0 last:pb-0">
+                <time class="block text-sm text-[var(--color-muted)]">
+                  <span class="lang-ja">{item.period.ja}</span>
+                  <span class="lang-en">{item.period.en}</span>
+                </time>
 
-              <p class="mt-1 text-lg font-extrabold leading-relaxed text-[var(--color-text)]">
-                <span class="lang-ja">{item.title.ja}</span>
-                <span class="lang-en">{item.title.en}</span>
-              </p>
-            </div>
-          ))}
+                <p class="mt-1 text-lg font-extrabold leading-relaxed text-[var(--color-text)]">
+                  <span class="lang-ja">{item.title.ja}</span>
+                  <span class="lang-en">{item.title.en}</span>
+                </p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </div>
 
     <div class="order-1 w-full md:order-1 md:col-span-2">
-      <Image
-        src={historyImg}
-        alt="History"
-        class="block h-auto w-full max-w-none object-contain"
-      />
+      <Image src={historyImg} alt="History" class="block h-auto w-full max-w-none object-contain" />
     </div>
   </div>
 </section>
