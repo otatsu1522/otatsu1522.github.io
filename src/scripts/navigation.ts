@@ -3,7 +3,7 @@ export function initNavigation(): void {
     'footer nav a[href*="#"]'
   );
 
-  const smoothScrollTo = (targetY: number, duration = 1000) => {
+  const smoothScrollTo = (targetY: number, duration = 800) => {
     const startY = window.scrollY;
     const distance = targetY - startY;
     const startTime = performance.now();
@@ -58,7 +58,7 @@ export function initNavigation(): void {
       const targetY =
         target.getBoundingClientRect().top + window.scrollY;
 
-      smoothScrollTo(targetY, 1000);
+      smoothScrollTo(targetY, 800);
 
       history.replaceState(
         null,
@@ -80,7 +80,7 @@ export function initNavigation(): void {
     scrollTopLink.addEventListener('click', (event) => {
       event.preventDefault();
 
-      smoothScrollTo(0, 1000);
+      smoothScrollTo(0, 800);
 
       history.replaceState(
         null,
@@ -105,7 +105,7 @@ export function initNavigation(): void {
         const targetY =
           target.getBoundingClientRect().top + window.scrollY;
 
-        smoothScrollTo(targetY, 1000);
+        smoothScrollTo(targetY, 800);
       });
     }
   }

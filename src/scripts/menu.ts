@@ -37,7 +37,7 @@ export function initMenu(): void {
     document.removeEventListener('keydown', preventKeyboardScroll);
   };
 
-  const smoothScrollTo = (targetY: number, duration = 1000) => {
+  const smoothScrollTo = (targetY: number, duration = 800) => {
     cancelAnimationFrame(scrollAnimationFrame);
 
     const startY = window.scrollY;
@@ -143,16 +143,13 @@ export function initMenu(): void {
         target.getBoundingClientRect().top + window.scrollY;
 
       setOpen(false);
+      smoothScrollTo(targetY, 800);
 
-      window.setTimeout(() => {
-        smoothScrollTo(targetY, 1000);
-
-        history.replaceState(
-          null,
-          '',
-          window.location.pathname + window.location.search
-        );
-      }, 520);
+      history.replaceState(
+        null,
+        '',
+        window.location.pathname + window.location.search
+      );
     });
   });
 
