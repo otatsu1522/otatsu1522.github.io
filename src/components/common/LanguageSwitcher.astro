@@ -61,3 +61,12 @@
   document.addEventListener('astro:page-load', initLanguage);
   document.addEventListener('astro:after-swap', initLanguage);
 </script>
+
+<style>
+html[data-lang="ja"] [data-lang-btn="ja"],
+html[data-lang="en"] [data-lang-btn="en"] {
+  opacity: 1;
+  cursor: default;
+  font-weight: 700;
+}
+</style>
