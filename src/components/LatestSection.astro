@@ -1,9 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { Image } from 'astro:assets';
 import PostCard from './common/PostCard.astro';
 import { ui } from '../data/ui';
-import postsBannerImg from '../assets/images/common/posts-banner.jpg';
 
 const toDateNumber = (date?: string) => {
   if (!date) return 0;
@@ -36,21 +34,13 @@ const latestPosts = posts
         ))}
       </div>
 
-      <div class="mt-8 flex justify-center">
+      <div class="mt-5 flex justify-center">
         <a
           href="/posts/"
-          class="inline-block text-4xl font-bold tracking-[0.16em] text-[var(--color-accent-green)] transition-all duration-300 hover:text-[var(--color-accent-teal)] hover:-translate-y-1 md:text-5xl"
+          class="inline-block text-4xl font-bold tracking-[0.16em] text-[var(--color-accent-green)] transition-all duration-300 hover:-translate-y-1 hover:text-[var(--color-accent-teal)] md:text-5xl"
         >
           MORE
         </a>
-      </div>
-
-      <div class="relative left-1/2 mt-12 w-screen -translate-x-1/2 overflow-hidden">
-        <Image
-          src={postsBannerImg}
-          alt=""
-          class="h-40 w-full object-cover object-center sm:h-48 md:h-[28rem] lg:h-[32rem]"
-        />
       </div>
     </>
   ) : (
