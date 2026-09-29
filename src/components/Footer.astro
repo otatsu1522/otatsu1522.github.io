@@ -12,7 +12,7 @@ const currentYear = new Date().getFullYear();
     <a
       href="#top"
       id="footer-scroll-top"
-      class="group flex flex-col items-center text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
+      class="group flex flex-col items-center text-white/80 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
       aria-label={ui.ja.footer.scrollTop}
     >
       <svg
@@ -37,7 +37,7 @@ const currentYear = new Date().getFullYear();
             <li>
               <a
                 href={item.href}
-                class="text-sm font-semibold tracking-[0.14em] text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
+                class="text-sm font-semibold tracking-[0.14em] text-white/80 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
               >
                 <span class="lang-ja">{ui.ja.nav[item.key]}</span>
                 <span class="lang-en">{ui.en.nav[item.key]}</span>
@@ -57,7 +57,7 @@ const currentYear = new Date().getFullYear();
             rel="noopener noreferrer"
             aria-label={sns.name}
             title={sns.name}
-            class="group flex h-10 w-10 items-center justify-center border border-white/90 text-white/90 transition-all duration-300 hover:border-[var(--color-accent-teal)] hover:bg-[var(--color-accent-teal)] hover:text-white"
+            class="group flex h-10 w-10 items-center justify-center border border-white/80 text-white/80 transition-all duration-300 hover:border-[var(--color-accent-teal)] hover:bg-[var(--color-accent-teal)] hover:text-white"
           >
             <SnsIcon
               name={sns.icon}
