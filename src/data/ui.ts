@@ -4,8 +4,8 @@ export const ui = {
       home: 'Home',
       about: 'About',
       featured: 'Featured',
-      latest: 'Latest',
       social: 'Social',
+      latest: 'Latest',
       contact: 'Contact',
     },
     sections: {
@@ -39,8 +39,8 @@ export const ui = {
       about: 'About',
       featured: 'Featured',
       gallery: 'Gallery',
-      latest: 'Latest',
       social: 'Social',
+      latest: 'Latest',
       contact: 'Contact',
     },
     sections: {

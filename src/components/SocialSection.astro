@@ -24,7 +24,7 @@ import socialImg from '../assets/images/common/social.jpg';
         </h2>
       </div>
 
-      <div class="px-4 md:px-0">
+      <div class="px-0">
         <div>
           {
             snsLinks.map((sns: SnsLink) => (
@@ -32,25 +32,27 @@ import socialImg from '../assets/images/common/social.jpg';
                 href={sns.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group flex items-center gap-5 border-b border-[var(--color-border)] py-5 transition-all duration-300 last:border-b-0 hover:px-2"
+                class="group flex items-center border-b border-[var(--color-border)] py-5 transition-all duration-300 last:border-b-0"
               >
-                <SnsIcon
-                  name={sns.icon}
-                  class="h-7 w-7 shrink-0 text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)]"
-                />
+                <div class="flex w-full items-center gap-5 px-4 md:px-0">
+                  <SnsIcon
+                    name={sns.icon}
+                    class="h-7 w-7 shrink-0 text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)]"
+                  />
 
-                <div class="min-w-0 flex-1">
-                  <div class="text-xl font-bold tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-2xl">
-                    {sns.name}
+                  <div class="min-w-0 flex-1">
+                    <div class="text-xl font-bold tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-2xl">
+                      {sns.name}
+                    </div>
+
+                    <p class="lang-ja mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
+                      {sns.description.ja}
+                    </p>
+
+                    <p class="lang-en mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
+                      {sns.description.en}
+                    </p>
                   </div>
-
-                  <p class="lang-ja mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
-                    {sns.description.ja}
-                  </p>
-
-                  <p class="lang-en mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
-                    {sns.description.en}
-                  </p>
                 </div>
               </a>
             ))
