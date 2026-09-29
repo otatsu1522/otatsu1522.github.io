@@ -6,7 +6,7 @@ import SnsLinks from './common/SnsLinks.astro';
 import profileImg from '../assets/images/common/profile.jpg';
 ---
 
-<section id="about" class="pb-0 pt-20">
+<section id="about" class="pt-20 pb-0">
   <div class="flex flex-col items-center gap-10 md:flex-row md:items-start md:gap-14 lg:gap-20">
     <Image
       src={profileImg}
@@ -26,7 +26,7 @@ import profileImg from '../assets/images/common/profile.jpg';
       </h3>
 
       <p
-        class="mt-4 whitespace-pre-line text-sm leading-relaxed text-[var(--color-muted)] md:text-base"
+        class="mt-4 text-sm leading-relaxed whitespace-pre-line text-[var(--color-muted)] md:text-base"
       >
         <span class="lang-ja">{siteConfig.ja.bio}</span>
         <span class="lang-en">{siteConfig.en.bio}</span>
