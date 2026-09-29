@@ -17,7 +17,7 @@ export const travelHistory: HistoryItem[] = [
     period: { ja: '2018年9月 ~ 2019年9月', en: 'Sep 2018 - Sep 2019' },
     title: {
       ja: 'ニュージーランドゼロ円ワーホリ',
-      en: 'Zero-Yen Working Holiday in New Zealand',
+      en: 'No Money Working Holiday in New Zealand',
     },
   },
   {
@@ -25,7 +25,7 @@ export const travelHistory: HistoryItem[] = [
     period: { ja: '2019年9月 ~ 2019年11月', en: 'Sep 2019 - Nov 2019' },
     title: {
       ja: '無一文オーストラリア一周旅',
-      en: 'Penniless Trip Around Australia',
+      en: 'Hitchhiking Around Australia',
     },
   },
   {
@@ -33,7 +33,7 @@ export const travelHistory: HistoryItem[] = [
     period: { ja: '2019年12月 ~ 2020年1月', en: 'Dec 2019 - Jan 2020' },
     title: {
       ja: '無一文アメリカ横断旅',
-      en: 'Penniless Trip Across the United States',
+      en: 'Hitchhiking Across the United States',
     },
   },
   {
@@ -41,7 +41,7 @@ export const travelHistory: HistoryItem[] = [
     period: { ja: '2020年1月 ~ 2020年3月', en: 'Jan 2020 - Mar 2020' },
     title: {
       ja: '無一文カナダ横断旅',
-      en: 'Penniless Trip Across Canada',
+      en: 'Hitchhiking Across Canada',
     },
   },
   {

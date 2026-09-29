@@ -1,36 +1,48 @@
 ---
+import { Image } from 'astro:assets';
 import { siteConfig } from '../data/site';
 import { ui } from '../data/ui';
+import contactImg from '../assets/images/common/contact.jpg';
 
 const [emailUser, emailDomain] = siteConfig.ja.email.split('@');
 ---
 
-<section id="contact" class="pt-20 pb-0">
-  <div class="mb-10 text-center">
-    <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      <span class="lang-ja">{ui.ja.sections.contactTitle}</span>
-      <span class="lang-en">{ui.en.sections.contactTitle}</span>
-    </h2>
-  </div>
+<section id="contact" class="pb-0 md:pt-20">
+  <div class="flex flex-col md:grid md:grid-cols-2 md:items-center md:gap-14 lg:gap-20">
+    <Image
+      src={contactImg}
+      alt="Contact"
+      class="order-1 mx-auto mt-10 h-auto w-full max-w-[240px] object-contain md:order-1 md:mx-0 md:mt-0 md:max-w-sm"
+    />
 
-  <div class="text-center">
-    <p class="mx-auto max-w-xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
-      <span class="lang-ja">{siteConfig.ja.contactDescription}</span>
-      <span class="lang-en">{siteConfig.en.contactDescription}</span>
-    </p>
+    <div class="order-2 mt-10 md:mt-0">
+      <div class="mb-10">
+        <h2
+          class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl"
+        >
+          <span class="lang-ja">{ui.ja.sections.contactTitle}</span>
+          <span class="lang-en">{ui.en.sections.contactTitle}</span>
+        </h2>
+      </div>
 
-    <a
-      id="contact-mail"
-      href="#"
-      class="relative left-1/2 mt-5 block w-screen -translate-x-1/2 text-[clamp(2rem,10vw,7rem)] leading-none font-bold tracking-[0.06em] break-words transition-all duration-300 hover:-translate-y-1 hover:text-[var(--color-accent-teal)]"
-    >
-      <span class="lang-ja">{siteConfig.ja.contactAction}</span>
-      <span class="lang-en">{siteConfig.en.contactAction}</span>
-    </a>
-  </div>
+      <div class="text-center">
+        <p class="mx-auto max-w-xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+          <span class="lang-ja">{siteConfig.ja.contactDescription}</span>
+          <span class="lang-en">{siteConfig.en.contactDescription}</span>
+        </p>
 
-  <div class="mt-5 flex justify-center pb-10">
-    <div class="h-1 w-[100vw] max-w-[1200px] bg-[var(--color-accent-orange)]"></div>
+        <a
+          id="contact-mail"
+          href="#"
+          class="mt-20 block w-full text-[clamp(2.5rem,6vw,5rem)] leading-none font-bold tracking-[0.06em] break-words transition-all duration-300 hover:-translate-y-1 hover:text-[var(--color-accent-teal)] md:text-5xl"
+        >
+          <span class="lang-ja">{siteConfig.ja.contactAction}</span>
+          <span class="lang-en">{siteConfig.en.contactAction}</span>
+        </a>
+
+        <div class="mt-5 h-1 w-full bg-[var(--color-accent-orange)]"></div>
+      </div>
+    </div>
   </div>
 </section>
 

@@ -11,13 +11,13 @@ export interface Current {
 }
 
 export const current: Current = {
-  active: false,
+  active: true,
   date: {
-    ja: '2026/9/30〜',
+    ja: '2035/12/26〜',
     en: 'Sep 30, 2026 –',
   },
   title: {
     ja: '自転車世界一周中',
-    en: 'Cycling Around the World',
+    en: 'Cycling Around the World Now',
   },
 };
