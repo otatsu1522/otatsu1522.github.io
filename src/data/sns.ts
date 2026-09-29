@@ -15,7 +15,7 @@ export const snsLinks: SnsLink[] = [
     icon: 'youtube',
     description: {
       ja: '旅のリアルな日常や自転車・キャンプ・アウトドアに関して動画で発信してます。',
-      en: 'Travel stories, cycling around the world, camping, and outdoor adventures.',
+      en: 'I share real daily life from my travels, as well as cycling, camping, and outdoor content through videos.',
     },
   },
   {
@@ -24,7 +24,7 @@ export const snsLinks: SnsLink[] = [
     icon: 'instagram',
     description: {
       ja: '旅先の風景や日常、出会った人や行った場所を写真で発信してます。',
-      en: 'Travel scenes, daily life, and moments from cycling around the world in photos.',
+      en: 'I share travel scenes, daily life, the people I meet, and the places I visit through photos.',
     },
   },
   {
@@ -33,7 +33,7 @@ export const snsLinks: SnsLink[] = [
     icon: 'twitter',
     description: {
       ja: '旅の近況や日々の出来事、旅に関する有益な情報などを発信してます。',
-      en: 'Travel updates, daily happenings, and real-time trip information.',
+      en: 'I share travel updates, daily happenings, and useful information about traveling.',
     },
   },
   {
@@ -42,7 +42,7 @@ export const snsLinks: SnsLink[] = [
     icon: 'tiktok',
     description: {
       ja: '旅の動画を短く見やすく編集したショート動画を発信してます。',
-      en: 'Short videos featuring moments from travel and cycling adventures.',
+      en: 'I share short, easy-to-watch videos featuring moments from my travels.',
     },
   },
 ];

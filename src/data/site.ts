@@ -34,14 +34,14 @@ export const siteConfig: Record<Language, SiteConfig> = {
   },
   en: {
     title: 'Portfolio | OTATSU',
-    description: 'Sharing real travel logs, gear reviews, and outdoor adventures.',
+    description: 'The portfolio site of traveler Otatsu.',
     hero: {
       title: 'OTATSU',
       tagline: 'JOURNEY IS MY LIFE',
     },
     author: 'OTATSU',
-    bio: 'Traveling across Japan and the world by bicycle and hitchhiking. Documenting local culture, gear reviews, and real daily life on the road.',
-    contactDescription: 'For travel, projects, and general inquiries.',
+    bio: 'Born in 1994 and a former engineer. I left my job at 23 and am currently traveling around the world by bicycle. I share the real daily life of a traveler on social media. Thanks for stopping by.',
+    contactDescription: 'Please contact me here.',
     contactAction: 'GET IN TOUCH',
     email: 'otatsu1522@gmail.com',
     message: 'See you somewhere in the world.',
