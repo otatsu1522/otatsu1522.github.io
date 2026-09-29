@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { travelHistory, type HistoryItem } from '../data/history';
 import { ui } from '../data/ui';
+import SectionHeading from './common/SectionHeading.astro';
 import historyImg from '../assets/images/common/history.jpg';
 ---
 
@@ -10,11 +11,8 @@ import historyImg from '../assets/images/common/history.jpg';
     class="flex flex-col md:relative md:left-1/2 md:grid md:w-screen md:-translate-x-1/2 md:grid-cols-3 md:items-center"
   >
     <div class="order-2 mt-10 w-full md:order-2 md:col-span-1 md:mt-0">
-      <div class="mb-10 md:px-10 lg:px-16">
-        <h2 class="text-4xl font-bold text-[var(--color-text)] md:text-5xl">
-          <span class="lang-ja">{ui.ja.sections.historyTitle}</span>
-          <span class="lang-en">{ui.en.sections.historyTitle}</span>
-        </h2>
+      <div class="md:px-10 lg:px-16">
+        <SectionHeading ja={ui.ja.sections.historyTitle} en={ui.en.sections.historyTitle} />
       </div>
 
       <div class="px-0 md:px-10 lg:px-16">

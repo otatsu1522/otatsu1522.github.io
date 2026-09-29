@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { recommendedPlaylists, type Recommendation } from '../data/recommend';
 import { ui } from '../data/ui';
+import SectionHeading from './common/SectionHeading.astro';
 import playlistJapanImg from '../assets/images/common/playlist-japan-round.jpg';
 import playlistWorldImg from '../assets/images/common/playlist-world-round.jpg';
 import playlistAmericaImg from '../assets/images/common/playlist-north-america.jpg';
@@ -23,12 +24,7 @@ const getPlaylistImage = (id: string) => {
 ---
 
 <section id="recommend" class="pt-20 pb-0">
-  <div class="mb-10">
-    <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      <span class="lang-ja">{ui.ja.sections.recommendTitle}</span>
-      <span class="lang-en">{ui.en.sections.recommendTitle}</span>
-    </h2>
-  </div>
+  <SectionHeading ja={ui.ja.sections.recommendTitle} en={ui.en.sections.recommendTitle} />
 
   {
     videos.length > 0 && (
@@ -58,12 +54,7 @@ const getPlaylistImage = (id: string) => {
 {
   playlists.length > 0 && (
     <section id="playlist" class="pt-20 pb-0">
-      <div class="mb-10">
-        <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
-          <span class="lang-ja">{ui.ja.sections.playlistTitle}</span>
-          <span class="lang-en">{ui.en.sections.playlistTitle}</span>
-        </h2>
-      </div>
+      <SectionHeading ja={ui.ja.sections.playlistTitle} en={ui.en.sections.playlistTitle} />
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
         {playlists.map(

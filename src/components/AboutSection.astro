@@ -2,7 +2,9 @@
 import { Image } from 'astro:assets';
 import { siteConfig } from '../data/site';
 import { ui } from '../data/ui';
-import SnsLinks from './common/SnsLinks.astro';
+import { snsLinks, type SnsLink } from '../data/sns';
+import SectionHeading from './common/SectionHeading.astro';
+import SnsIcon from './common/SnsIcon.astro';
 import profileImg from '../assets/images/common/profile.jpg';
 ---
 
@@ -15,10 +17,7 @@ import profileImg from '../assets/images/common/profile.jpg';
     />
 
     <div class="w-full flex-1">
-      <h2 class="mb-10 text-4xl font-bold text-[var(--color-text)] md:text-5xl">
-        <span class="lang-ja">{ui.ja.sections.aboutTitle}</span>
-        <span class="lang-en">{ui.en.sections.aboutTitle}</span>
-      </h2>
+      <SectionHeading ja={ui.ja.sections.aboutTitle} en={ui.en.sections.aboutTitle} />
 
       <h3 class="text-2xl font-bold text-[var(--color-text)] md:text-3xl">
         <span class="lang-ja">{siteConfig.ja.author}</span>
@@ -32,8 +31,26 @@ import profileImg from '../assets/images/common/profile.jpg';
         <span class="lang-en">{siteConfig.en.bio}</span>
       </p>
 
-      <div class="mt-8 border-t border-[var(--color-border)] pt-6">
-        <SnsLinks />
+      <div
+        class="mt-8 flex items-center justify-center gap-4 border-t border-[var(--color-border)] pt-6"
+      >
+        {
+          snsLinks.map((sns: SnsLink) => (
+            <a
+              href={sns.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={sns.name}
+              title={sns.name}
+              class="group flex h-12 w-12 items-center justify-center border border-[var(--color-muted)] text-[var(--color-muted)] transition-all duration-300 hover:border-[var(--color-accent-teal)] hover:bg-[var(--color-accent-teal)] hover:text-white"
+            >
+              <SnsIcon
+                name={sns.icon}
+                class="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
+              />
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>

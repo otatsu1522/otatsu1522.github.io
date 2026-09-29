@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { snsLinks, type SnsLink } from '../data/sns';
 import { ui } from '../data/ui';
+import SectionHeading from './common/SectionHeading.astro';
 import SnsIcon from './common/SnsIcon.astro';
 import socialImg from '../assets/images/common/social.jpg';
 ---
@@ -15,14 +16,7 @@ import socialImg from '../assets/images/common/social.jpg';
     />
 
     <div class="order-1 md:order-2">
-      <div class="mb-10">
-        <h2
-          class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl"
-        >
-          <span class="lang-ja">{ui.ja.sections.socialTitle}</span>
-          <span class="lang-en">{ui.en.sections.socialTitle}</span>
-        </h2>
-      </div>
+      <SectionHeading ja={ui.ja.sections.socialTitle} en={ui.en.sections.socialTitle} />
 
       <div class="px-0">
         <div>
@@ -32,7 +26,7 @@ import socialImg from '../assets/images/common/social.jpg';
                 href={sns.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group flex items-center border-b border-[var(--color-border)] py-5 transition-all duration-300 last:border-b-0"
+                class="group flex items-center border-b border-[var(--color-border)] py-5 transition-all duration-300 first:pt-0 last:border-b-0"
               >
                 <div class="flex w-full items-center gap-5 px-2 md:px-0">
                   <SnsIcon
