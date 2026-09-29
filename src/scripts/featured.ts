@@ -105,7 +105,7 @@ export function setupFeaturedScroll(): void {
     });
   }
 
-  if ('onscrollend' in container) {
+  if ('onscrollend' in window) {
     container.addEventListener('scrollend', normalizePosition);
   } else {
     container.addEventListener('scroll', scheduleNormalize, {

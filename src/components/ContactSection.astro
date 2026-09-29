@@ -30,7 +30,7 @@ const [emailUser, emailDomain] = siteConfig.ja.email.split('@');
   </div>
 </section>
 
-<script define:vars={{ emailUser, emailDomain }}>
+<script is:inline define:vars={{ emailUser, emailDomain }}>
   const initContactMail = () => {
     const link = document.getElementById('contact-mail');
 
