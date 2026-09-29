@@ -46,7 +46,22 @@ export function setupFeaturedScroll(): void {
     const layout = getLayout();
 
     if (layout) {
+      const previousSnapType = container.style.scrollSnapType;
+      const previousScrollBehavior = container.style.scrollBehavior;
+
+      container.style.scrollSnapType = 'none';
+      container.style.scrollBehavior = 'auto';
       container.scrollLeft = layout.anchor;
+
+      window.requestAnimationFrame(() => {
+        container.scrollLeft = layout.anchor;
+
+        window.requestAnimationFrame(() => {
+          container.style.scrollSnapType = previousSnapType;
+          container.style.scrollBehavior = previousScrollBehavior;
+        });
+      });
+
       return;
     }
 
