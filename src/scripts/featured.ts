@@ -42,11 +42,19 @@ export function setupFeaturedScroll(): void {
     };
   };
 
-  const initScrollPosition = () => {
+  const initScrollPosition = (attempt = 0) => {
     const layout = getLayout();
-    if (!layout) return;
 
-    container.scrollLeft = layout.anchor;
+    if (layout) {
+      container.scrollLeft = layout.anchor;
+      return;
+    }
+
+    if (attempt >= 10) return;
+
+    window.requestAnimationFrame(() => {
+      initScrollPosition(attempt + 1);
+    });
   };
 
   const normalizePosition = () => {
@@ -82,18 +90,26 @@ export function setupFeaturedScroll(): void {
     }, 200);
   };
 
+  const initAfterImagesReady = () => {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        initScrollPosition();
+      });
+    });
+  };
+
   const images = Array.from(container.querySelectorAll<HTMLImageElement>('img'));
 
   let remainingImages = images.filter((img) => !img.complete).length;
 
   if (remainingImages === 0) {
-    initScrollPosition();
+    initAfterImagesReady();
   } else {
     const handleImageReady = () => {
       remainingImages -= 1;
 
       if (remainingImages === 0) {
-        initScrollPosition();
+        initAfterImagesReady();
       }
     };
 
