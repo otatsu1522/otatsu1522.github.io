@@ -9,7 +9,7 @@ export const navigationItems: NavItem[] = [
   { key: 'home', href: '/#top' },
   { key: 'about', href: '/#about' },
   { key: 'featured', href: '/#featured' },
-  { key: 'latest', href: '/#latest' },
   { key: 'social', href: '/#social' },
+  { key: 'latest', href: '/#latest' },
   { key: 'contact', href: '/#contact' },
 ];
