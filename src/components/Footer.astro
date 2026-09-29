@@ -1,9 +1,11 @@
 ---
 import { navigationItems, type NavItem } from '../data/navigation';
+import { snsLinks, type SnsLink } from '../data/sns';
 import { ui } from '../data/ui';
-import SnsLinks from './common/SnsLinks.astro';
+import SnsIcon from './common/SnsIcon.astro';
 
 const currentYear = new Date().getFullYear();
+---
 ---
 
 <footer class="mt-20 bg-[var(--color-overlay-bg)] text-[var(--color-overlay-text)]">
@@ -11,7 +13,7 @@ const currentYear = new Date().getFullYear();
     <a
       href="#top"
       id="footer-scroll-top"
-      class="group flex flex-col items-center text-white/50 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
+      class="group flex flex-col items-center text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
       aria-label={ui.ja.footer.scrollTop}
     >
       <svg
@@ -24,19 +26,19 @@ const currentYear = new Date().getFullYear();
         ></path>
       </svg>
 
-      <span class="mt-2 text-[10px] tracking-[0.18em]">
+      <span class="mt-2 text-[10px] font-semibold tracking-[0.18em]">
         {ui.ja.footer.scrollTop}
       </span>
     </a>
 
-    <nav class="mt-8 w-full">
+    <nav class="mt-12 w-full">
       <ul class="flex flex-wrap items-center justify-center gap-x-7 gap-y-4 md:gap-x-10">
         {
           navigationItems.map((item: NavItem) => (
             <li>
               <a
                 href={item.href}
-                class="text-sm font-semibold tracking-[0.14em] text-[var(--color-muted)] transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
+                class="text-sm font-semibold tracking-[0.14em] text-white/90 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
               >
                 <span class="lang-ja">{ui.ja.nav[item.key]}</span>
                 <span class="lang-en">{ui.en.nav[item.key]}</span>
@@ -47,11 +49,27 @@ const currentYear = new Date().getFullYear();
       </ul>
     </nav>
 
-    <div class="mt-8">
-      <SnsLinks />
+    <div class="mt-8 flex items-center justify-center gap-3">
+      {
+        snsLinks.map((sns: SnsLink) => (
+          <a
+            href={sns.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={sns.name}
+            title={sns.name}
+            class="group flex h-10 w-10 items-center justify-center border border-white/90 text-white/90 transition-all duration-300 hover:border-[var(--color-accent-teal)] hover:bg-[var(--color-accent-teal)] hover:text-white"
+          >
+            <SnsIcon
+              name={sns.icon}
+              class="h-5 w-5 transition-transform duration-300 group-hover:scale-110"
+            />
+          </a>
+        ))
+      }
     </div>
 
-    <p class="mt-8 text-[10px] tracking-[0.12em] text-[var(--color-muted)]">
+    <p class="mt-8 text-[10px] tracking-[0.12em] text-white/50">
       &copy; {currentYear}
       {ui.ja.footer.copyRights}
     </p>

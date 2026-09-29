@@ -29,7 +29,7 @@ export const ui = {
       noPosts: '新着情報はありません。',
     },
     footer: {
-      copyRights: ' OTATSU All Rights Reserved.',
+      copyRights: ' OTATSU ALL RIGHTS RESERVED.',
       scrollTop: 'SCROLL TOP',
     },
   },
@@ -65,7 +65,7 @@ export const ui = {
       noPosts: 'No posts available yet.',
     },
     footer: {
-      rights: ' OTATSU All Rights Reserved.',
+      rights: ' OTATSU ALL RIGHTS RESERVED.',
       scrollTop: 'SCROLL TOP',
     },
   },

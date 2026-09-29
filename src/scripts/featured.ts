@@ -21,18 +21,14 @@ export function setupFeaturedScroll(): void {
 
   const getLayout = () => {
     const firstItem = container.children[0] as HTMLElement | undefined;
-    const secondItem = container.children[1] as HTMLElement | undefined;
     const secondSetFirstItem = container.children[itemCount] as HTMLElement | undefined;
 
     if (!firstItem || !secondSetFirstItem) return null;
 
     const isMobile = window.matchMedia('(max-width: 767px)').matches;
-
-    const itemStep = secondItem
-      ? secondItem.offsetLeft - firstItem.offsetLeft
-      : secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
-
     const setWidth = secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
+
+    if (setWidth <= 0) return null;
 
     const centerOffset = isMobile
       ? (container.clientWidth - secondSetFirstItem.offsetWidth) / 2
@@ -41,7 +37,6 @@ export function setupFeaturedScroll(): void {
     const anchor = secondSetFirstItem.offsetLeft - centerOffset;
 
     return {
-      itemStep,
       setWidth,
       anchor,
     };
@@ -49,14 +44,14 @@ export function setupFeaturedScroll(): void {
 
   const initScrollPosition = () => {
     const layout = getLayout();
-    if (!layout || layout.setWidth <= 0) return;
+    if (!layout) return;
 
     container.scrollLeft = layout.anchor;
   };
 
   const normalizePosition = () => {
     const layout = getLayout();
-    if (!layout || layout.setWidth <= 0) return;
+    if (!layout) return;
 
     let position = container.scrollLeft;
     let normalized = false;
@@ -66,19 +61,14 @@ export function setupFeaturedScroll(): void {
       normalized = true;
     }
 
-    while (position > layout.anchor + layout.setWidth) {
+    while (position >= layout.anchor + layout.setWidth) {
       position -= layout.setWidth;
       normalized = true;
     }
 
     if (!normalized) return;
 
-    container.style.scrollSnapType = 'none';
     container.scrollLeft = position;
-
-    requestAnimationFrame(() => {
-      container.style.scrollSnapType = '';
-    });
   };
 
   const scheduleNormalize = () => {
@@ -89,7 +79,7 @@ export function setupFeaturedScroll(): void {
     normalizeTimer = window.setTimeout(() => {
       normalizeTimer = undefined;
       normalizePosition();
-    }, 100);
+    }, 200);
   };
 
   const images = Array.from(container.querySelectorAll<HTMLImageElement>('img'));
@@ -115,13 +105,13 @@ export function setupFeaturedScroll(): void {
     });
   }
 
-  container.addEventListener('scroll', scheduleNormalize, {
-    passive: true,
-  });
-
-  container.addEventListener('scrollend', () => {
-    normalizePosition();
-  });
+  if ('onscrollend' in container) {
+    container.addEventListener('scrollend', normalizePosition);
+  } else {
+    container.addEventListener('scroll', scheduleNormalize, {
+      passive: true,
+    });
+  }
 
   container.dataset.infiniteInitialized = 'true';
 }
