@@ -30,7 +30,7 @@ export const ui = {
     },
     footer: {
       copyRights: ' OTATSU ALL RIGHTS RESERVED.',
-      scrollTop: 'TOP',
+      scrollTop: 'SCROLL TOP',
     },
   },
   en: {
@@ -64,7 +64,7 @@ export const ui = {
     },
     footer: {
       rights: ' OTATSU ALL RIGHTS RESERVED.',
-      scrollTop: 'TOP',
+      scrollTop: 'SCROLL TOP',
     },
   },
 } as const;
