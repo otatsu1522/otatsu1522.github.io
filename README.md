@@ -8,15 +8,15 @@ Astroを使用した静的サイト生成（SSG）により、不要なクライ
 
 ## 特徴
 
-* **静的サイト生成**: AstroによるSSG構成
-* **バイリンガル対応**: 日本語・英語の切り替えに対応
-* **コンテンツ管理**: Astro Content CollectionsによるJourney・Postの管理
-* **記事ナビゲーション**: Journey・Postの詳細ページに前後の記事へのリンクを表示
-* **画像最適化**: `astro:assets` と Sharp による画像の最適化
-* **レスポンシブデザイン**: Tailwind CSS v4によるモバイル・PC対応
-* **共通コンポーネント**: セクション見出し、MOREリンク、記事カードなどを共通化
-* **CI/CD自動化**: GitHub Actionsによるチェック・ビルド・GitHub Pagesへの自動デプロイ
-* **サイトマップ生成**: `@astrojs/sitemap` によるサイトマップ生成
+- **静的サイト生成**: AstroによるSSG構成
+- **バイリンガル対応**: 日本語・英語の切り替えに対応
+- **コンテンツ管理**: Astro Content CollectionsによるJourney・Postの管理
+- **記事ナビゲーション**: Journey・Postの詳細ページに前後の記事へのリンクを表示
+- **画像最適化**: `astro:assets` と Sharp による画像の最適化
+- **レスポンシブデザイン**: Tailwind CSS v4によるモバイル・PC対応
+- **共通コンポーネント**: セクション見出し、MOREリンク、記事カードなどを共通化
+- **CI/CD自動化**: GitHub Actionsによるチェック・ビルド・GitHub Pagesへの自動デプロイ
+- **サイトマップ生成**: `@astrojs/sitemap` によるサイトマップ生成
 
 ---
 
@@ -47,25 +47,25 @@ Astroを使用した静的サイト生成（SSG）により、不要なクライ
 
 ## 使用技術
 
-| カテゴリ              | ツール / ライブラリ                              | バージョン / 詳細  | 用途                    |
-| ----------------- | ---------------------------------------- | ----------- | --------------------- |
-| フレームワーク           | [Astro](https://astro.build/)            | `^7.3.2`    | 静的サイト生成（SSG）          |
-| スタイリング            | [Tailwind CSS](https://tailwindcss.com/) | `^4.3.3`    | UIデザイン・レイアウト          |
-| Tailwind連携        | `@tailwindcss/vite`                      | `^4.3.3`    | Vite経由のTailwind CSS統合 |
-| 言語                | TypeScript                               | `^5.7.3`    | 型安全な開発環境              |
-| Node管理            | fnm                                      | -           | Node.jsバージョン管理        |
-| Node.js           | Node.js                                  | `>=22.12.0` | 実行環境                  |
-| パッケージマネージャ        | pnpm                                     | `10.5.2`    | 依存関係管理                |
-| 画像最適化             | Sharp                                    | `^0.35.4`   | 画像処理・最適化              |
-| Astro画像処理         | `astro:assets`                           | Astro内蔵     | 画像最適化・変換              |
-| 型チェック             | `@astrojs/check`                         | `^0.9.4`    | Astro・TypeScriptの診断   |
-| コード整形             | Prettier                                 | `^3.4.2`    | コード整形・フォーマットチェック      |
-| Astro用Prettier    | `prettier-plugin-astro`                  | `^0.14.1`   | `.astro` ファイルの整形      |
-| Tailwind用Prettier | `prettier-plugin-tailwindcss`            | `^0.6.11`   | Tailwindクラスの整形        |
-| サイトマップ            | `@astrojs/sitemap`                       | `^3.7.4`    | サイトマップ生成              |
-| アイコン              | `astro-icon`                             | `^1.2.0`    | アイコン表示                |
-| アイコンセット           | `@iconify-json/simple-icons`             | `^1.2.97`   | SNSなどのSimple Icons    |
-| ホスティング            | GitHub Pages                             | -           | Webサイトの公開・配信          |
+| カテゴリ             | ツール / ライブラリ                      | バージョン / 詳細 | 用途                             |
+| -------------------- | ---------------------------------------- | ----------------- | -------------------------------- |
+| フレームワーク       | [Astro](https://astro.build/)            | `^7.3.2`          | 静的サイト生成（SSG）            |
+| スタイリング         | [Tailwind CSS](https://tailwindcss.com/) | `^4.3.3`          | UIデザイン・レイアウト           |
+| Tailwind連携         | `@tailwindcss/vite`                      | `^4.3.3`          | Vite経由のTailwind CSS統合       |
+| 言語                 | TypeScript                               | `^5.7.3`          | 型安全な開発環境                 |
+| Node管理             | fnm                                      | -                 | Node.jsバージョン管理            |
+| Node.js              | Node.js                                  | `>=22.12.0`       | 実行環境                         |
+| パッケージマネージャ | pnpm                                     | `10.5.2`          | 依存関係管理                     |
+| 画像最適化           | Sharp                                    | `^0.35.4`         | 画像処理・最適化                 |
+| Astro画像処理        | `astro:assets`                           | Astro内蔵         | 画像最適化・変換                 |
+| 型チェック           | `@astrojs/check`                         | `^0.9.4`          | Astro・TypeScriptの診断          |
+| コード整形           | Prettier                                 | `^3.4.2`          | コード整形・フォーマットチェック |
+| Astro用Prettier      | `prettier-plugin-astro`                  | `^0.14.1`         | `.astro` ファイルの整形          |
+| Tailwind用Prettier   | `prettier-plugin-tailwindcss`            | `^0.6.11`         | Tailwindクラスの整形             |
+| サイトマップ         | `@astrojs/sitemap`                       | `^3.7.4`          | サイトマップ生成                 |
+| アイコン             | `astro-icon`                             | `^1.2.0`          | アイコン表示                     |
+| アイコンセット       | `@iconify-json/simple-icons`             | `^1.2.97`         | SNSなどのSimple Icons            |
+| ホスティング         | GitHub Pages                             | -                 | Webサイトの公開・配信            |
 
 ---
 
