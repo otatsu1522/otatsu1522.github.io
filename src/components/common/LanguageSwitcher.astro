@@ -27,6 +27,7 @@
   html[data-lang='en'] [data-lang-btn='en'] {
     opacity: 1;
     cursor: default;
+    font-weight: 700;
   }
 
   html[data-lang='ja'] [data-lang-btn='en']:hover,
@@ -41,8 +42,6 @@
     const langButtons = document.querySelectorAll<HTMLButtonElement>('[data-lang-btn]');
 
     langButtons.forEach((btn) => {
-      if (btn.dataset.languageInitialized === 'true') return;
-
       btn.addEventListener('click', () => {
         const targetLang = btn.getAttribute('data-lang-btn');
 
@@ -52,21 +51,8 @@
         document.documentElement.setAttribute('lang', targetLang);
         localStorage.setItem('preferred-lang', targetLang);
       });
-
-      btn.dataset.languageInitialized = 'true';
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initLanguage);
-  document.addEventListener('astro:page-load', initLanguage);
-  document.addEventListener('astro:after-swap', initLanguage);
+  initLanguage();
 </script>
-
-<style>
-  html[data-lang='ja'] [data-lang-btn='ja'],
-  html[data-lang='en'] [data-lang-btn='en'] {
-    opacity: 1;
-    cursor: default;
-    font-weight: 700;
-  }
-</style>

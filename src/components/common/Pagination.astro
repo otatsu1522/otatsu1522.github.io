@@ -2,11 +2,11 @@
 interface Props {
   target: string;
   totalItems: number;
-  mobilePageSize?: number;
-  desktopPageSize?: number;
+  mobilePageSize: number;
+  desktopPageSize: number;
 }
 
-const { target, totalItems, mobilePageSize = 0, desktopPageSize = 0 } = Astro.props;
+const { target, totalItems, mobilePageSize, desktopPageSize } = Astro.props;
 const totalPages =
   mobilePageSize > 0 && desktopPageSize > 0
     ? Math.max(Math.ceil(totalItems / mobilePageSize), Math.ceil(totalItems / desktopPageSize))
@@ -27,7 +27,7 @@ if (totalPages <= 1) {
     type="button"
     data-pagination-prev
     aria-label="Previous page"
-    class="flex h-8 w-8 cursor-pointer items-center justify-center text-[var(--color-muted)] transition-all duration-300 hover:text-[var(--color-accent-teal)] disabled:pointer-events-none disabled:opacity-30"
+    class="flex h-8 w-8 cursor-pointer items-center justify-center text-muted transition-all duration-300 hover:text-accent-teal disabled:pointer-events-none disabled:opacity-30"
     disabled
   >
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,21 +44,10 @@ if (totalPages <= 1) {
           <button
             type="button"
             data-pagination-page={page}
-            class:list={[
-              'relative cursor-pointer pb-1 text-xs font-medium tracking-[0.12em] transition-all duration-300',
-              page === 1
-                ? 'text-[var(--color-accent-teal)]'
-                : 'text-[var(--color-muted)] hover:text-[var(--color-text)]',
-            ]}
+            class="relative cursor-pointer pb-1 text-xs font-medium tracking-[0.12em] text-muted transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-accent-teal after:opacity-0 hover:text-text aria-[current=page]:text-accent-teal aria-[current=page]:after:opacity-100 aria-[current=page]:hover:text-accent-teal"
             aria-current={page === 1 ? 'page' : undefined}
           >
             {page}
-            {page === 1 && (
-              <span
-                class="absolute bottom-0 left-0 h-px w-full bg-[var(--color-accent-teal)]"
-                data-pagination-active-indicator
-              />
-            )}
           </button>
         );
       })
@@ -69,7 +58,7 @@ if (totalPages <= 1) {
     type="button"
     data-pagination-next
     aria-label="Next page"
-    class="flex h-8 w-8 cursor-pointer items-center justify-center text-[var(--color-muted)] transition-all duration-300 hover:text-[var(--color-accent-teal)] disabled:pointer-events-none disabled:opacity-30"
+    class="flex h-8 w-8 cursor-pointer items-center justify-center text-muted transition-all duration-300 hover:text-accent-teal disabled:pointer-events-none disabled:opacity-30"
   >
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"
@@ -83,8 +72,6 @@ if (totalPages <= 1) {
     const paginations = document.querySelectorAll<HTMLElement>('[data-pagination-target]');
 
     paginations.forEach((pagination) => {
-      if (pagination.dataset.initialized === 'true') return;
-
       const target = pagination.dataset.paginationTarget;
       const mobilePageSize = Number(pagination.dataset.paginationPageSizeMobile);
       const desktopPageSize = Number(pagination.dataset.paginationPageSizeDesktop);
@@ -150,28 +137,13 @@ if (totalPages <= 1) {
 
         pageButtons.forEach((button) => {
           const pageNumber = Number(button.dataset.paginationPage);
-          const visible = pageNumber <= totalPages;
-          const active = pageNumber === currentPage;
 
-          button.classList.toggle('hidden', !visible);
-          button.classList.toggle('text-[var(--color-accent-teal)]', active);
-          button.classList.toggle('text-[var(--color-muted)]', !active);
+          button.classList.toggle('hidden', pageNumber > totalPages);
 
-          const indicator = button.querySelector<HTMLElement>('[data-pagination-active-indicator]');
-
-          if (active) {
+          if (pageNumber === currentPage) {
             button.setAttribute('aria-current', 'page');
-
-            if (!indicator) {
-              const activeIndicator = document.createElement('span');
-              activeIndicator.dataset.paginationActiveIndicator = '';
-              activeIndicator.className =
-                'absolute bottom-0 left-0 h-px w-full bg-[var(--color-accent-teal)]';
-              button.appendChild(activeIndicator);
-            }
           } else {
             button.removeAttribute('aria-current');
-            indicator?.remove();
           }
         });
 
@@ -206,11 +178,8 @@ if (totalPages <= 1) {
       });
 
       update(getHistoryPage());
-      pagination.dataset.initialized = 'true';
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initPagination);
-  document.addEventListener('astro:page-load', initPagination);
-  document.addEventListener('astro:after-swap', initPagination);
+  initPagination();
 </script>

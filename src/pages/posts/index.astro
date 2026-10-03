@@ -2,36 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Pagination from '../../components/common/Pagination.astro';
 import PostCard from '../../components/common/PostCard.astro';
+import SectionHeading from '../../components/common/SectionHeading.astro';
 import { ui, type Language } from '../../data/ui';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getPublishedEntries } from '../../utils/content';
 
-const posts: CollectionEntry<'posts'>[] = (await getCollection('posts')).filter(
-  (post) => post.data.published,
-);
-
-const toDateNumber = (date?: string) => {
-  if (!date) return 0;
-  const match = date.trim().match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/);
-  if (!match) return 0;
-  return Number(match[1]) * 10000 + Number(match[2]) * 100 + Number(match[3]);
-};
-
-const sortedPosts = posts.sort((a, b) => {
-  return toDateNumber(b.data.date) - toDateNumber(a.data.date);
-});
+const sortedPosts = await getPublishedEntries('posts');
 
 const lang: Language = 'ja';
 const t = ui[lang];
 ---
 
 <Layout title={t.sections.postsListTitle}>
-  <main class="pt-20 pb-10">
-    <header class="mx-auto mb-10 max-w-5xl px-5 md:px-10">
-      <h1 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-6xl">
-        <span class="lang-ja">{ui.ja.sections.postsListTitle}</span>
-        <span class="lang-en">{ui.en.sections.postsListTitle}</span>
-      </h1>
-    </header>
+  <div class="pt-20 pb-10">
+    <SectionHeading
+      as="h1"
+      ja={ui.ja.sections.postsListTitle}
+      en={ui.en.sections.postsListTitle}
+      class="mx-auto max-w-5xl px-5 md:px-10"
+    />
 
     {
       sortedPosts.length > 0 ? (
@@ -48,7 +36,7 @@ const t = ui[lang];
           </div>
         </div>
       ) : (
-        <div class="mx-auto max-w-5xl px-6 py-6 text-sm text-[var(--color-muted)] md:px-8">
+        <div class="mx-auto max-w-5xl px-6 py-6 text-sm text-muted md:px-8">
           <span class="lang-ja">{ui.ja.messages.noPosts}</span>
           <span class="lang-en">{ui.en.messages.noPosts}</span>
         </div>
@@ -63,5 +51,5 @@ const t = ui[lang];
         desktopPageSize={10}
       />
     </div>
-  </main>
+  </div>
 </Layout>

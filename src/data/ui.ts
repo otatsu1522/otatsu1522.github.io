@@ -23,6 +23,11 @@ export const ui = {
     buttons: {
       toggleMenu: 'メニュー切り替え',
       readArticle: '記事を読む',
+      playVideo: '動画を再生',
+    },
+    article: {
+      previous: '前の記事',
+      next: '次の記事',
     },
     messages: {
       noJourneys: '旅の記事は準備中です。',
@@ -57,13 +62,18 @@ export const ui = {
     buttons: {
       toggleMenu: 'Toggle Menu',
       readArticle: 'Read article',
+      playVideo: 'Play video',
+    },
+    article: {
+      previous: 'PREVIOUS',
+      next: 'NEXT',
     },
     messages: {
       noJourneys: 'No journey posts available yet.',
       noPosts: 'No posts available yet.',
     },
     footer: {
-      rights: ' OTATSU ALL RIGHTS RESERVED.',
+      copyRights: ' OTATSU ALL RIGHTS RESERVED.',
       scrollTop: 'SCROLL TOP',
     },
   },

@@ -3,18 +3,16 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="404 Page Not Found" description="お探しのページは見つかりませんでした。">
-  <section
-    class="flex min-h-dvh w-full flex-col items-center justify-center px-4 py-16 text-center"
-  >
+  <section class="flex w-full flex-col items-center justify-center px-4 py-32 text-center md:py-40">
     <div>
-      <p class="text-accent-teal mb-2 text-8xl font-extrabold tracking-tight md:text-9xl">404</p>
+      <p class="mb-2 text-8xl font-extrabold tracking-tight text-accent-teal md:text-9xl">404</p>
 
       <h1 class="mb-4 text-2xl font-bold md:text-3xl">
         <span class="lang-ja">ページが見つかりません</span>
         <span class="lang-en">Page Not Found</span>
       </h1>
 
-      <p class="text-sm text-[var(--color-muted)] md:text-base">
+      <p class="text-sm text-muted md:text-base">
         <span class="lang-ja"
           >お探しのページは移動または削除されたか、URLが間違っている可能性があります。</span
         >

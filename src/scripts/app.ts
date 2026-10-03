@@ -8,10 +8,4 @@ export function initApp(): void {
   setupFeaturedScroll();
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
-} else {
-  initApp();
-}
-
-document.addEventListener('astro:after-swap', initApp);
+initApp();

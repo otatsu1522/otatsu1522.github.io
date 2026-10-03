@@ -7,13 +7,12 @@ import SnsIcon from './common/SnsIcon.astro';
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-[var(--color-overlay-bg)] text-[var(--color-overlay-text)]">
+<footer class="bg-overlay-bg text-overlay-text">
   <div class="mx-auto flex max-w-5xl flex-col items-center px-4 pt-12 pb-8 md:pt-16">
     <a
       href="#top"
       id="footer-scroll-top"
-      class="group flex flex-col items-center text-white/80 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
-      aria-label={ui.ja.footer.scrollTop}
+      class="group flex flex-col items-center text-white/80 transition-colors duration-300 hover:text-accent-teal"
     >
       <svg
         class="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-1"
@@ -25,8 +24,9 @@ const currentYear = new Date().getFullYear();
         ></path>
       </svg>
 
-      <span class="mt-2 text-sm font-semibold tracking-[0.18em]">
-        {ui.ja.footer.scrollTop}
+      <span class="mt-2 text-xs font-semibold tracking-[0.18em]">
+        <span class="lang-ja">{ui.ja.footer.scrollTop}</span>
+        <span class="lang-en">{ui.en.footer.scrollTop}</span>
       </span>
     </a>
 
@@ -37,7 +37,7 @@ const currentYear = new Date().getFullYear();
             <li>
               <a
                 href={item.href}
-                class="text-sm font-semibold tracking-[0.14em] text-white/80 transition-colors duration-300 hover:text-[var(--color-accent-teal)]"
+                class="text-sm font-semibold tracking-[0.14em] text-white/80 transition-colors duration-300 hover:text-accent-teal"
               >
                 <span class="lang-ja">{ui.ja.nav[item.key]}</span>
                 <span class="lang-en">{ui.en.nav[item.key]}</span>
@@ -57,7 +57,7 @@ const currentYear = new Date().getFullYear();
             rel="noopener noreferrer"
             aria-label={sns.name}
             title={sns.name}
-            class="group flex h-10 w-10 items-center justify-center border border-white/80 text-white/80 transition-all duration-300 hover:border-[var(--color-accent-teal)] hover:bg-[var(--color-accent-teal)] hover:text-white"
+            class="group flex h-10 w-10 items-center justify-center border border-white/80 text-white/80 transition-all duration-300 hover:border-accent-teal hover:bg-accent-teal hover:text-white"
           >
             <SnsIcon
               name={sns.icon}
@@ -70,7 +70,8 @@ const currentYear = new Date().getFullYear();
 
     <p class="mt-8 text-[10px] tracking-[0.12em] text-white/50">
       &copy; {currentYear}
-      {ui.ja.footer.copyRights}
+      <span class="lang-ja">{ui.ja.footer.copyRights}</span>
+      <span class="lang-en">{ui.en.footer.copyRights}</span>
     </p>
   </div>
 </footer>

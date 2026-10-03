@@ -1,20 +1,17 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
 import JourneyCard from './common/JourneyCard.astro';
 import SectionHeading from './common/SectionHeading.astro';
 import MoreLink from './common/MoreLink.astro';
 import { ui } from '../data/ui';
-import { toDateNumber } from '../utils/date';
+import { getPublishedEntries } from '../utils/content';
 
-const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys'))
-  .filter((entry) => entry.data.published)
-  .sort((a, b) => toDateNumber(b.data.date) - toDateNumber(a.data.date));
+const journeys = await getPublishedEntries('journeys');
 
 const carouselItemClass =
   'w-[80vw] max-w-[80vw] shrink-0 snap-center md:w-[calc((100%_-_3rem)/3)] md:max-w-none md:snap-start';
 ---
 
-<section id="featured" class="pt-10 pb-0">
+<section id="featured" class="pt-10">
   <SectionHeading
     ja={ui.ja.sections.journeyTitle}
     en={ui.en.sections.journeyTitle}
@@ -38,7 +35,7 @@ const carouselItemClass =
         </div>
       </div>
     ) : (
-      <div class="py-4 text-sm text-[var(--color-muted)]">
+      <div class="py-4 text-sm text-muted">
         <span class="lang-ja">{ui.ja.messages.noJourneys}</span>
         <span class="lang-en">{ui.en.messages.noJourneys}</span>
       </div>

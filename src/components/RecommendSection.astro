@@ -10,9 +10,16 @@ import playlistAmericaImg from '../assets/images/common/playlist-north-america.j
 const videos = recommendedPlaylists.filter((item) => item.type === 'video');
 const playlists = recommendedPlaylists.filter((item) => item.type === 'playlist');
 
+const getYouTubeId = (url: string) => new URL(url).searchParams.get('v');
+
 const getYouTubeEmbedUrl = (url: string) => {
-  const videoId = new URL(url).searchParams.get('v');
-  return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+  const videoId = getYouTubeId(url);
+  return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1` : url;
+};
+
+const getYouTubeThumbnailUrl = (url: string) => {
+  const videoId = getYouTubeId(url);
+  return videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : '';
 };
 
 const getPlaylistImage = (id: string) => {
@@ -23,7 +30,7 @@ const getPlaylistImage = (id: string) => {
 };
 ---
 
-<section id="recommend" class="pt-10 pb-0">
+<section id="recommend" class="pt-10">
   <SectionHeading ja={ui.ja.sections.recommendTitle} en={ui.en.sections.recommendTitle} />
 
   {
@@ -33,15 +40,45 @@ const getPlaylistImage = (id: string) => {
           (item: Recommendation) =>
             item.type === 'video' && (
               <div class="overflow-hidden bg-black">
-                <div class="aspect-video">
-                  <iframe
-                    src={getYouTubeEmbedUrl(item.url)}
-                    title={item.title.ja}
-                    class="h-full w-full"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                  />
+                <div class="aspect-video" data-youtube-facade>
+                  <button
+                    type="button"
+                    data-youtube-play
+                    class="group relative block h-full w-full cursor-pointer"
+                  >
+                    <img
+                      src={getYouTubeThumbnailUrl(item.url)}
+                      alt=""
+                      loading="lazy"
+                      class="h-full w-full object-cover"
+                    />
+
+                    <span class="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors duration-300 group-hover:bg-black/10">
+                      <svg
+                        class="h-16 w-16 text-white transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-2 14.5v-9l7 4.5-7 4.5Z" />
+                      </svg>
+                    </span>
+
+                    <span class="sr-only">
+                      <span class="lang-ja">{ui.ja.buttons.playVideo}</span>
+                      <span class="lang-en">{ui.en.buttons.playVideo}</span>
+                    </span>
+                  </button>
+
+                  <template>
+                    <iframe
+                      src={getYouTubeEmbedUrl(item.url)}
+                      title={item.title.ja}
+                      class="h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen
+                    />
+                  </template>
                 </div>
               </div>
             ),
@@ -53,7 +90,7 @@ const getPlaylistImage = (id: string) => {
 
 {
   playlists.length > 0 && (
-    <section id="playlist" class="pt-10 pb-0">
+    <section id="playlist" class="pt-10">
       <SectionHeading ja={ui.ja.sections.playlistTitle} en={ui.en.sections.playlistTitle} />
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -66,7 +103,7 @@ const getPlaylistImage = (id: string) => {
                 rel="noopener noreferrer"
                 class="group relative block overflow-hidden"
               >
-                <div class="aspect-[16/10] overflow-hidden bg-[var(--color-border)]">
+                <div class="aspect-[16/10] overflow-hidden bg-border">
                   <Image
                     src={getPlaylistImage(item.id)}
                     alt={item.title.ja}
@@ -95,3 +132,17 @@ const getPlaylistImage = (id: string) => {
     </section>
   )
 }
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-youtube-facade]').forEach((facade) => {
+    const template = facade.querySelector('template');
+
+    facade.querySelector('[data-youtube-play]')?.addEventListener(
+      'click',
+      () => {
+        if (template) facade.replaceChildren(template.content.cloneNode(true));
+      },
+      { once: true },
+    );
+  });
+</script>

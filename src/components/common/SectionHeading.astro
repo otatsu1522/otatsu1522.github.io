@@ -2,15 +2,16 @@
 interface Props {
   ja: string;
   en: string;
+  as?: 'h1' | 'h2';
   class?: string;
 }
 
-const { ja, en, class: className = '' } = Astro.props;
+const { ja, en, as: Heading = 'h2', class: className = '' } = Astro.props;
 ---
 
 <div class:list={['mb-10', className]}>
-  <h2 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-5xl lg:text-6xl">
+  <Heading class="text-4xl font-bold tracking-tight text-text md:text-5xl lg:text-6xl">
     <span class="lang-ja">{ja}</span>
     <span class="lang-en">{en}</span>
-  </h2>
+  </Heading>
 </div>

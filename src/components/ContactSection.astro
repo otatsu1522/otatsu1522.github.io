@@ -1,14 +1,14 @@
 ---
 import { Image } from 'astro:assets';
-import { siteConfig } from '../data/site';
+import { siteConfig, siteMeta } from '../data/site';
 import { ui } from '../data/ui';
 import SectionHeading from './common/SectionHeading.astro';
 import contactImg from '../assets/images/common/contact.jpg';
 
-const [emailUser, emailDomain] = siteConfig.ja.email.split('@');
+const [emailUser, emailDomain] = siteMeta.email.split('@');
 ---
 
-<section id="contact" class="pt-0 pb-0 md:pt-20">
+<section id="contact" class="pt-0 md:pt-20">
   <div class="flex flex-col md:grid md:grid-cols-2 md:items-center md:gap-14 lg:gap-20">
     <Image
       src={contactImg}
@@ -20,7 +20,7 @@ const [emailUser, emailDomain] = siteConfig.ja.email.split('@');
       <SectionHeading ja={ui.ja.sections.contactTitle} en={ui.en.sections.contactTitle} />
 
       <div>
-        <p class="mx-auto max-w-xl text-sm leading-relaxed text-[var(--color-muted)] md:text-base">
+        <p class="mx-auto max-w-xl text-sm leading-relaxed text-muted md:text-base">
           <span class="lang-ja">{siteConfig.ja.contactDescription}</span>
           <span class="lang-en">{siteConfig.en.contactDescription}</span>
         </p>
@@ -28,13 +28,13 @@ const [emailUser, emailDomain] = siteConfig.ja.email.split('@');
         <a
           id="contact-mail"
           href="#"
-          class="mt-10 block w-full text-center text-[clamp(2.5rem,6vw,5rem)] leading-none font-bold tracking-[0.06em] break-words transition-all duration-300 hover:-translate-y-1 hover:text-[var(--color-accent-teal)] md:text-5xl"
+          class="mt-10 block w-full text-center text-[clamp(2.5rem,6vw,5rem)] leading-none font-bold tracking-[0.06em] break-words transition-all duration-300 hover:-translate-y-1 hover:text-accent-teal md:text-5xl"
         >
           <span class="lang-ja">{siteConfig.ja.contactAction}</span>
           <span class="lang-en">{siteConfig.en.contactAction}</span>
         </a>
 
-        <div class="mt-5 h-1 w-full bg-[var(--color-accent-orange)]"></div>
+        <div class="mt-5 h-1 w-full bg-accent-orange"></div>
       </div>
     </div>
   </div>
@@ -45,17 +45,12 @@ const [emailUser, emailDomain] = siteConfig.ja.email.split('@');
     const link = document.getElementById('contact-mail');
 
     if (!link) return;
-    if (link.dataset.initialized === 'true') return;
 
     link.addEventListener('click', (event) => {
       event.preventDefault();
       window.location.href = `mailto:${emailUser}@${emailDomain}`;
     });
-
-    link.dataset.initialized = 'true';
   };
 
-  document.addEventListener('DOMContentLoaded', initContactMail);
-  document.addEventListener('astro:page-load', initContactMail);
-  document.addEventListener('astro:after-swap', initContactMail);
+  initContactMail();
 </script>

@@ -2,28 +2,24 @@
 import Layout from '../../layouts/Layout.astro';
 import Pagination from '../../components/common/Pagination.astro';
 import JourneyCard from '../../components/common/JourneyCard.astro';
+import SectionHeading from '../../components/common/SectionHeading.astro';
 import { ui, type Language } from '../../data/ui';
-import { getCollection, type CollectionEntry } from 'astro:content';
-import { toDateNumber } from '../../utils/date';
+import { getPublishedEntries } from '../../utils/content';
 
-const journeys: CollectionEntry<'journeys'>[] = (await getCollection('journeys'))
-  .filter((entry) => entry.data.published)
-  .sort((a, b) => {
-    return toDateNumber(b.data.date) - toDateNumber(a.data.date);
-  });
+const journeys = await getPublishedEntries('journeys');
 
 const lang: Language = 'ja';
 const t = ui[lang];
 ---
 
 <Layout title={t.sections.journeyListTitle}>
-  <main class="pt-20 pb-10">
-    <header class="mx-auto mb-10 max-w-6xl px-5 md:px-10">
-      <h1 class="text-4xl font-bold tracking-tight text-[var(--color-text)] md:text-6xl">
-        <span class="lang-ja">{ui.ja.sections.journeyListTitle}</span>
-        <span class="lang-en">{ui.en.sections.journeyListTitle}</span>
-      </h1>
-    </header>
+  <div class="pt-20 pb-10">
+    <SectionHeading
+      as="h1"
+      ja={ui.ja.sections.journeyListTitle}
+      en={ui.en.sections.journeyListTitle}
+      class="mx-auto max-w-6xl px-5 md:px-10"
+    />
 
     {
       journeys.length > 0 ? (
@@ -40,7 +36,7 @@ const t = ui[lang];
           </div>
         </div>
       ) : (
-        <div class="mx-auto max-w-7xl px-6 py-10 text-center text-sm text-[var(--color-muted)] md:px-10 lg:px-12">
+        <div class="mx-auto max-w-7xl px-6 py-10 text-center text-sm text-muted md:px-10 lg:px-12">
           <span class="lang-ja">{ui.ja.messages.noJourneys}</span>
           <span class="lang-en">{ui.en.messages.noJourneys}</span>
         </div>
@@ -55,5 +51,5 @@ const t = ui[lang];
         desktopPageSize={12}
       />
     </div>
-  </main>
+  </div>
 </Layout>

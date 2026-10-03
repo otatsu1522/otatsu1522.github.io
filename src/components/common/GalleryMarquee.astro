@@ -49,20 +49,12 @@ const galleryImages = Object.entries(
 <script>
   const GALLERY_SPEED = 50; // 横スクロール速度(px/秒)
 
-  let animationFrame = 0;
-  let resizeHandler: (() => void) | null = null;
-  let cleanupHandler: (() => void) | null = null;
-
   function setupGalleryMarquee() {
     const viewport = document.getElementById('gallery-viewport');
     const track = document.getElementById('gallery-track');
     const firstSet = document.getElementById('gallery-set');
 
     if (!viewport || !track || !firstSet) return;
-
-    if (cleanupHandler) {
-      cleanupHandler();
-    }
 
     let position = 0;
     let previousTime = performance.now();
@@ -101,37 +93,23 @@ const galleryImages = Object.entries(
         track.style.transform = `translate3d(${position}px, 0, 0)`;
       }
 
-      animationFrame = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     };
 
-    resizeHandler = updateDimensions;
-    window.addEventListener('resize', resizeHandler);
+    window.addEventListener('resize', updateDimensions);
 
     updateDimensions();
 
     if (loopWidth > 0) {
       started = true;
       previousTime = performance.now();
-      animationFrame = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     }
 
     firstSet.querySelectorAll('img').forEach((image) => {
       image.addEventListener('load', updateDimensions, { once: true });
     });
-
-    cleanupHandler = () => {
-      cancelAnimationFrame(animationFrame);
-
-      if (resizeHandler) {
-        window.removeEventListener('resize', resizeHandler);
-      }
-
-      resizeHandler = null;
-      cleanupHandler = null;
-    };
   }
 
-  document.addEventListener('DOMContentLoaded', setupGalleryMarquee);
-  document.addEventListener('astro:page-load', setupGalleryMarquee);
-  document.addEventListener('astro:after-swap', setupGalleryMarquee);
+  setupGalleryMarquee();
 </script>

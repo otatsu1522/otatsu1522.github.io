@@ -6,7 +6,7 @@ import SectionHeading from './common/SectionHeading.astro';
 import historyImg from '../assets/images/common/history.jpg';
 ---
 
-<section id="history" class="pt-10 pb-0">
+<section id="history" class="pt-10">
   <div
     class="flex flex-col md:relative md:left-1/2 md:grid md:w-screen md:-translate-x-1/2 md:grid-cols-3 md:items-center"
   >
@@ -16,16 +16,16 @@ import historyImg from '../assets/images/common/history.jpg';
       </div>
 
       <div class="px-0 md:px-10 lg:px-16">
-        <div class="divide-y divide-[var(--color-border)]">
+        <div class="divide-y divide-border">
           {
             travelHistory.map((item: HistoryItem) => (
               <div class="py-3 first:pt-0 last:pb-0">
-                <time class="block text-[10px] text-[var(--color-muted)]">
+                <time class="block text-[10px] text-muted">
                   <span class="lang-ja">{item.period.ja}</span>
                   <span class="lang-en">{item.period.en}</span>
                 </time>
 
-                <p class="mt-1 text-base leading-relaxed font-extrabold text-[var(--color-text)]">
+                <p class="mt-1 text-base leading-relaxed font-extrabold text-text">
                   <span class="lang-ja">{item.title.ja}</span>
                   <span class="lang-en">{item.title.en}</span>
                 </p>

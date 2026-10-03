@@ -1,0 +1,72 @@
+@reference './global.css';
+
+/* 記事（Markdown）本文の見た目。ArticleLayout の .article-body 配下に適用する */
+@layer components {
+  .article-body a {
+    @apply text-accent-teal underline decoration-accent-teal/40 underline-offset-4 transition-opacity hover:opacity-60;
+  }
+
+  .article-body blockquote {
+    @apply my-10 border-l-2 border-accent-teal pl-5 text-muted italic;
+  }
+
+  .article-body code {
+    @apply rounded bg-border px-1.5 py-0.5 text-text;
+  }
+
+  .article-body h2 {
+    @apply mt-16 mb-6 text-2xl leading-tight font-bold tracking-tight text-text;
+  }
+
+  .article-body h3 {
+    @apply mt-12 mb-5 text-xl leading-tight font-bold text-text;
+  }
+
+  .article-body hr {
+    @apply my-12 border-border;
+  }
+
+  .article-body img {
+    @apply my-10 w-full;
+  }
+
+  .article-body li {
+    @apply mb-2;
+  }
+
+  .article-body ol {
+    @apply mb-7 list-decimal pl-6;
+  }
+
+  .article-body p {
+    @apply mb-6;
+  }
+
+  .article-body pre {
+    @apply mb-8 overflow-x-auto border border-[#2a2a2a] bg-[#1a1a1a] p-5 text-bg;
+  }
+
+  .article-body pre code {
+    @apply bg-transparent p-0 text-inherit;
+  }
+
+  .article-body strong {
+    @apply font-semibold text-text;
+  }
+
+  .article-body table {
+    @apply my-10 w-full border-collapse;
+  }
+
+  .article-body td {
+    @apply border-b border-border px-3 py-3;
+  }
+
+  .article-body th {
+    @apply border-b border-border px-3 py-3 text-left font-semibold;
+  }
+
+  .article-body ul {
+    @apply mb-7 list-disc pl-6;
+  }
+}

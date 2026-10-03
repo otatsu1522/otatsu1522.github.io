@@ -4,8 +4,6 @@ export function initNavigation(): void {
   const anchorLinks = document.querySelectorAll<HTMLAnchorElement>('footer nav a[href*="#"]');
 
   anchorLinks.forEach((link) => {
-    if (link.dataset.navigationInitialized === 'true') return;
-
     link.addEventListener('click', (event) => {
       const url = new URL(link.href, window.location.href);
 
@@ -32,13 +30,11 @@ export function initNavigation(): void {
 
       history.replaceState(null, '', window.location.pathname + window.location.search);
     });
-
-    link.dataset.navigationInitialized = 'true';
   });
 
   const scrollTopLink = document.getElementById('footer-scroll-top');
 
-  if (scrollTopLink && scrollTopLink.dataset.navigationInitialized !== 'true') {
+  if (scrollTopLink) {
     scrollTopLink.addEventListener('click', (event) => {
       event.preventDefault();
 
@@ -46,8 +42,6 @@ export function initNavigation(): void {
 
       history.replaceState(null, '', window.location.pathname + window.location.search);
     });
-
-    scrollTopLink.dataset.navigationInitialized = 'true';
   }
 
   const pendingTarget = sessionStorage.getItem('navigation-target');

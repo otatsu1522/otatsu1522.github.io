@@ -7,7 +7,7 @@ import SnsIcon from './common/SnsIcon.astro';
 import socialImg from '../assets/images/common/social.jpg';
 ---
 
-<section id="social" class="pt-10 pb-0">
+<section id="social" class="pt-10">
   <div class="flex flex-col md:grid md:grid-cols-2 md:items-center md:gap-14 lg:gap-20">
     <Image
       src={socialImg}
@@ -26,24 +26,24 @@ import socialImg from '../assets/images/common/social.jpg';
                 href={sns.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group flex items-center border-b border-[var(--color-border)] py-5 transition-all duration-300 first:pt-0 last:border-b-0"
+                class="group flex items-center border-b border-border py-5 transition-all duration-300 first:pt-0 last:border-b-0"
               >
                 <div class="flex w-full items-center gap-5 px-2 md:px-0">
                   <SnsIcon
                     name={sns.icon}
-                    class="h-7 w-7 shrink-0 text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)]"
+                    class="h-7 w-7 shrink-0 text-text transition-colors duration-300 group-hover:text-accent-teal"
                   />
 
                   <div class="min-w-0 flex-1">
-                    <div class="text-xl font-bold tracking-tight text-[var(--color-text)] transition-colors duration-300 group-hover:text-[var(--color-accent-teal)] md:text-2xl">
+                    <div class="text-xl font-bold tracking-tight text-text transition-colors duration-300 group-hover:text-accent-teal md:text-2xl">
                       {sns.name}
                     </div>
 
-                    <p class="lang-ja mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
+                    <p class="lang-ja mt-1 text-xs leading-relaxed text-muted">
                       {sns.description.ja}
                     </p>
 
-                    <p class="lang-en mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
+                    <p class="lang-en mt-1 text-xs leading-relaxed text-muted">
                       {sns.description.en}
                     </p>
                   </div>

@@ -1,13 +1,12 @@
 ---
 import { Image } from 'astro:assets';
-import { siteConfig } from '../data/site';
+import { siteConfig, siteMeta } from '../data/site';
 import heroImg from '../assets/images/common/hero.jpg';
 
-const hero = siteConfig.en.hero;
+const hero = siteMeta.hero;
 ---
 
 <section
-  id="top"
   class="h-svh w-full overflow-hidden bg-white px-4 pt-24 pb-4 sm:px-5 sm:pt-28 sm:pb-5 md:px-6 md:pt-32 md:pb-6"
 >
   <div class="relative h-full w-full overflow-hidden">

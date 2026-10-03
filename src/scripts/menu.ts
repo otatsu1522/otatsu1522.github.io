@@ -5,7 +5,6 @@ export function initMenu(): void {
   const overlay = document.getElementById('menu-overlay');
 
   if (!toggle || !overlay) return;
-  if (toggle.dataset.initialized === 'true') return;
 
   const lines = toggle.querySelectorAll<HTMLElement>('.menu-line');
   const links = overlay.querySelectorAll<HTMLAnchorElement>('.menu-link');
@@ -48,15 +47,13 @@ export function initMenu(): void {
 
     isOpen = open;
     toggle.setAttribute('aria-expanded', String(open));
+    overlay.toggleAttribute('inert', !open);
 
     if (open) {
       overlay.setAttribute('aria-hidden', 'false');
 
       overlay.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
       overlay.classList.add('translate-x-0', 'opacity-100');
-
-      toggle.classList.remove('text-black');
-      toggle.classList.add('text-white');
 
       lines[0]?.style.setProperty('transform', 'translateY(5px) rotate(45deg)');
       lines[1]?.style.setProperty('transform', 'translateY(-5px) rotate(-45deg)');
@@ -70,9 +67,6 @@ export function initMenu(): void {
 
     overlay.classList.remove('translate-x-0', 'opacity-100');
     overlay.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
-
-    toggle.classList.remove('text-white');
-    toggle.classList.add('text-black');
 
     lines[0]?.style.removeProperty('transform');
     lines[1]?.style.removeProperty('transform');
@@ -105,6 +99,4 @@ export function initMenu(): void {
       history.replaceState(null, '', window.location.pathname + window.location.search);
     });
   });
-
-  toggle.dataset.initialized = 'true';
 }

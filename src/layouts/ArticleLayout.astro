@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Layout from './Layout.astro';
+import ArticleNavigation from '../components/common/ArticleNavigation.astro';
+import '../styles/article.css';
+
+type ArticleEntry = CollectionEntry<'journeys'> | CollectionEntry<'posts'>;
+
+interface Props {
+  entry: ArticleEntry;
+  previous?: ArticleEntry;
+  next?: ArticleEntry;
+  basePath: string;
+}
+
+const { entry, previous, next, basePath } = Astro.props;
+---
+
+<Layout title={entry.data.title} description={entry.data.summary}>
+  <div class="pt-20 pb-10">
+    <article class="mx-auto max-w-5xl px-4 md:px-8">
+      {
+        entry.data.cover && (
+          <div class="mb-12 w-full overflow-hidden md:mb-16">
+            <Image
+              src={entry.data.cover}
+              alt={entry.data.title}
+              class="h-auto max-h-[640px] w-full object-cover"
+            />
+          </div>
+        )
+      }
+
+      <header class="mx-auto max-w-4xl border-b border-border pb-10 text-center">
+        {
+          entry.data.date && entry.data.showDate && (
+            <time class="block text-xs tracking-[0.16em] text-muted">{entry.data.date}</time>
+          )
+        }
+
+        <h1 class="mt-4 text-3xl leading-tight font-bold tracking-tight text-text md:text-5xl">
+          {entry.data.title}
+        </h1>
+
+        {
+          entry.data.summary && (
+            <p class="mt-6 text-base leading-relaxed text-muted md:text-lg">{entry.data.summary}</p>
+          )
+        }
+      </header>
+
+      <div class="article-body mx-auto mt-10 max-w-3xl leading-8 text-text">
+        <slot />
+      </div>
+
+      <ArticleNavigation previous={previous} next={next} basePath={basePath} />
+    </article>
+  </div>
+</Layout>

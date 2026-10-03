@@ -1,9 +1,9 @@
 export function setupFeaturedScroll(): void {
   const container = document.getElementById('journey-container');
-  if (!container || container.dataset.infiniteInitialized === 'true') return;
+  if (!container) return;
 
   const originalItems = Array.from(container.children);
-  if (!originalItems.length || container.querySelector('.text-gray-500')) return;
+  if (!originalItems.length) return;
 
   const itemCount = originalItems.length;
   originalItems.forEach((item) => container.appendChild(item.cloneNode(true)));
@@ -76,6 +76,4 @@ export function setupFeaturedScroll(): void {
   } else {
     container.addEventListener('scroll', scheduleNormalize, { passive: true });
   }
-
-  container.dataset.infiniteInitialized = 'true';
 }
