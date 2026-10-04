@@ -30,7 +30,11 @@ const currentYear = new Date().getFullYear();
       </span>
     </a>
 
-    <nav class="mt-12 w-full">
+    <nav aria-labelledby="footer-nav-label" class="mt-12 w-full">
+      <span id="footer-nav-label" class="sr-only">
+        <span class="lang-ja">{ui.ja.a11y.footerNav}</span>
+        <span class="lang-en">{ui.en.a11y.footerNav}</span>
+      </span>
       <ul class="flex flex-wrap items-center justify-center gap-x-7 gap-y-4 md:gap-x-10">
         {
           navigationItems.map((item: NavItem) => (

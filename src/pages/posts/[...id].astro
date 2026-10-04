@@ -2,6 +2,7 @@
 import { render, type CollectionEntry } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import { getPublishedEntries } from '../../utils/content';
+import { routes } from '../../data/routes';
 
 export async function getStaticPaths() {
   const posts = await getPublishedEntries('posts');
@@ -27,6 +28,6 @@ const nextEntry =
   currentIndex >= 0 && currentIndex < posts.length - 1 ? posts[currentIndex + 1] : undefined;
 ---
 
-<ArticleLayout entry={entry} previous={previousEntry} next={nextEntry} basePath="/posts">
+<ArticleLayout entry={entry} previous={previousEntry} next={nextEntry} basePath={routes.posts}>
   <Content />
 </ArticleLayout>

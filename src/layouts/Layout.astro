@@ -3,25 +3,46 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BaseHead from '../components/common/BaseHead.astro';
+import { defaultLanguage } from '../data/language';
+import { ui } from '../data/ui';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  jsonLd?: Record<string, unknown>;
+  mainClass?: string;
 }
 
-const { title, description, image } = Astro.props;
+const { title, description, image, type, publishedTime, jsonLd, mainClass } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="ja" data-lang="ja">
+<html lang={defaultLanguage} data-lang={defaultLanguage}>
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      publishedTime={publishedTime}
+      jsonLd={jsonLd}
+    />
   </head>
 
   <body id="top" class="relative flex min-h-screen flex-col antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-110 focus:bg-overlay-bg focus:px-4 focus:py-2 focus:text-sm focus:text-overlay-text"
+    >
+      <span class="lang-ja">{ui.ja.a11y.skipToContent}</span>
+      <span class="lang-en">{ui.en.a11y.skipToContent}</span>
+    </a>
+
     <Header />
-    <main class="relative z-10 flex-1">
+    <main id="main" class:list={['relative z-10 flex-1', mainClass]}>
       <slot />
     </main>
     <Footer />

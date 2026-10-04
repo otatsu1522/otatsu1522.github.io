@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { siteConfig, siteMeta } from '../data/site';
+import { defaultLanguage } from '../data/language';
 import heroImg from '../assets/images/common/hero.jpg';
 
 const hero = siteMeta.hero;
@@ -12,7 +13,7 @@ const hero = siteMeta.hero;
   <div class="relative h-full w-full overflow-hidden">
     <Image
       src={heroImg}
-      alt={siteConfig.ja.author}
+      alt={siteConfig[defaultLanguage].author}
       class="absolute inset-0 h-full w-full object-cover object-center"
       loading="eager"
       fetchpriority="high"

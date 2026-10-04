@@ -3,6 +3,7 @@ import JourneyCard from './common/JourneyCard.astro';
 import SectionHeading from './common/SectionHeading.astro';
 import MoreLink from './common/MoreLink.astro';
 import { ui } from '../data/ui';
+import { routes } from '../data/routes';
 import { getPublishedEntries } from '../utils/content';
 
 const journeys = await getPublishedEntries('journeys');
@@ -22,7 +23,7 @@ const carouselItemClass =
     journeys.length > 0 ? (
       <div class="relative">
         <div
-          id="journey-container"
+          id="featured-container"
           class="-mx-4 flex w-[calc(100%+2rem)] snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto px-[10vw] pb-4 [-ms-overflow-style:none] md:relative md:left-1/2 md:mx-0 md:w-[calc(100vw-8rem)] md:-translate-x-1/2 md:gap-6 md:px-0 [&::-webkit-scrollbar]:hidden"
         >
           {journeys.map((item) => (
@@ -31,7 +32,7 @@ const carouselItemClass =
         </div>
 
         <div class="mt-5 flex justify-center">
-          <MoreLink href="/journeys/" />
+          <MoreLink href={routes.journeys} />
         </div>
       </div>
     ) : (

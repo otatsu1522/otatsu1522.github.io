@@ -1,57 +1,71 @@
 ---
-
+import { defaultLanguage, languages } from '../../data/language';
 ---
 
 <div class="flex items-center gap-4 text-sm tracking-widest text-white/90">
-  <button
-    type="button"
-    data-lang-btn="ja"
-    class="cursor-pointer text-inherit opacity-40 transition-all duration-300"
-  >
-    JA
-  </button>
-
-  <span>/</span>
-
-  <button
-    type="button"
-    data-lang-btn="en"
-    class="cursor-pointer text-inherit opacity-40 transition-all duration-300"
-  >
-    EN
-  </button>
+  {
+    languages.map((language, index) => (
+      <>
+        {index > 0 && <span>/</span>}
+        <button
+          type="button"
+          data-lang-btn={language}
+          aria-pressed={language === defaultLanguage}
+          class="cursor-pointer text-inherit opacity-40 transition-all duration-300"
+        >
+          {language.toUpperCase()}
+        </button>
+      </>
+    ))
+  }
 </div>
 
 <style is:global>
-  html[data-lang='ja'] [data-lang-btn='ja'],
-  html[data-lang='en'] [data-lang-btn='en'] {
+  [data-lang-btn][aria-pressed='true'] {
     opacity: 1;
     cursor: default;
     font-weight: 700;
   }
 
-  html[data-lang='ja'] [data-lang-btn='en']:hover,
-  html[data-lang='en'] [data-lang-btn='ja']:hover {
+  [data-lang-btn]:not([aria-pressed='true']):hover {
     color: var(--color-accent-teal);
     opacity: 1;
   }
 </style>
 
 <script>
+  import { isLanguage, languageStorageKey } from '../../data/language';
+
   function initLanguage(): void {
     const langButtons = document.querySelectorAll<HTMLButtonElement>('[data-lang-btn]');
+
+    const syncPressed = () => {
+      const current = document.documentElement.getAttribute('data-lang');
+
+      langButtons.forEach((btn) => {
+        btn.setAttribute('aria-pressed', String(btn.dataset.langBtn === current));
+      });
+    };
 
     langButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
         const targetLang = btn.getAttribute('data-lang-btn');
 
-        if (targetLang !== 'ja' && targetLang !== 'en') return;
+        if (!isLanguage(targetLang)) return;
 
         document.documentElement.setAttribute('data-lang', targetLang);
         document.documentElement.setAttribute('lang', targetLang);
-        localStorage.setItem('preferred-lang', targetLang);
+        syncPressed();
+
+        try {
+          localStorage.setItem(languageStorageKey, targetLang);
+        } catch {
+          // 保存できない環境でも、表示の切り替え自体は行う
+        }
       });
     });
+
+    syncPressed();
   }
 
   initLanguage();

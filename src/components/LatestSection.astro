@@ -3,6 +3,7 @@ import PostCard from './common/PostCard.astro';
 import SectionHeading from './common/SectionHeading.astro';
 import MoreLink from './common/MoreLink.astro';
 import { ui } from '../data/ui';
+import { routes } from '../data/routes';
 import { getPublishedEntries } from '../utils/content';
 
 const latestPosts = (await getPublishedEntries('posts')).slice(0, 3);
@@ -21,7 +22,7 @@ const latestPosts = (await getPublishedEntries('posts')).slice(0, 3);
         </div>
 
         <div class="mt-5 flex justify-center">
-          <MoreLink href="/posts/" />
+          <MoreLink href={routes.posts} />
         </div>
       </>
     ) : (

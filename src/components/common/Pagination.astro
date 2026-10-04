@@ -1,4 +1,6 @@
 ---
+import { ui } from '../../data/ui';
+
 interface Props {
   target: string;
   totalItems: number;
@@ -26,10 +28,13 @@ if (totalPages <= 1) {
   <button
     type="button"
     data-pagination-prev
-    aria-label="Previous page"
     class="flex h-8 w-8 cursor-pointer items-center justify-center text-muted transition-all duration-300 hover:text-accent-teal disabled:pointer-events-none disabled:opacity-30"
     disabled
   >
+    <span class="sr-only">
+      <span class="lang-ja">{ui.ja.a11y.previousPage}</span>
+      <span class="lang-en">{ui.en.a11y.previousPage}</span>
+    </span>
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"
       ></path>
@@ -57,9 +62,12 @@ if (totalPages <= 1) {
   <button
     type="button"
     data-pagination-next
-    aria-label="Next page"
     class="flex h-8 w-8 cursor-pointer items-center justify-center text-muted transition-all duration-300 hover:text-accent-teal disabled:pointer-events-none disabled:opacity-30"
   >
+    <span class="sr-only">
+      <span class="lang-ja">{ui.ja.a11y.nextPage}</span>
+      <span class="lang-en">{ui.en.a11y.nextPage}</span>
+    </span>
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"
       ></path>
@@ -68,6 +76,9 @@ if (totalPages <= 1) {
 </nav>
 
 <script>
+  import { matchesMinWidth } from '../../scripts/breakpoint';
+  import { paginationInitialClasses } from '../../utils/pagination';
+
   function initPagination(): void {
     const paginations = document.querySelectorAll<HTMLElement>('[data-pagination-target]');
 
@@ -82,13 +93,15 @@ if (totalPages <= 1) {
         document.querySelectorAll<HTMLElement>('[data-pagination-item]'),
       ).filter((item) => item.dataset.paginationItem === target);
 
+      items.forEach((item) => item.classList.remove(...Object.values(paginationInitialClasses)));
+
       const pageButtons = pagination.querySelectorAll<HTMLButtonElement>('[data-pagination-page]');
       const prevButton = pagination.querySelector<HTMLButtonElement>('[data-pagination-prev]');
       const nextButton = pagination.querySelector<HTMLButtonElement>('[data-pagination-next]');
 
       if (!items.length || !pageButtons.length) return;
 
-      const getPageSize = () => (window.innerWidth >= 768 ? desktopPageSize : mobilePageSize);
+      const getPageSize = () => (matchesMinWidth('md') ? desktopPageSize : mobilePageSize);
 
       let currentPage = 1;
 

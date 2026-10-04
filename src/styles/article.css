@@ -1,6 +1,5 @@
 @reference './global.css';
 
-/* 記事（Markdown）本文の見た目。ArticleLayout の .article-body 配下に適用する */
 @layer components {
   .article-body a {
     @apply text-accent-teal underline decoration-accent-teal/40 underline-offset-4 transition-opacity hover:opacity-60;
@@ -43,7 +42,7 @@
   }
 
   .article-body pre {
-    @apply mb-8 overflow-x-auto border border-[#2a2a2a] bg-[#1a1a1a] p-5 text-bg;
+    @apply mb-8 overflow-x-auto border border-code-border bg-code-bg p-5 text-bg;
   }
 
   .article-body pre code {

@@ -1,10 +1,15 @@
+import type { ImageMetadata } from 'astro';
 import type { Language } from './ui';
+import worldRoundImg from '../assets/images/common/playlist-world-round.jpg';
+import japanRoundImg from '../assets/images/common/playlist-japan-round.jpg';
+import northAmericaImg from '../assets/images/common/playlist-north-america.jpg';
 
 export interface Playlist {
   id: string;
   type: 'playlist';
   title: Record<Language, string>;
   url: string;
+  image: ImageMetadata;
 }
 
 export interface RecommendedVideo {
@@ -25,6 +30,7 @@ export const recommendedPlaylists: Recommendation[] = [
       en: 'Cycling Around the World',
     },
     url: 'https://www.youtube.com/playlist?list=PLs9JLAzb3cG4lGI5PjpcUxcAtHU1Bbpv3',
+    image: worldRoundImg,
   },
   {
     id: 'japan-round',
@@ -34,6 +40,7 @@ export const recommendedPlaylists: Recommendation[] = [
       en: 'Cycling Around Japan',
     },
     url: 'https://www.youtube.com/playlist?list=PLs9JLAzb3cG5QiAMN0QEGsgTF5r8Knd4V',
+    image: japanRoundImg,
   },
   {
     id: 'north-america',
@@ -43,6 +50,7 @@ export const recommendedPlaylists: Recommendation[] = [
       en: 'Hitchhiking Around North America',
     },
     url: 'https://www.youtube.com/playlist?list=PLs9JLAzb3cG6DS8SIpsXdm9O0XvP9IhQ3',
+    image: northAmericaImg,
   },
   {
     id: '3OMFPDpNQsM',

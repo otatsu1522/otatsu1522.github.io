@@ -50,8 +50,6 @@ export function initMenu(): void {
     overlay.toggleAttribute('inert', !open);
 
     if (open) {
-      overlay.setAttribute('aria-hidden', 'false');
-
       overlay.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
       overlay.classList.add('translate-x-0', 'opacity-100');
 
@@ -63,7 +61,6 @@ export function initMenu(): void {
     }
 
     toggle.focus({ preventScroll: true });
-    overlay.setAttribute('aria-hidden', 'true');
 
     overlay.classList.remove('translate-x-0', 'opacity-100');
     overlay.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');

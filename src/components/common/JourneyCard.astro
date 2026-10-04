@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import type { HTMLAttributes } from 'astro/types';
 import type { CollectionEntry } from 'astro:content';
 import { ui } from '../../data/ui';
+import { routes } from '../../data/routes';
+import { toIsoDate } from '../../utils/date';
 
 interface Props extends Omit<HTMLAttributes<'a'>, 'href'> {
   entry: CollectionEntry<'journeys'>;
@@ -13,13 +15,18 @@ const { entry, headingLevel = 'h3', class: className, ...rest } = Astro.props;
 const Heading = headingLevel;
 ---
 
-<a {...rest} href={`/journeys/${entry.id}/`} class:list={['group/card flex flex-col', className]}>
+<a
+  {...rest}
+  href={`${routes.journeys}${entry.id}/`}
+  class:list={['group/card flex flex-col', className]}
+>
   {
     entry.data.cover && (
-      <div class="aspect-[4/3] w-full shrink-0 overflow-hidden bg-border">
+      <div class="aspect-4/3 w-full shrink-0 overflow-hidden bg-border">
         <Image
           src={entry.data.cover}
-          alt={entry.data.title}
+          alt=""
+          sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 80vw"
           class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
         />
       </div>
@@ -29,7 +36,12 @@ const Heading = headingLevel;
   <div class="pt-5">
     {
       entry.data.date && entry.data.showDate && (
-        <time class="block text-[10px] tracking-[0.2em] text-muted">{entry.data.date}</time>
+        <time
+          datetime={toIsoDate(entry.data.date)}
+          class="block text-[10px] tracking-[0.2em] text-muted"
+        >
+          {entry.data.date}
+        </time>
       )
     }
 
@@ -37,7 +49,7 @@ const Heading = headingLevel;
     </div>
 
     <Heading
-      class="mt-4 text-xl leading-tight font-bold tracking-tight text-text transition-colors duration-300 group-hover/card:text-accent-teal md:text-xl lg:text-2xl"
+      class="mt-4 text-xl leading-tight font-bold tracking-tight text-text transition-colors duration-300 group-hover/card:text-accent-teal lg:text-2xl"
     >
       {entry.data.title}
     </Heading>

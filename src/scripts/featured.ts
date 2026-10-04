@@ -1,5 +1,7 @@
+import { matchesMinWidth } from './breakpoint';
+
 export function setupFeaturedScroll(): void {
-  const container = document.getElementById('journey-container');
+  const container = document.getElementById('featured-container');
   if (!container) return;
 
   const originalItems = Array.from(container.children);
@@ -9,12 +11,19 @@ export function setupFeaturedScroll(): void {
   originalItems.forEach((item) => container.appendChild(item.cloneNode(true)));
   originalItems.forEach((item) => container.appendChild(item.cloneNode(true)));
 
+  (Array.from(container.children) as HTMLElement[]).forEach((item, index) => {
+    if (index >= itemCount && index < itemCount * 2) return;
+
+    item.setAttribute('aria-hidden', 'true');
+    item.tabIndex = -1;
+  });
+
   const getLayout = () => {
     const firstItem = container.children[0] as HTMLElement | undefined;
     const secondSetFirstItem = container.children[itemCount] as HTMLElement | undefined;
     if (!firstItem || !secondSetFirstItem) return null;
 
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const isMobile = !matchesMinWidth('md');
     const setWidth = secondSetFirstItem.offsetLeft - firstItem.offsetLeft;
     if (setWidth <= 0) return null;
 

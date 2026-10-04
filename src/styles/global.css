@@ -12,6 +12,11 @@
   --color-accent-red: #a83232;
   --color-overlay-bg: #0a0a0a;
   --color-overlay-text: #ffffff;
+
+  --color-code-bg: #1a1a1a;
+  --color-code-border: #2a2a2a;
+
+  --breakpoint-md: 48rem;
 }
 
 html {
@@ -26,6 +31,4 @@ html {
 
 body {
   overflow-x: clip;
-  background: var(--color-bg);
-  color: var(--color-text);
 }

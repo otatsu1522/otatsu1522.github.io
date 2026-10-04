@@ -10,6 +10,9 @@ const galleryImages = Object.entries(
 )
   .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
   .map(([, module]) => module.default);
+
+// 画像を縮小して配信する高さ(px)。表示高さ(md 以上は 180px)の2倍で、高解像度の画面でも粗く見えない
+const imageHeight = 360;
 ---
 
 {
@@ -22,6 +25,7 @@ const galleryImages = Object.entries(
               <Image
                 src={image}
                 alt=""
+                height={imageHeight}
                 class="m-0 block h-full w-auto max-w-none p-0"
                 loading={index < 8 ? 'eager' : 'lazy'}
               />
@@ -35,6 +39,7 @@ const galleryImages = Object.entries(
               <Image
                 src={image}
                 alt=""
+                height={imageHeight}
                 class="m-0 block h-full w-auto max-w-none p-0"
                 loading="lazy"
               />

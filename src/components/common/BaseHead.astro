@@ -1,17 +1,28 @@
 ---
-import { siteConfig } from '../../data/site';
+import { siteConfig, siteMeta } from '../../data/site';
+import { defaultLanguage, languages, languageStorageKey } from '../../data/language';
+import { routes } from '../../data/routes';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  jsonLd?: Record<string, unknown>;
 }
 
-const { title, description, image = '/ogp.png' } = Astro.props;
-const site = siteConfig.ja;
+const {
+  title,
+  description,
+  image = '/ogp.png',
+  type = 'website',
+  publishedTime,
+  jsonLd,
+} = Astro.props;
 
-const pageTitle = title ? `${title} | ${site.author}` : site.title;
-const pageDescription = description || site.description;
+const pageTitle = title ? `${title} | ${siteConfig[defaultLanguage].author}` : siteMeta.title;
+const pageDescription = description || siteMeta.description;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
@@ -23,9 +34,11 @@ const ogImageURL = new URL(image, Astro.site);
 
 <!-- Manifest & Theme Color -->
 <link rel="manifest" href="/site.webmanifest" />
-<meta name="theme-color" content="#ffffff" />
+<meta name="theme-color" content={siteMeta.themeColor} />
 
 <link rel="canonical" href={canonicalURL} />
+<link rel="sitemap" href={routes.sitemap} />
+<link rel="alternate" type="application/rss+xml" title={pageTitle} href={routes.rss} />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Primary Meta Tags -->
@@ -34,28 +47,39 @@ const ogImageURL = new URL(image, Astro.site);
 <meta name="description" content={pageDescription} />
 
 <!-- Open Graph / Facebook / Discord -->
-<meta property="og:type" content="website" />
+<meta property="og:type" content={type} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={pageDescription} />
 <meta property="og:image" content={ogImageURL} />
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalURL} />
-<meta property="twitter:title" content={pageTitle} />
-<meta property="twitter:description" content={pageDescription} />
-<meta property="twitter:image" content={ogImageURL} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={pageDescription} />
+<meta name="twitter:image" content={ogImageURL} />
 
-<script is:inline>
-  (function () {
-    const saved = localStorage.getItem('preferred-lang');
+{
+  jsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />
+  )
+}
 
-    if (saved === 'en' || saved === 'ja') {
+<script is:inline define:vars={{ languages, languageStorageKey }}>
+  document.documentElement.setAttribute('data-js', '');
+
+  try {
+    const saved = localStorage.getItem(languageStorageKey);
+
+    if (languages.includes(saved)) {
       document.documentElement.setAttribute('data-lang', saved);
       document.documentElement.setAttribute('lang', saved);
     }
-  })();
+  } catch (error) {
+    // localStorage が使えない環境では、既定の言語のまま表示する
+  }
 </script>
 
 <style is:global>

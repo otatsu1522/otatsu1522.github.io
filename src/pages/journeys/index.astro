@@ -3,16 +3,18 @@ import Layout from '../../layouts/Layout.astro';
 import Pagination from '../../components/common/Pagination.astro';
 import JourneyCard from '../../components/common/JourneyCard.astro';
 import SectionHeading from '../../components/common/SectionHeading.astro';
-import { ui, type Language } from '../../data/ui';
+import { ui } from '../../data/ui';
+import { defaultLanguage } from '../../data/language';
+import { pageSizes } from '../../data/pagination';
+import { getInitialPaginationClass } from '../../utils/pagination';
 import { getPublishedEntries } from '../../utils/content';
 
 const journeys = await getPublishedEntries('journeys');
 
-const lang: Language = 'ja';
-const t = ui[lang];
+const { mobile, desktop } = pageSizes.journeys;
 ---
 
-<Layout title={t.sections.journeyListTitle}>
+<Layout title={ui[defaultLanguage].sections.journeyListTitle}>
   <div class="pt-20 pb-10">
     <SectionHeading
       as="h1"
@@ -31,6 +33,7 @@ const t = ui[lang];
                 headingLevel="h2"
                 data-pagination-item="journeys"
                 data-pagination-index={index}
+                class={getInitialPaginationClass(index, mobile, desktop)}
               />
             ))}
           </div>
@@ -47,8 +50,8 @@ const t = ui[lang];
       <Pagination
         target="journeys"
         totalItems={journeys.length}
-        mobilePageSize={10}
-        desktopPageSize={12}
+        mobilePageSize={mobile}
+        desktopPageSize={desktop}
       />
     </div>
   </div>

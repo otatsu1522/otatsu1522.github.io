@@ -12,9 +12,23 @@ import SocialSection from '../components/SocialSection.astro';
 import ContactSection from '../components/ContactSection.astro';
 import MessageSection from '../components/MessageSection.astro';
 import GalleryMarquee from '../components/common/GalleryMarquee.astro';
+import { siteConfig } from '../data/site';
+import { snsLinks } from '../data/sns';
+import { defaultLanguage } from '../data/language';
+
+const { author, bio } = siteConfig[defaultLanguage];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: author,
+  description: bio,
+  url: Astro.site?.href,
+  sameAs: snsLinks.map((sns) => sns.url),
+};
 ---
 
-<Layout>
+<Layout jsonLd={jsonLd}>
   <Hero />
   <CurrentSection />
 

@@ -37,6 +37,14 @@ export const ui = {
       copyRights: ' OTATSU ALL RIGHTS RESERVED.',
       scrollTop: 'SCROLL TOP',
     },
+    a11y: {
+      skipToContent: '本文へスキップ',
+      mainNav: 'メインメニュー',
+      footerNav: 'フッターメニュー',
+      articleNav: '前後の記事',
+      previousPage: '前のページ',
+      nextPage: '次のページ',
+    },
   },
   en: {
     nav: {
@@ -76,7 +84,15 @@ export const ui = {
       copyRights: ' OTATSU ALL RIGHTS RESERVED.',
       scrollTop: 'SCROLL TOP',
     },
+    a11y: {
+      skipToContent: 'Skip to content',
+      mainNav: 'Main menu',
+      footerNav: 'Footer menu',
+      articleNav: 'Previous and next articles',
+      previousPage: 'Previous page',
+      nextPage: 'Next page',
+    },
   },
 } as const;
 
-export type Language = 'ja' | 'en';
+export type { Language } from './language';

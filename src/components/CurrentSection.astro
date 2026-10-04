@@ -7,10 +7,10 @@ import { current } from '../data/current';
     <section class="mx-auto mt-5 w-full bg-accent-red md:mt-3 md:max-w-3xl">
       <div class="flex flex-col items-center justify-center gap-1 px-4 py-3 text-overlay-text sm:px-6 md:gap-1.5 md:py-4">
         {current.date && (
-          <time class="text-xs tracking-[0.1em] md:text-sm">
+          <p class="text-xs tracking-[0.1em] md:text-sm">
             <span class="lang-ja">{current.date.ja}</span>
             <span class="lang-en">{current.date.en}</span>
-          </time>
+          </p>
         )}
 
         <p class="text-base font-bold tracking-[0.15em] md:text-lg">
