@@ -20,12 +20,14 @@ import profileImg from '../assets/images/common/profile.jpg';
     <div class="w-full flex-1">
       <SectionHeading ja={ui.ja.sections.aboutTitle} en={ui.en.sections.aboutTitle} />
 
-      <h3 class="text-2xl font-bold text-text md:text-3xl text-center md:text-left">
+      <h3 class="text-center text-2xl font-bold text-text md:text-left md:text-3xl">
         <span class="lang-ja">{siteConfig.ja.author}</span>
         <span class="lang-en">{siteConfig.en.author}</span>
       </h3>
 
-      <p class="mt-4 text-sm leading-relaxed whitespace-pre-line text-muted md:text-base text-center md:text-left">
+      <p
+        class="mt-4 text-center text-sm leading-relaxed whitespace-pre-line text-muted md:text-left md:text-base"
+      >
         <span class="lang-ja">{siteConfig.ja.bio}</span>
         <span class="lang-en">{siteConfig.en.bio}</span>
       </p>
