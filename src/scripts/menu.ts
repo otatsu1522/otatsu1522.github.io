@@ -1,4 +1,8 @@
 import { smoothScrollTo } from './scroll';
+import { routes } from '../data/routes';
+import { languageChangedEvent, type LanguageChangedDetail } from '../data/language';
+
+const MENU_STATE_KEY = 'menuOpen';
 
 export function initMenu(): void {
   const toggle = document.getElementById('menu-toggle');
@@ -11,6 +15,8 @@ export function initMenu(): void {
 
   let isOpen = false;
 
+  const isMenuEntry = () => history.state?.[MENU_STATE_KEY] === true;
+
   const preventScroll = (event: Event) => {
     if (isOpen) event.preventDefault();
   };
@@ -19,7 +25,7 @@ export function initMenu(): void {
     if (!isOpen) return;
 
     if (event.key === 'Escape') {
-      setOpen(false);
+      closeMenu();
       return;
     }
 
@@ -71,8 +77,55 @@ export function initMenu(): void {
     unlockScroll();
   };
 
+  const openMenu = () => {
+    if (isOpen) return;
+
+    history.pushState({ ...history.state, [MENU_STATE_KEY]: true }, '');
+    setOpen(true);
+  };
+
+  const closeMenu = (): Promise<void> =>
+    new Promise((resolve) => {
+      if (!isOpen) return resolve();
+
+      if (!isMenuEntry()) {
+        setOpen(false);
+        return resolve();
+      }
+
+      window.addEventListener('popstate', () => resolve(), { once: true });
+      history.back();
+    });
+
+  window.addEventListener('popstate', () => {
+    const shouldBeOpen = isMenuEntry();
+
+    if (shouldBeOpen !== isOpen) setOpen(shouldBeOpen);
+  });
+
+  if (isMenuEntry()) {
+    history.replaceState({ ...history.state, [MENU_STATE_KEY]: false }, '');
+  }
+
   toggle.addEventListener('click', () => {
-    setOpen(!isOpen);
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  document.addEventListener(languageChangedEvent, (event) => {
+    const { persisted } = (event as CustomEvent<LanguageChangedDetail>).detail;
+
+    if (!persisted) return;
+
+    if (window.location.pathname === routes.home) {
+      closeMenu().then(() => smoothScrollTo(0));
+      return;
+    }
+
+    window.location.replace(routes.home);
   });
 
   links.forEach((link) => {
@@ -88,12 +141,13 @@ export function initMenu(): void {
 
       event.preventDefault();
 
-      const targetY = target.getBoundingClientRect().top + window.scrollY;
+      closeMenu().then(() => {
+        const targetY = target.getBoundingClientRect().top + window.scrollY;
 
-      setOpen(false);
-      smoothScrollTo(targetY);
+        smoothScrollTo(targetY);
 
-      history.replaceState(null, '', window.location.pathname + window.location.search);
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      });
     });
   });
 }

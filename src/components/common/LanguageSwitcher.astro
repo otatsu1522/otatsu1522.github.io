@@ -34,11 +34,17 @@ import { defaultLanguage, languages } from '../../data/language';
 </style>
 
 <script>
-  import { isLanguage, languageStorageKey } from '../../data/language';
+  import {
+    isLanguage,
+    languageChangedEvent,
+    languageStorageKey,
+    type LanguageChangedDetail,
+  } from '../../data/language';
 
   function initLanguage(): void {
     const langButtons = document.querySelectorAll<HTMLButtonElement>('[data-lang-btn]');
 
+    // 現在の言語(<html data-lang>)に合わせて、押されている状態を表示に反映する
     const syncPressed = () => {
       const current = document.documentElement.getAttribute('data-lang');
 
@@ -52,16 +58,24 @@ import { defaultLanguage, languages } from '../../data/language';
         const targetLang = btn.getAttribute('data-lang-btn');
 
         if (!isLanguage(targetLang)) return;
+        if (document.documentElement.getAttribute('data-lang') === targetLang) return;
 
         document.documentElement.setAttribute('data-lang', targetLang);
         document.documentElement.setAttribute('lang', targetLang);
         syncPressed();
 
+        let persisted = true;
+
         try {
           localStorage.setItem(languageStorageKey, targetLang);
         } catch {
           // 保存できない環境でも、表示の切り替え自体は行う
+          persisted = false;
         }
+
+        document.dispatchEvent(
+          new CustomEvent<LanguageChangedDetail>(languageChangedEvent, { detail: { persisted } }),
+        );
       });
     });
 
