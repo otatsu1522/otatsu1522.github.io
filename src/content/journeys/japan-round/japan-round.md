@@ -1,7 +1,7 @@
 ---
 title: '自転車日本一周旅の振り返り'
 summary: '自転車で日本一周旅をした。'
-cover: './pic.jpg'
+cover: './japan-round.jpg'
 date: '2020/3/2'
 showDate: false
 published: true
@@ -20,4 +20,4 @@ published: true
 - 総出費 188679円
 - 47都道府県、20極端
 
-![pic](./pic.jpg)
+![pic](./japan-round.jpg)
