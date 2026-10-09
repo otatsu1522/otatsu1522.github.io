@@ -1,4 +1,6 @@
 ---
+import { ui } from '../../data/ui';
+
 interface Props {
   href: string;
 }
@@ -11,7 +13,8 @@ const { href } = Astro.props;
     href={href}
     class="inline-block text-center text-4xl font-bold tracking-[0.16em] transition-all duration-300 hover:-translate-y-1 hover:text-accent-teal md:text-5xl"
   >
-    MORE
+    <span class="lang-ja">{ui.ja.labels.more}</span>
+    <span class="lang-en">{ui.en.labels.more}</span>
   </a>
 
   <div class="mt-5 h-1 w-[50vw] max-w-[1200px] bg-accent-green md:w-[30vw]"></div>

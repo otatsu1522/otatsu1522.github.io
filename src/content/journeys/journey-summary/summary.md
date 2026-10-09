@@ -4,7 +4,7 @@ summary: '旅をまとめた'
 cover: './map.jpg'
 date: ''
 showDate: false
-published: true
+published: false
 ---
 
 ![map](./map.jpg)

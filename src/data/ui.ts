@@ -45,6 +45,10 @@ export const ui = {
       previousPage: '前のページ',
       nextPage: '次のページ',
     },
+    labels: {
+      youtubePlaylist: 'YOUTUBE PLAYLIST',
+      more: 'MORE',
+    },
   },
   en: {
     nav: {
@@ -91,6 +95,10 @@ export const ui = {
       articleNav: 'Previous and next articles',
       previousPage: 'Previous page',
       nextPage: 'Next page',
+    },
+    labels: {
+      youtubePlaylist: 'YOUTUBE PLAYLIST',
+      more: 'MORE',
     },
   },
 } as const;
